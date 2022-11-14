@@ -1,6 +1,8 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const UserModel = require("../models/UsersModel");
+const BookingController = require("./BookingController");
+const ObjectId = require("mongodb").ObjectId;
 
 const validateEmail = (email) => {
   const re =
@@ -87,7 +89,7 @@ module.exports = {
         email,
         phoneNum,
         password,
-        admin: true,
+        admin: false,
         superAdmin: false,
       });
 
@@ -150,7 +152,9 @@ module.exports = {
                 {
                   userId: userInfo._id,
                   name: userInfo.name,
-                  admin: userInfo.admin,
+                  admin1: userInfo.userName === "admin1",
+                  admin2: userInfo.userName === "admin2",
+                  admin3: userInfo.userName === "admin3",
                   superAdmin: userInfo.superAdmin,
                 },
                 process.env.JWT_KEY,
@@ -212,8 +216,11 @@ module.exports = {
             res.status(401).json({ error: "Failed to authenticate. " });
           } else {
             req.userId = decoded.userId;
-            req.superAdmin = decoded.admin;
-            if (decoded.admin) {
+            req.admin1 = decoded.admin1;
+            req.admin2 = decoded.admin2;
+            req.admin3 = decoded.admin3;
+            req.superAdmin = decoded.superAdmin;
+            if (decoded.admin1 || decoded.admin2 || decoded.admin3) {
               next();
             } else {
               res.json({ errors: "Not an Admin" });
@@ -240,6 +247,9 @@ module.exports = {
             res.status(401).json({ errors: "Failed to authenticate. " });
           } else {
             req.userId = decoded.userId;
+            req.admin1 = false;
+            req.admin2 = false;
+            req.admin3 = false;
             req.superAdmin = decoded.superAdmin;
             if (decoded.superAdmin) {
               next();
@@ -272,9 +282,11 @@ module.exports = {
             }
           } else {
             req.userId = decoded.userId;
+            req.admin1 = decoded.admin1;
+            req.admin2 = decoded.admin2;
+            req.admin3 = decoded.admin3;
             req.superAdmin = decoded.superAdmin;
-            req.admin = decoded.admin;
-            if (decoded.superAdmin || decoded.admin) {
+            if (decoded.superAdmin || (decoded.admin1 || decoded.admin2 || decoded.admin3)) {
               next();
             } else {
               res.json({ errors: "Not a Superadmin or Admin." });
@@ -315,4 +327,22 @@ module.exports = {
       }
     }
   },
+
+  isOwnerOf: async (req, res, next) => {
+    const bookId = req.body.bookId || "";
+
+    BookingController.findOne({_id: ObjectId(bookId)}).then((result) => {
+      if (result === null) {
+        res.json({errors: "Booking doesn't exists"});
+      } else {
+        if (req.userId === result._id.toString()) {
+          next();
+        } else {
+          res.json({
+            errors: "You don't have rights to update the booking",
+          });
+        }
+      }
+    });
+  }
 };
