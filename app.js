@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 const userRouter = require("./src/routes/UserRoutes");
 const roomRouter = require("./src/routes/RoomRoutes");
+const bookingRouter = require("./src/routes/BookingsRoute");
 require("dotenv").config();
 const cors = require("cors");
 
@@ -33,6 +34,8 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRouter);
 
 app.use("/api/rooms", roomRouter);
+
+app.use("/api/bookings", bookingRouter);
 
 app.listen(port, () => {
   console.log(`🚀 Server running on port: ${port}`);
