@@ -139,39 +139,47 @@ const checkConflictDates = async (ltId, std, etd) => {
 
 module.exports = {
   getTimetable: async (req, res) => {
-    let cur = new Date(req.body.date);
-    let first = cur.getDate() - cur.getDay();
-    let last = first + 6;
+    const date = req.body.date || "";
 
-    cur = new Date(cur.setDate(first));
-    const startDate = cur.toISOString();
-    cur = new Date(cur.setDate(last));
-    const endDate = cur.toISOString();
+    if (date === "") {
+      res.json({ errors: "Please give a date" });
+    } else {
+      let cur = new Date(date);
+      let first = cur.getDate() - cur.getDay();
+      let last = first + 6;
 
-    BookingsModel.find({
-      $and: [
-        {
-          startDate: {
-            $lte: endDate,
+      cur = new Date(cur.setDate(first));
+      const startDate = cur.toISOString();
+      cur = new Date(cur.setDate(last));
+      const endDate = cur.toISOString();
+
+      BookingsModel.find({
+        $and: [
+          {
+            startDate: {
+              $lte: endDate,
+            },
           },
-        },
-        {
-          endDate: {
-            $gte: startDate,
+          {
+            endDate: {
+              $gte: startDate,
+            },
           },
-        },
-      ],
-    }).then((result) => {
-      res.json({message: "success", data: result});
-    }).catch((err) => {
-      console.log(err);
-      res.json({errors: "something went wrong"});
-    });
+        ],
+      })
+        .then((result) => {
+          res.json({ message: "success", data: result });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.json({ errors: "something went wrong" });
+        });
+    }
   },
 
   makeBooking: async (req, res) => {
     const bookId = req.body.bookId || "N/A";
-    const userId = req.body.userId || "";
+    const userId = req.userId || req.body.userId || "";
     const ltId = req.body.ltId || "";
     const purpose = req.body.purpose || "";
     let startDate = req.body.startDate || "";
@@ -191,7 +199,6 @@ module.exports = {
     };
 
     const errors = await checkForErrors(reqBody);
-
 
     if (Object.keys(errors).length > 0) {
       res.json({ message: "Invalid Inputs", errors });
@@ -538,17 +545,17 @@ module.exports = {
     let admin1 = {};
 
     if (req.admin1) {
-      admin = {admin1: false};
-      admin1 = {admin1: true};
+      admin = { admin1: false };
+      admin1 = { admin1: true };
     } else if (req.admin2) {
-      admin = {admin2: false};
-      admin1 = {admin2: true};
+      admin = { admin2: false };
+      admin1 = { admin2: true };
     } else if (req.admin3) {
-      admin = {admin3: false};
-      admin1 = {admin3: true};
+      admin = { admin3: false };
+      admin1 = { admin3: true };
     } else if (req.superAdmin) {
-      admin = {superAdmin: false};
-      admin1 = {superAdmin: true};
+      admin = { superAdmin: false };
+      admin1 = { superAdmin: true };
     }
 
     if (ObjectId.isValid(bookId)) {

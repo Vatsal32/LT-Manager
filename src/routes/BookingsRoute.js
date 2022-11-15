@@ -4,11 +4,11 @@ const UserController = require("../controllers/UserController");
 
 const router = express.Router();
 
-router.get("/", bookingController.getTimetable);
+router.post("/", bookingController.getTimetable);
 
-router.put("/book", UserController.isAuthenticated, bookingController.makeBooking);
+router.post("/book", UserController.isAuthenticated, bookingController.makeBooking);
 
-router.put("/bookI", UserController.isSuperAdmin, bookingController.makeBooking);
+router.post("/bookI", UserController.isSuperAdmin, bookingController.makeBooking);
 
 router.put("/update", bookingController.updateBooking);
 

@@ -25,9 +25,12 @@ const processBookingRequest = async (data) => {
 
 function* bookingWorker({ payload }) {
   const res = yield call(processBookingRequest, payload);
-  if(res.message==='success') {
-    put(bookingSuccessfulAction());
-  } else put(bookingFailedAction());
+
+  if(res.message === 'success') {
+    yield put(bookingSuccessfulAction());
+  } else {
+    yield put(bookingFailedAction(res));
+  }
 }
 
 export function* bookingWatcher() {

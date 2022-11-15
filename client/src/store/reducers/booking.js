@@ -14,6 +14,7 @@ const BookingReducer = (state = initialState, action) => {
         errors: {},
       };
     case BOOKING_UNSUCCESSFUL:
+
       return {
         ...state,
         booked: false,

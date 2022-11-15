@@ -40,4 +40,27 @@ module.exports = {
         });
     }
   },
+
+  getRoom: async (req, res) => {
+    const answer = await RoomModel.find({})
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json({ errors: "something went wrong" });
+      });
+
+    let data = {}, cnt = 0;
+
+    for (let d of answer) {
+      data = {
+        ...data,
+        [d._id.toString()]: [d.roomNo, cnt],
+      };
+      cnt++;
+    }
+
+    res.json({ message: "success", data });
+  },
 };
