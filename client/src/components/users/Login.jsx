@@ -1,14 +1,6 @@
-import  {useEffect, useState} from "react";
-// import {
-// 	Box,
-// 	Button,
-// 	Container,
-// 	CssBaseline,
-// 	TextField,
-// 	Typography,
-// } from "@mui/material";
-import {useDispatch, useSelector} from 'react-redux';
-import {loginAction} from "../../store/actions/users";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginAction } from "../../store/actions/users";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import img1 from "./images/1.jpg";
@@ -36,11 +28,11 @@ const Login = () => {
 
   const textout = (e) => {
     setState(e.target.value);
-	setUserID(e.target.value);
+    setUserID(e.target.value);
   };
   const textout1 = (e) => {
     setState1(e.target.value);
-	setPassword(e.target.value);
+    setPassword(e.target.value);
   };
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -65,8 +57,8 @@ const Login = () => {
     showPassword: false,
   });
 
-  const handleClickOpen = async() => {
-	dispatcher(loginAction(userid, password));
+  const handleClickOpen = async () => {
+    dispatcher(loginAction(userid, password));
     if (state === "") {
       seterr(true);
     } else {
@@ -79,26 +71,18 @@ const Login = () => {
     }
   };
 
-//   vatsal
   const [userid, setUserID] = useState("");
   const [password, setPassword] = useState("");
   const dispatcher = useDispatch();
   const navigate = useNavigate();
 
   const loggedIn = useSelector((state) => state.users.loggedIn);
-//   const e = useSelector((state) => state.users.errors);
 
   useEffect(() => {
     if (loggedIn) {
       navigate("/");
     }
   }, [loggedIn, navigate]);
-
-	//   useEffect(() => {
-		
-	//   }, [e]);
-
-
 
   return (
     <Box
@@ -259,7 +243,6 @@ const Login = () => {
         </Card>
       </Box>
     </Box>
-    
   );
 };
 
