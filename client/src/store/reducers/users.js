@@ -1,11 +1,13 @@
 import {LOGIN_SUCCESSFUL, LOGIN_UNSUCCESSFUL, LOGOUT_SUCCESSFUL} from "../actions/users";
 
 const JWT_TOKEN = localStorage.getItem('JWT_TOKEN');
+const userId = localStorage.getItem('userID');
 
 const initialState = {
 	jwtToken: JWT_TOKEN,
 	errors: {},
 	loggedIn: false,
+	userId: userId || ''
 };
 
 const UserReducer = (state = initialState, action) => {
@@ -32,6 +34,7 @@ const UserReducer = (state = initialState, action) => {
 				errors: {},
 				jwtToken: '',
 				loggedIn: false,
+				userId: ''
 			});
 		default:
 			return state;
