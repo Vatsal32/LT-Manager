@@ -10,7 +10,7 @@ const NavBar = () => {
 
 	const handleClose = () => {
 		setAnchor(null);
-	}
+	};
 
 	return (
 		<AppBar position="sticky">
@@ -43,6 +43,6 @@ const NavBar = () => {
 			</Toolbar>
 		</AppBar>
 	);
-}
+};
 
 export default NavBar;

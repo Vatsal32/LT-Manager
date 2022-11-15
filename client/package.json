@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@coreui/react": "^4.4.0",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@mui/icons-material": "^5.10.9",
@@ -21,6 +22,7 @@
     "redux-saga": "^1.2.1",
     "redux-thunk": "^2.4.1",
     "styled-components": "^5.3.6",
+    "bootstrap": "^5.2.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
