@@ -6,6 +6,8 @@ import NavBar from './components/NavBar';
 import Home from "./components/Home/Home";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import MakeBooking from './components/bookings/MakeBooking';
+import Register from './components/users/Register';
+import DeleteUser from './components/users/DeleteUser';
 
 const router = createBrowserRouter([
   {
@@ -29,6 +31,14 @@ const router = createBrowserRouter([
       return ans.data;
     },
     element: <MakeBooking />
+  },
+  {
+    path: '/register/',
+    element: <Register />
+  },
+  {
+    path: '/deleteUser',
+    element: <DeleteUser />
   }
 ]);
 

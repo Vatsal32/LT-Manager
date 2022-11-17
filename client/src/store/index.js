@@ -1,6 +1,11 @@
 import { all } from "redux-saga/effects";
 import UserReducer from "./reducers/users";
-import { loginWatcher, logoutWatcher } from "./sagas/users";
+import {
+  addUserWatcher,
+  deleteUserWatcher,
+  loginWatcher,
+  logoutWatcher,
+} from "./sagas/users";
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { composeWithDevTools } from "redux-devtools-extension";
@@ -14,7 +19,13 @@ const rootReducer = combineReducers({
 });
 
 function* rootSagas() {
-  yield all([loginWatcher(), logoutWatcher(), bookingWatcher()]);
+  yield all([
+    loginWatcher(),
+    logoutWatcher(),
+    bookingWatcher(),
+    addUserWatcher(),
+    deleteUserWatcher(),
+  ]);
 }
 
 const sagaMiddleWare = createSagaMiddleware();

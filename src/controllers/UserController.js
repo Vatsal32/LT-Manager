@@ -197,14 +197,14 @@ module.exports = {
           }
         });
       } else {
-        res.status(403).json({ errors: "No token provided." });
+        res.json({ errors: "No token provided." });
       }
     }
   },
 
   isAdmin: async (req, res, next) => {
     if (!req.headers["authorization"]) {
-      res.status(403).json({ errors: "No token provided." });
+      res.json({ errors: "No token provided." });
     } else {
       const authHeader = req.headers["authorization"];
       const authToken = authHeader.split(" ")[1];
@@ -235,7 +235,7 @@ module.exports = {
 
   isSuperAdmin: async (req, res, next) => {
     if (!req.headers["authorization"]) {
-      res.status(403).json({ errors: "No token provided." });
+      res.json({ errors: "No token provided." });
     } else {
       const authHeader = req.headers["authorization"];
       const authToken = authHeader.split(" ")[1];
@@ -266,7 +266,7 @@ module.exports = {
 
   isSuper: async (req, res, next) => {
     if (!req.headers["authorization"]) {
-      res.status(403).json({ errors: "No token provided." });
+      res.json({ errors: "No token provided." });
     } else {
       const authHeader = req.headers["authorization"];
       const authToken = authHeader.split(" ")[1];
@@ -308,7 +308,7 @@ module.exports = {
         errors: { userId: "This field cannot be empty" },
       });
     } else {
-      if (req.admin || req.superAdmin) {
+      if ((req.admin1 || req.admin3 || req.admin3) || req.superAdmin) {
         UserModel.findOneAndDelete({ userName }, (err, data) => {
           if (err) {
             console.log("Err", err);
