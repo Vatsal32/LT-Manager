@@ -1,20 +1,35 @@
 import { all } from "redux-saga/effects";
 import UserReducer from "./reducers/users";
-import { loginWatcher, logoutWatcher } from "./sagas/users";
+import {
+  addUserWatcher,
+  deleteUserWatcher,
+  loginWatcher,
+  logoutWatcher,
+} from "./sagas/users";
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import { bookingWatcher } from "./sagas/booking";
 import BookingReducer from "./reducers/booking";
+import RoomReducer from "./reducers/rooms";
+import { addRoomWatcher } from "./sagas/rooms";
 
 const rootReducer = combineReducers({
   users: UserReducer,
   booking: BookingReducer,
+  rooms: RoomReducer,
 });
 
 function* rootSagas() {
-  yield all([loginWatcher(), logoutWatcher(), bookingWatcher()]);
+  yield all([
+    loginWatcher(),
+    logoutWatcher(),
+    bookingWatcher(),
+    addUserWatcher(),
+    deleteUserWatcher(),
+    addRoomWatcher(),
+  ]);
 }
 
 const sagaMiddleWare = createSagaMiddleware();

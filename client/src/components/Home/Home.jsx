@@ -116,6 +116,7 @@ const Home = () => {
 
       for (let i = st; i < et; i++) {
         ans[ltData[d.ltId][1]][i] = {
+          _id: d._id.toString(),
           admin1: d.admin1,
           admin2: d.admin2,
           admin3: d.admin3,
@@ -210,7 +211,7 @@ const Home = () => {
             >
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  label="Basic example"
+                  label="Date"
                   value={value}
                   onChange={(newValue) => {
                     setValue(newValue);

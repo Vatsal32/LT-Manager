@@ -199,6 +199,7 @@ a.new_booking {
 }
 
 a:hover {
+  background-color: #1976d2;
   color: #0b263b;
   text-decoration: underline;
   font-weight: bold;

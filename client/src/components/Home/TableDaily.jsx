@@ -66,12 +66,18 @@ function TableDaily({ data, lectures, date }) {
                     className="new"
                     onClick={() => {
                       console.log(value);
-                        navigate(`/book/${date}`);
-                      }}
+                      if (value.purpose === null) {
+                        navigate(`/book/${key + 1}/${date}`);
+                      } else {
+                        navigate(`/details/${value._id}`);
+                      }
+                    }}
                     style={{
                       backgroundColor:
                         value.purpose === null
-                          ? "white"
+                          ? key % 2 === 1
+                            ? "white"
+                            : "#efefef"
                           : (value.admin1 && value.admin2 && value.admin3) ||
                             value.superAdmin
                           ? "green"
