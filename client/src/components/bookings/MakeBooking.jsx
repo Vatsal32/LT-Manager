@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -13,7 +13,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import FormHelperText from '@mui/material/FormHelperText';
+import FormHelperText from "@mui/material/FormHelperText";
 import Checkbox from "@mui/material/Checkbox";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -35,7 +35,7 @@ const MakeBooking = () => {
     ltId: "",
     purpose: "",
     batch: "",
-    it_req: ""
+    it_req: "",
   });
   const [page, setPage] = useState(tm.x);
   const [batch, setBatch] = useState("");
@@ -63,25 +63,25 @@ const MakeBooking = () => {
 
   const handleChange = (newValue) => {
     setValue(newValue);
-    settime1S('');
-    settime1E('');
-    settime2S('');
-    settime2E('');
-    settime3S('');
-    settime3E('');
-    settime4S('');
-    settime4E('');
-    settime5S('');
-    settime5E('');
-    settime6S('');
-    settime6E('');
-    settime7S('');
-    settime7E('');
+    settime1S("");
+    settime1E("");
+    settime2S("");
+    settime2E("");
+    settime3S("");
+    settime3E("");
+    settime4S("");
+    settime4E("");
+    settime5S("");
+    settime5E("");
+    settime6S("");
+    settime6E("");
+    settime7S("");
+    settime7E("");
     setValue(tm.y);
-    setV('1');
-    setPage('');
-    setBatch('');
-    setPurpose('');
+    setV("1");
+    setPage("");
+    setBatch("");
+    setPurpose("");
   };
 
   const [value1, setValue1] = useState(dayjs(tm.y));
@@ -98,26 +98,26 @@ const MakeBooking = () => {
     setV(newValue);
   };
 
-  const [time1S, settime1S] = useState('');
-  const [time1E, settime1E] = useState('');
+  const [time1S, settime1S] = useState("");
+  const [time1E, settime1E] = useState("");
 
-  const [time2S, settime2S] = useState('');
-  const [time2E, settime2E] = useState('');
+  const [time2S, settime2S] = useState("");
+  const [time2E, settime2E] = useState("");
 
-  const [time3S, settime3S] = useState('');
-  const [time3E, settime3E] = useState('');
+  const [time3S, settime3S] = useState("");
+  const [time3E, settime3E] = useState("");
 
-  const [time4S, settime4S] = useState('');
-  const [time4E, settime4E] = useState('');
+  const [time4S, settime4S] = useState("");
+  const [time4E, settime4E] = useState("");
 
-  const [time5S, settime5S] = useState('');
-  const [time5E, settime5E] = useState('');
+  const [time5S, settime5S] = useState("");
+  const [time5E, settime5E] = useState("");
 
-  const [time6S, settime6S] = useState('');
-  const [time6E, settime6E] = useState('');
+  const [time6S, settime6S] = useState("");
+  const [time6E, settime6E] = useState("");
 
-  const [time7S, settime7S] = useState('');
-  const [time7E, settime7E] = useState('');
+  const [time7S, settime7S] = useState("");
+  const [time7E, settime7E] = useState("");
 
   const [checked, setChecked] = React.useState(true);
 
@@ -192,11 +192,11 @@ const MakeBooking = () => {
             aria-label="minimum height"
             minRows={4}
             placeholder="Enter your purpose"
-            style={{ margin: "10px", minWidth: 200, fontSize: 15, }}
+            style={{ margin: "10px", minWidth: 200, fontSize: 15 }}
             error={errors.purpose !== ""}
             helperText={errors.purpose}
             InputProps={{
-              inputComponent: TextareaAutosize
+              inputComponent: TextareaAutosize,
             }}
           />
         </Box>
@@ -420,7 +420,7 @@ const MakeBooking = () => {
               }}
             >
               <TabPanel value="2">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <Stack spacing={3}>
                     <Box
                       sx={{
@@ -490,7 +490,7 @@ const MakeBooking = () => {
               }}
             >
               <TabPanel value="3">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <Stack spacing={3}>
                     <Box
                       sx={{
@@ -560,7 +560,7 @@ const MakeBooking = () => {
               }}
             >
               <TabPanel value="4">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <Stack spacing={3}>
                     <Box
                       sx={{
@@ -630,7 +630,7 @@ const MakeBooking = () => {
               }}
             >
               <TabPanel value="5">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <Stack spacing={3}>
                     <Box
                       sx={{
@@ -700,7 +700,7 @@ const MakeBooking = () => {
               }}
             >
               <TabPanel value="6">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <Stack spacing={3}>
                     <Box
                       sx={{
@@ -770,7 +770,7 @@ const MakeBooking = () => {
               }}
             >
               <TabPanel value="7">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <Stack spacing={3}>
                     <Box
                       sx={{
@@ -835,36 +835,98 @@ const MakeBooking = () => {
           </TabContext>
         </Box>
         <Box>
-          <Button variant="contained" endIcon={<SendIcon />} onClick={() => {
-            dispatcher(bookingAction({
-              ltId: Object.keys(data)[page - 1],
-              purpose,
-              startDate: value.format('YYYY-MM-DD'),
-              endDate: value1.format('YYYY-MM-DD'),
-              batch,
-              it_req: checked,
-              monST: time1S !== "" ? time1S.get('hour') * 100 + (time1S.get('minute') > 0 ? 50 : 0) : -1,
-              monET: time1E !== "" ? time1E.get('hour') * 100 + (time1E.get('minute') > 0 ? 50 : 0) : -1,
-              
-              tueST: time2S !== "" ? time2S.get('hour') * 100 + (time2S.get('minute') > 0 ? 50 : 0) : -1,
-              tueET: time2E !== "" ? time2E.get('hour') * 100 + (time2E.get('minute') > 0 ? 50 : 0) : -1,
-              
-              wedST: time3S !== "" ? time3S.get('hour') * 100 + (time3S.get('minutes') > 0 ? 50 : 0) : -1,
-              wedET: time3E !== "" ? time3E.get('hour') * 100 + (time3E.get('minutes') > 0 ? 50 : 0) : -1,
-              
-              thuST: time4S !== "" ? time4S.get('hour') * 100 + (time4S.get('minutes') > 0 ? 50 : 0) : -1,
-              thuET: time4E !== "" ? time4E.get('hour') * 100 + (time4E.get('minutes') > 0 ? 50 : 0) : -1,
-              
-              friST: time5S !== "" ? time5S.get('hour') * 100 + (time5S.get('minutes') > 0 ? 50 : 0) : -1,
-              friET: time5E !== "" ? time5E.get('hour') * 100 + (time5E.get('minutes') > 0 ? 50 : 0) : -1,
-              
-              satST: time6S !== "" ? time6S.get('hour') * 100 + (time6S.get('minutes') > 0 ? 50 : 0) : -1,
-              satET: time6E !== "" ? time6E.get('hour') * 100 + (time6E.get('minutes') > 0 ? 50 : 0) : -1,
-              
-              sunST: time7S !== "" ? time7S.get('hour') * 100 + (time7S.get('minutes') > 0 ? 50 : 0) : -1,
-              sunET: time7E !== "" ? time7E.get('hour') * 100 + (time7E.get('minutes') > 0 ? 50 : 0) : -1,
-            }));
-          }}>
+          <Button
+            variant="contained"
+            endIcon={<SendIcon />}
+            onClick={() => {
+              dispatcher(
+                bookingAction({
+                  ltId: Object.keys(data)[page - 1],
+                  purpose,
+                  startDate: value.format("YYYY-MM-DD"),
+                  endDate: value1.format("YYYY-MM-DD"),
+                  batch,
+                  it_req: checked,
+                  monST:
+                    time1S !== ""
+                      ? time1S.get("hour") * 100 +
+                        (time1S.get("minute") > 0 ? 50 : 0)
+                      : -1,
+                  monET:
+                    time1E !== ""
+                      ? time1E.get("hour") * 100 +
+                        (time1E.get("minute") > 0 ? 50 : 0)
+                      : -1,
+
+                  tueST:
+                    time2S !== ""
+                      ? time2S.get("hour") * 100 +
+                        (time2S.get("minute") > 0 ? 50 : 0)
+                      : -1,
+                  tueET:
+                    time2E !== ""
+                      ? time2E.get("hour") * 100 +
+                        (time2E.get("minute") > 0 ? 50 : 0)
+                      : -1,
+
+                  wedST:
+                    time3S !== ""
+                      ? time3S.get("hour") * 100 +
+                        (time3S.get("minutes") > 0 ? 50 : 0)
+                      : -1,
+                  wedET:
+                    time3E !== ""
+                      ? time3E.get("hour") * 100 +
+                        (time3E.get("minutes") > 0 ? 50 : 0)
+                      : -1,
+
+                  thuST:
+                    time4S !== ""
+                      ? time4S.get("hour") * 100 +
+                        (time4S.get("minutes") > 0 ? 50 : 0)
+                      : -1,
+                  thuET:
+                    time4E !== ""
+                      ? time4E.get("hour") * 100 +
+                        (time4E.get("minutes") > 0 ? 50 : 0)
+                      : -1,
+
+                  friST:
+                    time5S !== ""
+                      ? time5S.get("hour") * 100 +
+                        (time5S.get("minutes") > 0 ? 50 : 0)
+                      : -1,
+                  friET:
+                    time5E !== ""
+                      ? time5E.get("hour") * 100 +
+                        (time5E.get("minutes") > 0 ? 50 : 0)
+                      : -1,
+
+                  satST:
+                    time6S !== ""
+                      ? time6S.get("hour") * 100 +
+                        (time6S.get("minutes") > 0 ? 50 : 0)
+                      : -1,
+                  satET:
+                    time6E !== ""
+                      ? time6E.get("hour") * 100 +
+                        (time6E.get("minutes") > 0 ? 50 : 0)
+                      : -1,
+
+                  sunST:
+                    time7S !== ""
+                      ? time7S.get("hour") * 100 +
+                        (time7S.get("minutes") > 0 ? 50 : 0)
+                      : -1,
+                  sunET:
+                    time7E !== ""
+                      ? time7E.get("hour") * 100 +
+                        (time7E.get("minutes") > 0 ? 50 : 0)
+                      : -1,
+                })
+              );
+            }}
+          >
             Submit
           </Button>
         </Box>

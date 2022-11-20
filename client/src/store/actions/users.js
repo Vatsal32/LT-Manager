@@ -20,11 +20,13 @@ export const loginAction = (userName, password) => {
   };
 };
 
-export const loginSuccessfulAction = (token) => {
+export const loginSuccessfulAction = (token, isAdmin, isSuperAdmin) => {
   return {
     type: LOGIN_SUCCESSFUL,
     payload: {
       token,
+      isAdmin,
+      isSuperAdmin
     },
   };
 };

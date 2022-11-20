@@ -162,7 +162,13 @@ module.exports = {
               );
               res.json({
                 message: "User signed in successfully. ",
-                data: { token: token },
+                data: { 
+                  token: token,
+                  admin1: userInfo.userName === "admin1",
+                  admin2: userInfo.userName === "admin2",
+                  admin3: userInfo.userName === "admin3",
+                  superAdmin: userInfo.superAdmin
+                },
               });
             } else {
               res.json({
@@ -181,7 +187,7 @@ module.exports = {
 
   isAuthenticated: async (req, res, next) => {
     if (!req.headers["authorization"]) {
-      res.status(403).json({ errors: "No token provided." });
+      res.status(403).json({ errors: "User not authenticated." });
     } else {
       const authHeader = req.headers["authorization"];
       const authToken = authHeader.split(" ")[1];
@@ -190,14 +196,14 @@ module.exports = {
         jwt.verify(authToken, process.env.JWT_KEY, (err, decoded) => {
           if (err) {
             console.log(err);
-            res.status(401).json({ errors: "Failed to authenticate. " });
+            res.status(401).json({ errors: "Failed to authenticate." });
           } else {
             req.userId = decoded.userId;
             next();
           }
         });
       } else {
-        res.json({ errors: "No token provided." });
+        res.status(403).json({ errors: "User not authenticated." });
       }
     }
   },

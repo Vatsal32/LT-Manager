@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAction } from "../../store/actions/users";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [userid, setUserID] = useState("");
@@ -17,13 +17,18 @@ const Login = () => {
   const [errors, setErrors] = useState({ userName: "", password: "" });
   const dispatcher = useDispatch();
   const navigate = useNavigate();
+  const getData = useLocation();
 
   const loggedIn = useSelector((state) => state.users.loggedIn);
   const e = useSelector((state) => state.users.errors);
 
   useEffect(() => {
     if (loggedIn) {
-      navigate("/");
+      if (getData.state.pg) {
+        navigate(getData.state.pg);
+      } else {
+        navigate("/");
+      }
     }
   }, [loggedIn, navigate]);
 

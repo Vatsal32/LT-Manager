@@ -138,6 +138,22 @@ const checkConflictDates = async (ltId, std, etd) => {
 };
 
 module.exports = {
+  getSchedule: async (req, res) => {
+    const id = req.body.bookId || "";
+
+    if (ObjectId.isValid(id)) {
+      BookingsModel.findOne({ _id: ObjectId(id) }).then((result) => {
+        if (result) {
+          res.json({ message: "success", data: result });
+        } else {
+          res.json({ errors: "No such booking" });
+        }
+      });
+    } else {
+      res.json({ errors: "Invalid Booking" });
+    }
+  },
+
   getTimetable: async (req, res) => {
     const date = req.body.date || "";
 

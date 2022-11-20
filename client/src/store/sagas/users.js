@@ -83,7 +83,15 @@ function* loginWorker({ payload }) {
 
   if (res.token) {
     localStorage.setItem("JWT_TOKEN", res.token);
-    yield put(loginSuccessfulAction(res.token));
+    yield put(
+      loginSuccessfulAction(
+        res.token,
+        res.admin1,
+        res.admin2,
+        res.admin3,
+        res.superAdmin
+      )
+    );
   } else {
     yield put(loginFailedAction({ ...res }));
   }

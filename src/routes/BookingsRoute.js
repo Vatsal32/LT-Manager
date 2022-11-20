@@ -20,4 +20,6 @@ router.post("/accept", UserController.isSuper, bookingController.approveBooking)
 
 router.delete("/reject", UserController.isSuper, bookingController.rejectBooking);
 
+router.post("/details", UserController.isAuthenticated, bookingController.getSchedule);
+
 module.exports = router;
