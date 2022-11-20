@@ -210,7 +210,7 @@ const Home = () => {
             >
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  label="Basic example"
+                  label="Date"
                   value={value}
                   onChange={(newValue) => {
                     setValue(newValue);

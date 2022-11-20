@@ -66,7 +66,7 @@ function TableDaily({ data, lectures, date }) {
                     className="new"
                     onClick={() => {
                       console.log(value);
-                        navigate(`/book/${date}`);
+                        navigate(`/book/${key + 1}/${date}`);
                       }}
                     style={{
                       backgroundColor:

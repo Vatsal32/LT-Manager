@@ -8,6 +8,7 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import MakeBooking from './components/bookings/MakeBooking';
 import Register from './components/users/Register';
 import DeleteUser from './components/users/DeleteUser';
+import AddRooms from './components/rooms/AddRooms';
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: '/book/:y',
+    path: '/book/:x/:y',
     loader: async () => {
       const result = await fetch("http://localhost:5001/api/rooms/", {
         method: "GET",
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
   {
     path: '/deleteUser',
     element: <DeleteUser />
+  },
+  {
+    path: '/addRooms',
+    element: <AddRooms />
   }
 ]);
 

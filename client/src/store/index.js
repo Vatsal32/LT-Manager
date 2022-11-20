@@ -12,10 +12,13 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import { bookingWatcher } from "./sagas/booking";
 import BookingReducer from "./reducers/booking";
+import RoomReducer from "./reducers/rooms";
+import { addRoomWatcher } from "./sagas/rooms";
 
 const rootReducer = combineReducers({
   users: UserReducer,
   booking: BookingReducer,
+  rooms: RoomReducer,
 });
 
 function* rootSagas() {
@@ -25,6 +28,7 @@ function* rootSagas() {
     bookingWatcher(),
     addUserWatcher(),
     deleteUserWatcher(),
+    addRoomWatcher(),
   ]);
 }
 

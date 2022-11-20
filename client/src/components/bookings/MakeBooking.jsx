@@ -37,7 +37,7 @@ const MakeBooking = () => {
     batch: "",
     it_req: ""
   });
-  const [page, setPage] = useState("");
+  const [page, setPage] = useState(tm.x);
   const [batch, setBatch] = useState("");
   const [purpose, setPurpose] = useState("");
 
@@ -51,15 +51,9 @@ const MakeBooking = () => {
       batch: e.batch || "",
       it_req: e.it_req || "",
     }));
-
-    if (e.slots) {
-      alert(e.slots);
-    }
   }, [e]);
 
-  if (d) {
-    alert("Booking successful");
-  }
+  console.log(d);
 
   const displayPage = (event) => {
     setPage(event.target.value);

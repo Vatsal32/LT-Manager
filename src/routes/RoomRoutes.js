@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.get("/", roomController.getRoom);
 
-router.put("/addRoom", userControllers.isSuper, roomController.addRoom);
+router.post("/addRoom", userControllers.isSuper, roomController.addRoom);
 
 module.exports = router;

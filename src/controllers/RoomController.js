@@ -29,14 +29,25 @@ module.exports = {
         capacity,
       });
 
-      newRoom
-        .save()
-        .then(() => {
-          res.json({ message: "Successful" });
+      RoomModel.find({ roomNo })
+        .then((result) => {
+          if (result.length > 0) {
+            res.json({ errors: { roomNo: "Already Exists" } });
+          } else {
+            newRoom
+              .save()
+              .then(() => {
+                res.json({ message: "Successful" });
+              })
+              .catch((err) => {
+                console.log(err);
+                res.json({ errors: "Something went wrong." });
+              });
+          }
         })
         .catch((err) => {
           console.log(err);
-          res.json({ errors: "Something went wrong." });
+          res.json({ errors: "Something went wrong" });
         });
     }
   },
@@ -51,7 +62,8 @@ module.exports = {
         res.json({ errors: "something went wrong" });
       });
 
-    let data = {}, cnt = 0;
+    let data = {},
+      cnt = 0;
 
     for (let d of answer) {
       data = {
