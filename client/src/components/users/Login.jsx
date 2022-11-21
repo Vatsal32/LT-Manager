@@ -24,7 +24,7 @@ const Login = () => {
 
   useEffect(() => {
     if (loggedIn) {
-      if (getData.state.pg) {
+      if (getData.state && getData.state.pg) {
         navigate(getData.state.pg);
       } else {
         navigate("/");

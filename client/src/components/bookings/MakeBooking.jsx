@@ -21,11 +21,19 @@ import TabContext from "@mui/lab/TabContext";
 import { TabPanel } from "@mui/lab";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
-import { useLoaderData, useParams } from "react-router-dom";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { bookingAction } from "../../store/actions/booking";
 
 const MakeBooking = () => {
+  const allowBookings = useSelector(
+    (state) =>
+      state.users.loggedIn &&
+      !state.users.isAdmin1 &&
+      !state.users.isAdmin2 &&
+      !state.users.isAdmin3
+  );
+  const superAdmin = useSelector((state) => state.users.isSuperAdmin);
   const data = useLoaderData();
   const tm = useParams();
   const dispatcher = useDispatch();
@@ -40,6 +48,13 @@ const MakeBooking = () => {
   const [page, setPage] = useState(tm.x);
   const [batch, setBatch] = useState("");
   const [purpose, setPurpose] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!allowBookings && !superAdmin) {
+      navigate("/notAuthorized");
+    }
+  }, [allowBookings, superAdmin]);
 
   useEffect(() => {
     setErrors((err) => ({
@@ -841,88 +856,91 @@ const MakeBooking = () => {
             onClick={() => {
               dispatcher(
                 bookingAction({
-                  ltId: Object.keys(data)[page - 1],
-                  purpose,
-                  startDate: value.format("YYYY-MM-DD"),
-                  endDate: value1.format("YYYY-MM-DD"),
-                  batch,
-                  it_req: checked,
-                  monST:
-                    time1S !== ""
-                      ? time1S.get("hour") * 100 +
-                        (time1S.get("minute") > 0 ? 50 : 0)
-                      : -1,
-                  monET:
-                    time1E !== ""
-                      ? time1E.get("hour") * 100 +
-                        (time1E.get("minute") > 0 ? 50 : 0)
-                      : -1,
-
-                  tueST:
-                    time2S !== ""
-                      ? time2S.get("hour") * 100 +
-                        (time2S.get("minute") > 0 ? 50 : 0)
-                      : -1,
-                  tueET:
-                    time2E !== ""
-                      ? time2E.get("hour") * 100 +
-                        (time2E.get("minute") > 0 ? 50 : 0)
-                      : -1,
-
-                  wedST:
-                    time3S !== ""
-                      ? time3S.get("hour") * 100 +
-                        (time3S.get("minutes") > 0 ? 50 : 0)
-                      : -1,
-                  wedET:
-                    time3E !== ""
-                      ? time3E.get("hour") * 100 +
-                        (time3E.get("minutes") > 0 ? 50 : 0)
-                      : -1,
-
-                  thuST:
-                    time4S !== ""
-                      ? time4S.get("hour") * 100 +
-                        (time4S.get("minutes") > 0 ? 50 : 0)
-                      : -1,
-                  thuET:
-                    time4E !== ""
-                      ? time4E.get("hour") * 100 +
-                        (time4E.get("minutes") > 0 ? 50 : 0)
-                      : -1,
-
-                  friST:
-                    time5S !== ""
-                      ? time5S.get("hour") * 100 +
-                        (time5S.get("minutes") > 0 ? 50 : 0)
-                      : -1,
-                  friET:
-                    time5E !== ""
-                      ? time5E.get("hour") * 100 +
-                        (time5E.get("minutes") > 0 ? 50 : 0)
-                      : -1,
-
-                  satST:
-                    time6S !== ""
-                      ? time6S.get("hour") * 100 +
-                        (time6S.get("minutes") > 0 ? 50 : 0)
-                      : -1,
-                  satET:
-                    time6E !== ""
-                      ? time6E.get("hour") * 100 +
-                        (time6E.get("minutes") > 0 ? 50 : 0)
-                      : -1,
-
-                  sunST:
-                    time7S !== ""
-                      ? time7S.get("hour") * 100 +
-                        (time7S.get("minutes") > 0 ? 50 : 0)
-                      : -1,
-                  sunET:
-                    time7E !== ""
-                      ? time7E.get("hour") * 100 +
-                        (time7E.get("minutes") > 0 ? 50 : 0)
-                      : -1,
+                  data: {
+                    ltId: Object.keys(data)[page - 1],
+                    purpose,
+                    startDate: value.format("YYYY-MM-DD"),
+                    endDate: value1.format("YYYY-MM-DD"),
+                    batch,
+                    it_req: checked,
+                    monST:
+                      time1S !== ""
+                        ? time1S.get("hour") * 100 +
+                          (time1S.get("minute") > 0 ? 50 : 0)
+                        : -1,
+                    monET:
+                      time1E !== ""
+                        ? time1E.get("hour") * 100 +
+                          (time1E.get("minute") > 0 ? 50 : 0)
+                        : -1,
+  
+                    tueST:
+                      time2S !== ""
+                        ? time2S.get("hour") * 100 +
+                          (time2S.get("minute") > 0 ? 50 : 0)
+                        : -1,
+                    tueET:
+                      time2E !== ""
+                        ? time2E.get("hour") * 100 +
+                          (time2E.get("minute") > 0 ? 50 : 0)
+                        : -1,
+  
+                    wedST:
+                      time3S !== ""
+                        ? time3S.get("hour") * 100 +
+                          (time3S.get("minutes") > 0 ? 50 : 0)
+                        : -1,
+                    wedET:
+                      time3E !== ""
+                        ? time3E.get("hour") * 100 +
+                          (time3E.get("minutes") > 0 ? 50 : 0)
+                        : -1,
+  
+                    thuST:
+                      time4S !== ""
+                        ? time4S.get("hour") * 100 +
+                          (time4S.get("minutes") > 0 ? 50 : 0)
+                        : -1,
+                    thuET:
+                      time4E !== ""
+                        ? time4E.get("hour") * 100 +
+                          (time4E.get("minutes") > 0 ? 50 : 0)
+                        : -1,
+  
+                    friST:
+                      time5S !== ""
+                        ? time5S.get("hour") * 100 +
+                          (time5S.get("minutes") > 0 ? 50 : 0)
+                        : -1,
+                    friET:
+                      time5E !== ""
+                        ? time5E.get("hour") * 100 +
+                          (time5E.get("minutes") > 0 ? 50 : 0)
+                        : -1,
+  
+                    satST:
+                      time6S !== ""
+                        ? time6S.get("hour") * 100 +
+                          (time6S.get("minutes") > 0 ? 50 : 0)
+                        : -1,
+                    satET:
+                      time6E !== ""
+                        ? time6E.get("hour") * 100 +
+                          (time6E.get("minutes") > 0 ? 50 : 0)
+                        : -1,
+  
+                    sunST:
+                      time7S !== ""
+                        ? time7S.get("hour") * 100 +
+                          (time7S.get("minutes") > 0 ? 50 : 0)
+                        : -1,
+                    sunET:
+                      time7E !== ""
+                        ? time7E.get("hour") * 100 +
+                          (time7E.get("minutes") > 0 ? 50 : 0)
+                        : -1,
+                  },
+                  navigate
                 })
               );
             }}

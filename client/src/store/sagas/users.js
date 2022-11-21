@@ -32,7 +32,7 @@ const processLoginRequest = async (data) => {
     .catch(console.log);
 };
 
-const processAddUserRequest = async (data) => {
+const processAddUserRequest = async (data, navigate) => {
   return fetch("http://localhost:5001/api/users/register", {
     method: "POST",
     headers: {
@@ -41,7 +41,21 @@ const processAddUserRequest = async (data) => {
     },
     body: JSON.stringify(data),
   })
-    .then((res) => res.json())
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        if (res.status === 440) {
+          navigate('/sessionExpired');
+        } else if (res.status === 401) {
+          navigate('/notAuthorized');
+        } else {
+          navigate('/error');
+        }
+
+        return {errors: res.status};
+      }
+    })
     .then((res) => {
       if (res.errors) {
         return res.errors;
@@ -55,7 +69,7 @@ const processAddUserRequest = async (data) => {
     });
 };
 
-const processDelUserRequest = async (data) => {
+const processDelUserRequest = async (data, navigate) => {
   return fetch("http://localhost:5001/api/users/delete", {
     method: "DELETE",
     headers: {
@@ -64,7 +78,21 @@ const processDelUserRequest = async (data) => {
     },
     body: JSON.stringify(data),
   })
-    .then((res) => res.json())
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        if (res.status === 440) {
+          navigate('/sessionExpired');
+        } else if (res.status === 401) {
+          navigate('/notAuthorized');
+        } else {
+          navigate('/error');
+        }
+
+        return {errors: res.status};
+      }
+    })
     .then((res) => {
       if (res.errors) {
         return res;
@@ -83,6 +111,10 @@ function* loginWorker({ payload }) {
 
   if (res.token) {
     localStorage.setItem("JWT_TOKEN", res.token);
+    localStorage.setItem("isAdmin1", res.admin1);
+    localStorage.setItem("isAdmin2", res.admin2);
+    localStorage.setItem("isAdmin3", res.admin3);  
+    localStorage.setItem("isSuperAdmin", res.superAdmin);
     yield put(
       loginSuccessfulAction(
         res.token,
@@ -111,7 +143,7 @@ export function* logoutWatcher() {
 }
 
 export function* addUserWorker({ payload }) {
-  const res = yield call(processAddUserRequest, payload);
+  const res = yield call(processAddUserRequest, payload.data, payload.navigate);
 
   if (res === "Success") {
     yield put(userAddedSuccessfullyAction());
@@ -125,7 +157,7 @@ export function* addUserWatcher() {
 }
 
 function* deleteUserWorker({ payload }) {
-  const res = yield call(processDelUserRequest, payload);
+  const res = yield call(processDelUserRequest, payload.data, payload.navigate);
 
   if (res.errors) {
     yield put(deleteUserFailedAction(res));

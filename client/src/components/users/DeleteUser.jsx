@@ -13,16 +13,43 @@ import Slide from "@mui/material/Slide";
 import { Stack } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUserAction } from "../../store/actions/users";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const DeleteUser = () => {
+  const allowDelete = useSelector(state => (state.users.isAdmin1 || state.users.isAdmin2 || state.users.isAdmin3 || state.users.isSuperAdmin));
   const [open, setOpen] = React.useState(false);
   const [state, setState] = React.useState("");
   const [err, seterr] = React.useState(false);
+  const ee = useSelector(state => state.users.deleteErrors);
+  const deleted = useSelector(state => state.users.deleted);
+  const [errors, setErrors] = React.useState({
+    userName: ""
+  });
   const dispatcher = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!allowDelete) {
+      navigate('/notAuthorized');
+    }
+  }, [allowDelete]);
+
+  useEffect(() => {
+    if (ee && ee.userName) {
+      setErrors(ee);
+      seterr(true);
+    } else {
+      setErrors({
+        userName: ""
+      });
+      seterr(false);
+    }
+  }, [ee, deleted]);
 
   const textout = (e) => {
     setState(e.target.value);
@@ -46,15 +73,13 @@ const DeleteUser = () => {
       userName: state, 
     });
     dispatcher(deleteUserAction({
-      userName: state, 
+      data: {
+        userName: state, 
+      },
+      navigate,
     }));
     setOpen(false);
   };
-
-  const ee = useSelector(state => state.users.deleteErrors);
-  const deleted = useSelector(state => state.users.deleted);
-
-  console.log(ee, deleted);
 
   return (
     <Box
@@ -87,7 +112,7 @@ const DeleteUser = () => {
             value={state}
             onChange={textout}
             error={err}
-            helperText={err ? "Empty field!" : " "}
+            helperText={errors.userName}
             id="outlined-basic"
             label={!err ? "user*" : " Error! "}
             variant="outlined"

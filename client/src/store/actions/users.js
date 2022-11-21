@@ -20,12 +20,14 @@ export const loginAction = (userName, password) => {
   };
 };
 
-export const loginSuccessfulAction = (token, isAdmin, isSuperAdmin) => {
+export const loginSuccessfulAction = (token, isAdmin1, isAdmin2, isAdmin3, isSuperAdmin) => {
   return {
     type: LOGIN_SUCCESSFUL,
     payload: {
       token,
-      isAdmin,
+      isAdmin1,
+      isAdmin2,
+      isAdmin3,
       isSuperAdmin
     },
   };

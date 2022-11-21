@@ -103,26 +103,28 @@ const Home = () => {
       purpose: null,
     });
 
-    for (let d of data) {
-      if (
-        d[dayMap[value.day()][0]] === -1 ||
-        d[dayMap[value.day()][1]] === -1
-      ) {
-        continue;
-      }
-
-      const st = (d[dayMap[value.day()][0]] - 1 - 700) / 50;
-      const et = (d[dayMap[value.day()][1]] - 700) / 50;
-
-      for (let i = st; i < et; i++) {
-        ans[ltData[d.ltId][1]][i] = {
-          _id: d._id.toString(),
-          admin1: d.admin1,
-          admin2: d.admin2,
-          admin3: d.admin3,
-          superAdmin: d.superAdmin,
-          purpose: d.purpose,
-        };
+    if (data.length > 0 && Object.keys(ltData).length > 0) {
+      for (let d of data) {
+        if (
+          d[dayMap[value.day()][0]] === -1 ||
+          d[dayMap[value.day()][1]] === -1
+        ) {
+          continue;
+        }
+  
+        const st = (d[dayMap[value.day()][0]] - 1 - 700) / 50;
+        const et = (d[dayMap[value.day()][1]] - 700) / 50;
+  
+        for (let i = st; i < et; i++) {
+          ans[ltData[d.ltId][1]][i] = {
+            _id: d._id.toString(),
+            admin1: d.admin1,
+            admin2: d.admin2,
+            admin3: d.admin3,
+            superAdmin: d.superAdmin,
+            purpose: d.purpose,
+          };
+        }
       }
     }
 
