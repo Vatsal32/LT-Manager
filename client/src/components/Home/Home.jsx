@@ -4,12 +4,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { Box } from "@mui/material";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Button from "@mui/material/Button";
 import "./TableDaily.css";
 import Table1 from "./TableDaily";
-import Table3 from "./TableWeekly";
-import Autocomplete from "@mui/material/Autocomplete";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 
@@ -36,8 +32,6 @@ const dayMap = {
 
 const Home = () => {
   const [value, setValue] = useState(dayjs());
-
-  const [c1, setc1] = useState(true);
 
   const [data, setData] = useState([]);
 
@@ -93,7 +87,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    getTT(value.format('YYYY-MM-DD')).then((res) => {
+    getTT(value.format("YYYY-MM-DD")).then((res) => {
       setData(res);
     });
   }, [value]);
@@ -111,10 +105,10 @@ const Home = () => {
         ) {
           continue;
         }
-  
+
         const st = (d[dayMap[value.day()][0]] - 1 - 700) / 50;
         const et = (d[dayMap[value.day()][1]] - 700) / 50;
-  
+
         for (let i = st; i < et; i++) {
           ans[ltData[d.ltId][1]][i] = {
             _id: d._id.toString(),
@@ -131,29 +125,7 @@ const Home = () => {
     return ans;
   }, [data, ltData, value]);
 
-	console.log(data);
-
-  const choose_lt = [
-    { label: "LT-1" },
-    { label: "LT-2" },
-    { label: "LT-3" },
-    { label: "LT-4" },
-    { label: "LT-5" },
-    { label: "LT-6" },
-    { label: "LT-7" },
-    { label: "LT-8" },
-    { label: "LT-9" },
-    { label: "LT-10" },
-    { label: "LT-11" },
-    { label: "LT-12" },
-    { label: "LT-13" },
-    { label: "LT-14" },
-    { label: "LT-15" },
-    { label: "LT-16" },
-    { label: "LT-17" },
-    { label: "LT-18" },
-    { label: "LT-19" },
-  ];
+  console.log(data);
 
   return (
     <Box style={{ display: "flex", flexDirection: "column", height: "100%" }}>
@@ -173,15 +145,7 @@ const Home = () => {
         >
           <Box
             sx={{
-              justifyContent: !c1
-                ? { xs: "space-between" }
-                : {
-                    xl: "flex-end",
-                    lg: "flex-end",
-                    xs: "space-between",
-                    md: "space-between",
-                    sm: "space-between",
-                  },
+              justifyContent: "flex-start",
             }}
             style={{
               display: "flex",
@@ -190,22 +154,6 @@ const Home = () => {
               marginLeft: "45px",
             }}
           >
-            <Box
-              style={{
-                display: c1 ? "none" : "block",
-              }}
-            >
-              <Autocomplete
-                disablePortal
-                size="small"
-                id="combo-box-demo"
-                options={choose_lt}
-                sx={{ width: 150 }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Choose LT" />
-                )}
-              />
-            </Box>
             <Box
               sx={{
                 display: { xl: "none", lg: "none", xs: "", md: "", sm: "" },
@@ -224,44 +172,21 @@ const Home = () => {
                 />
               </LocalizationProvider>
             </Box>
-
-            <ButtonGroup aria-label="small secondary button group">
-              <Button
-                variant={c1 ? "contained" : "outlined"}
-                onClick={() => setc1((val) => !val)}
-              >
-                Day
-              </Button>
-              <Button
-                variant={!c1 ? "contained" : "outlined"}
-                onClick={() => setc1((val) => !val)}
-              >
-                Week
-              </Button>
-            </ButtonGroup>
           </Box>
-          <Box>
+          <Box sx={{ my: { xl: 5, lg: 5, xs: 0, md: 0, sm: 0 } }}>
             <div
               className="table_container"
               style={{
-                display: c1 ? "" : "none",
+                // display: c1 ? "" : "none",
                 marginRight: "45px",
                 marginLeft: "45px",
-                marginTop: "30px",
               }}
             >
-              <Table1 data={ltData} lectures={parsedData} date={value.format("YYYY-MM-DD")} />
-            </div>
-            <div
-              className="table_container"
-              style={{
-                display: !c1 ? "" : "none",
-                marginRight: "45px",
-                marginLeft: "45px",
-                marginTop: "30px",
-              }}
-            >
-              <Table3 />
+              <Table1
+                data={ltData}
+                lectures={parsedData}
+                date={value.format("YYYY-MM-DD")}
+              />
             </div>
           </Box>
         </Box>
