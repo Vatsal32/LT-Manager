@@ -23,15 +23,16 @@ const NavBar = () => {
   };
 
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" sx={{mb: '10px'}}>
       <Toolbar sx={{marginY: 1}}>
-        <Typography variant="h4" color={'white'}>
-          <Link underline="none" sx={{
+      <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} >
+          <Link  underline="none" style={{color:'white',fontWeight:"bold"}} sx={{
+            textDecoration: 'none',
             ":hover": {
+              underline:"none",
               textDecoration: 'none',
               color: 'white',
             },
-            color: 'white'
           }} href={'/'}>
             LT-Manager
           </Link>
