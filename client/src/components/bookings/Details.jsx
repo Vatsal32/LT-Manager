@@ -15,6 +15,8 @@ const Details = () => {
 
     if (data.errors === 403) {
       navigate("/login", { replace: true, state: { pg: loc.pathname } });
+    } else if (data.errors === 440) {
+      navigate("/sessionExpired", { replace: true });
     }
 
     if (data.errors) {

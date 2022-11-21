@@ -9,10 +9,10 @@ import {
 } from "../actions/users";
 
 const JWT_TOKEN = localStorage.getItem("JWT_TOKEN");
-const isAdmin1 = localStorage.getItem("isAdmin1") || false;
-const isAdmin2 = localStorage.getItem("isAdmin2") || false;
-const isAdmin3 = localStorage.getItem("isAdmin3") || false;
-const isSuperAdmin = localStorage.getItem("isSuperAdmin") || false;
+const isAdmin1 = localStorage.getItem("isAdmin1") === "true" ? true : false || false;
+const isAdmin2 = localStorage.getItem("isAdmin2") === "true" ? true : false || false;
+const isAdmin3 = localStorage.getItem("isAdmin3") === "true" ? true : false || false;
+const isSuperAdmin = localStorage.getItem("isSuperAdmin") === "true" ? true : false || false;
 
 const initialState = {
   jwtToken: JWT_TOKEN,
@@ -29,15 +29,19 @@ const initialState = {
 };
 
 const UserReducer = (state = initialState, action) => {
+  
   switch (action.type) {
     case LOGIN_SUCCESSFUL:
+      console.log(action.payload);
       return {
         ...state,
         jwtToken: action.payload.token,
         errors: {},
         loggedIn: true,
-        isAdmin: action.payload.isAdmin,
-        isSuperAdmin: action.payload.isSuperAdmin,
+        isAdmin3: action.payload.isAdmin3,
+        isAdmin1: action.payload.isAdmin1,
+        isAdmin2: action.payload.isAdmin2,
+        isSuperAdmin: action.payload.superAdmin,
       };
     case LOGIN_UNSUCCESSFUL:
       return {
@@ -53,6 +57,11 @@ const UserReducer = (state = initialState, action) => {
         isSuperAdmin: false,
       };
     case LOGOUT_SUCCESSFUL:
+      localStorage.setItem("JWT_TOKEN", "");
+      localStorage.setItem("isAdmin1", false);
+      localStorage.setItem("isAdmin2", false);
+      localStorage.setItem("isAdmin3", false);
+      localStorage.setItem("isSuperAdmin", false);
       return {
         ...state,
         errors: {},

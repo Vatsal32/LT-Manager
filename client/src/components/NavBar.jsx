@@ -7,6 +7,8 @@ import {
   Avatar,
   Menu,
   MenuItem,
+  Typography,
+  Link,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAction } from "../store/actions/users";
@@ -22,7 +24,18 @@ const NavBar = () => {
 
   return (
     <AppBar position="sticky">
-      <Toolbar>
+      <Toolbar sx={{marginY: 1}}>
+        <Typography variant="h4" color={'white'}>
+          <Link underline="none" sx={{
+            ":hover": {
+              textDecoration: 'none',
+              color: 'white',
+            },
+            color: 'white'
+          }} href={'/'}>
+            LT-Manager
+          </Link>
+        </Typography>
         <Box sx={{ flex: 1 }} />
         {loggedIn && (
           <IconButton onClick={(e) => setAnchor(e.currentTarget)}>

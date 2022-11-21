@@ -195,8 +195,11 @@ module.exports = {
       if (authToken) {
         jwt.verify(authToken, process.env.JWT_KEY, (err, decoded) => {
           if (err) {
-            console.log(err);
-            res.status(401).json({ errors: "Failed to authenticate." });
+            if (err.name === jwt.TokenExpiredError.name) {
+              res.status(440).json({ errors: "Session Expired" });
+            } else {
+              res.status(401).json({ errors: "Failed to authenticate." });
+            }
           } else {
             req.userId = decoded.userId;
             next();
@@ -210,7 +213,7 @@ module.exports = {
 
   isAdmin: async (req, res, next) => {
     if (!req.headers["authorization"]) {
-      res.json({ errors: "No token provided." });
+      res.status(403).json({ errors: "No token provided." });
     } else {
       const authHeader = req.headers["authorization"];
       const authToken = authHeader.split(" ")[1];
@@ -218,18 +221,21 @@ module.exports = {
       if (authToken) {
         jwt.verify(authToken, process.env.JWT_KEY, (err, decoded) => {
           if (err) {
-            console.log(err);
-            res.status(401).json({ error: "Failed to authenticate. " });
+            if (err.name === "TokenExpiredError") {
+              res.status(440).json({errors: "Session Expired."});
+            } else {
+              res.status(401).json({ errors: "Failed to authenticate. " });
+            }
           } else {
             req.userId = decoded.userId;
             req.admin1 = decoded.admin1;
             req.admin2 = decoded.admin2;
             req.admin3 = decoded.admin3;
-            req.superAdmin = decoded.superAdmin;
+            req.superAdmin = false;
             if (decoded.admin1 || decoded.admin2 || decoded.admin3) {
               next();
             } else {
-              res.json({ errors: "Not an Admin" });
+              res.status(403).json({ errors: "Not an Admin" });
             }
           }
         });
@@ -241,7 +247,7 @@ module.exports = {
 
   isSuperAdmin: async (req, res, next) => {
     if (!req.headers["authorization"]) {
-      res.json({ errors: "No token provided." });
+      res.status(403).json({ errors: "No token provided." });
     } else {
       const authHeader = req.headers["authorization"];
       const authToken = authHeader.split(" ")[1];
@@ -249,8 +255,11 @@ module.exports = {
       if (authToken) {
         jwt.verify(authToken, process.env.JWT_KEY, (err, decoded) => {
           if (err) {
-            console.log(err);
-            res.status(401).json({ errors: "Failed to authenticate. " });
+            if (err.name === "TokenExpiredError") {
+              res.status(440).json({errors: "Session Expired."});
+            } else {
+              res.status(401).json({ errors: "Failed to authenticate. " });
+            }
           } else {
             req.userId = decoded.userId;
             req.admin1 = false;
@@ -260,7 +269,7 @@ module.exports = {
             if (decoded.superAdmin) {
               next();
             } else {
-              res.json({ errors: "Not a Superadmin." });
+              res.status(403).json({ errors: "Not a Superadmin." });
             }
           }
         });
@@ -272,7 +281,7 @@ module.exports = {
 
   isSuper: async (req, res, next) => {
     if (!req.headers["authorization"]) {
-      res.json({ errors: "No token provided." });
+      res.status(403).json({ errors: "No token provided." });
     } else {
       const authHeader = req.headers["authorization"];
       const authToken = authHeader.split(" ")[1];
@@ -282,7 +291,7 @@ module.exports = {
           if (err) {
             console.log(err.name);
             if (err.name === "TokenExpiredError") {
-              res.json({errors: "Session Expired."});
+              res.status(440).json({errors: "Session Expired."});
             } else {
               res.status(401).json({ errors: "Failed to authenticate. " });
             }
@@ -295,7 +304,7 @@ module.exports = {
             if (decoded.superAdmin || (decoded.admin1 || decoded.admin2 || decoded.admin3)) {
               next();
             } else {
-              res.json({ errors: "Not a Superadmin or Admin." });
+              res.status(403).json({ errors: "Not a Superadmin or Admin." });
             }
           }
         });

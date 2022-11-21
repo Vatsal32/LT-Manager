@@ -1,7 +1,7 @@
 import { takeEvery, call, put } from "redux-saga/effects";
 import { addRoomFailedAction, addRoomSuccessAction, ADD_ROOM } from "../actions/rooms";
 
-const processAddRoomReq = async (data) => {
+const processAddRoomReq = async (data, navigate) => {
   return fetch('http://localhost:5001/api/rooms/addRoom', {
     method: "POST",
     headers: {
@@ -10,7 +10,21 @@ const processAddRoomReq = async (data) => {
     },
     body: JSON.stringify(data),
   })
-    .then((res) => res.json())
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        if (res.status === 440) {
+          navigate('/sessionExpired');
+        } else if (res.status === 401) {
+          navigate('/notAuthorized');
+        } else {
+          navigate('/error');
+        }
+
+        return {errors: res.status};
+      }
+    })
     .then(res => {
       if (res.errors) {
         return res;
@@ -27,7 +41,7 @@ const processAddRoomReq = async (data) => {
 };
 
 function* addRoomWorker({ payload }) {
-  const res = yield call(processAddRoomReq, payload);
+  const res = yield call(processAddRoomReq, payload.data, payload.navigate);
 
   if (res.errors) {
     yield put(addRoomFailedAction(res));

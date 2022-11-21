@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -19,8 +19,22 @@ import { addUserAction } from "../../store/actions/users";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const allowRegister = useSelector(
+    (state) =>
+      state.users.isAdmin1 ||
+      state.users.isAdmin2 ||
+      state.users.isAdmin3 ||
+      state.users.isSuperAdmin
+  );
   const dispatcher = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!allowRegister) {
+      navigate("/notAuthorized");
+    }
+  }, [allowRegister]);
+
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
@@ -111,7 +125,7 @@ const Register = () => {
 
   useEffect(() => {
     if (added) {
-      navigate('/');
+      navigate("/");
     }
   }, [added]);
 
@@ -156,13 +170,13 @@ const Register = () => {
     if (!checkErrors()) {
       let p = phone;
       let i = 0;
-      while (p[i] != ' ') {
+      while (p[i] != " ") {
         i++;
       }
       p = p.substring(i + 1, p.length);
-      let q = '';
+      let q = "";
       for (i = 0; i < p.length; i++) {
-        if (p[i] !== ' ') {
+        if (p[i] !== " ") {
           q += p[i];
         }
       }
@@ -176,7 +190,7 @@ const Register = () => {
         phoneNum: q,
       };
 
-      dispatcher(addUserAction(data));
+      dispatcher(addUserAction({ data, navigate }));
     }
   };
 

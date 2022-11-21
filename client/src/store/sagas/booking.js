@@ -3,7 +3,7 @@ import {
   BOOKING, bookingFailedAction, bookingSuccessfulAction,
 } from "../actions/booking";
 
-const processBookingRequest = async (data) => {
+const processBookingRequest = async (data, navigate) => {
   return fetch("http://localhost:5001/api/bookings/book", {
     method: "POST",
     headers: {
@@ -12,7 +12,21 @@ const processBookingRequest = async (data) => {
     },
     body: JSON.stringify(data),
   })
-    .then((res) => res.json())
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        if (res.status === 440) {
+          navigate('/sessionExpired');
+        } else if (res.status === 401) {
+          navigate('/notAuthorized');
+        } else {
+          navigate('/error');
+        }
+
+        return {errors: res.status};
+      }
+    })
     .then((res) => {
       if (res.errors) {
         return res.errors;
@@ -24,7 +38,7 @@ const processBookingRequest = async (data) => {
 };
 
 function* bookingWorker({ payload }) {
-  const res = yield call(processBookingRequest, payload);
+  const res = yield call(processBookingRequest, payload.data, payload.navigate);
 
   if(res.message === 'success') {
     yield put(bookingSuccessfulAction());
