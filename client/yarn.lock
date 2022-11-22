@@ -1107,6 +1107,13 @@
   "resolved" "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   "version" "0.2.3"
 
+"@coreui/coreui@^4.2.2":
+  "integrity" "sha512-aPL7Rv98CBkIU4y7wmZOUBHuBN2qwRS3CFeWmUV3kPeGiPQe9FG4+kOtcITbttNQ35HVMSZeauJyoy2LSM0ygA=="
+  "resolved" "https://registry.npmjs.org/@coreui/coreui/-/coreui-4.2.2.tgz"
+  "version" "4.2.2"
+  dependencies:
+    "postcss-combine-duplicated-selectors" "^10.0.3"
+
 "@coreui/react@^4.4.0":
   "integrity" "sha512-72ZKArQQCMknqaE5AHDdOGy/kTl7xDK/I8reuWX6uTHLRD3Rz85pIA5IUzHafLIOlte8Sci0fdWYG8UshpXQyQ=="
   "resolved" "https://registry.npmjs.org/@coreui/react/-/react-4.4.0.tgz"
@@ -1903,7 +1910,7 @@
     "schema-utils" "^3.0.0"
     "source-map" "^0.7.3"
 
-"@popperjs/core@^2.11.6":
+"@popperjs/core@^2.11.5", "@popperjs/core@^2.11.6":
   "integrity" "sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw=="
   "resolved" "https://registry.npmjs.org/@popperjs/core/-/core-2.11.6.tgz"
   "version" "2.11.6"
@@ -3299,6 +3306,11 @@
   "integrity" "sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww=="
   "resolved" "https://registry.npmjs.org/boolbase/-/boolbase-1.0.0.tgz"
   "version" "1.0.0"
+
+"bootstrap@^5.2.3":
+  "integrity" "sha512-cEKPM+fwb3cT8NzQZYEu4HilJ3anCrWqh3CHAok1p9jXqMPsPTBhU25fBckEJHJ/p+tTxTFTsFQGM+gaHpi3QQ=="
+  "resolved" "https://registry.npmjs.org/bootstrap/-/bootstrap-5.2.3.tgz"
+  "version" "5.2.3"
 
 "brace-expansion@^1.1.7":
   "integrity" "sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA=="
@@ -7231,6 +7243,13 @@
     "caniuse-api" "^3.0.0"
     "colord" "^2.9.1"
     "postcss-value-parser" "^4.2.0"
+
+"postcss-combine-duplicated-selectors@^10.0.3":
+  "integrity" "sha512-IP0BmwFloCskv7DV7xqvzDXqMHpwdczJa6ZvIW8abgHdcIHs9mCJX2ltFhu3EwA51ozp13DByng30+Ke+eIExA=="
+  "resolved" "https://registry.npmjs.org/postcss-combine-duplicated-selectors/-/postcss-combine-duplicated-selectors-10.0.3.tgz"
+  "version" "10.0.3"
+  dependencies:
+    "postcss-selector-parser" "^6.0.4"
 
 "postcss-convert-values@^5.1.2":
   "integrity" "sha512-c6Hzc4GAv95B7suy4udszX9Zy4ETyMCgFPUDtWjdFTKH1SE9eFY/jEpHSwTH1QPuwxHpWslhckUQWbNRM4ho5g=="

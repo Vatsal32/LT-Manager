@@ -3,7 +3,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { Typography } from "@mui/material";
+import { Card, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
 import dayjs from "dayjs";
@@ -15,7 +15,7 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import FormHelperText from "@mui/material/FormHelperText";
 import Checkbox from "@mui/material/Checkbox";
-import Tabs ,{ tabsClasses } from "@mui/material/Tabs";
+import Tabs, { tabsClasses } from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import { TabPanel } from "@mui/lab";
@@ -159,770 +159,821 @@ const MakeBooking = () => {
         textAlign: "center",
       }}
     >
-      <Box style={{ marginTop: "20px" }}>
-        <Box>
-          <FormControl
-            sx={{
-              fontSize: 15,
-              width: {
-                xs: 220,
-                sm: 250,
-                md: 280,
-              },
-            }}
-            error={errors.ltId !== ""}
-          >
-            <InputLabel id="demo-simple-select-label">LT No.</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              label="LT No."
-              value={page}
-              onChange={displayPage}
-            >
-              {Object.keys(data).map((val, key) => (
-                <MenuItem key={key} value={key + 1}>
-                  {data[val][0]}
-                </MenuItem>
-              ))}
-            </Select>
-            <FormHelperText>{errors.ltId}</FormHelperText>
-          </FormControl>
-        </Box>
-      </Box>
-      <Box style={{ margin: "10px" }}>
-        <TextField
-          value={purpose}
-          onChange={handlePurpose}
-          aria-label="minimum height"
-          minRows={4}
-          placeholder="Enter your purpose"
-          sx={{
-            fontSize: 15,
-            width: {
-              xs: 220,
-              sm: 250,
-              md: 280,
-            },
-          }}
-          error={errors.purpose !== ""}
-          helperText={errors.purpose}
-          InputProps={{
-            inputComponent: TextareaAutosize,
-          }}
-        />
-      </Box>
-
-      <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Stack style={{ marginTop: "10px", marginBottom: "10px" }}>
-            <DesktopDatePicker
-              label="Start Date"
-              inputFormat="MM/DD/YYYY"
-              value={value}
-              onChange={handleChange}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  sx={{
-                    width: {
-                      xs: 220,
-                      sm: 250,
-                      md: 280,
-                    },
-                  }}
-                />
-              )}
-            />
-          </Stack>
-        </LocalizationProvider>
-      </Box>
-      <Box>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Stack style={{ marginTop: "10px", marginBottom: "10px" }}>
-            <DesktopDatePicker
-              label="End Date"
-              inputFormat="MM/DD/YYYY"
-              value={value1}
-              onChange={handleChange1}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  sx={{
-                    width: {
-                      xs: 220,
-                      sm: 250,
-                      md: 280,
-                    },
-                  }}
-                />
-              )}
-            />
-          </Stack>
-        </LocalizationProvider>
-      </Box>
-      <Box>
-        <TextField
-          id="outlined-basic"
-          label="Enter Batch"
-          variant="outlined"
-          value={batch}
-          onChange={handleBatch}
-          style={{ margin: "10px" }}
-          sx={{
-            width: {
-              xs: 220,
-              sm: 250,
-              md: 280,
-            },
-          }}
-          error={errors.batch !== ""}
-          helperText={errors.batch}
-        />
-      </Box>
-      <Box
+      <Card 
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          width: { xl: "850", lg: "850", md: "425", sm: "425", xs: "425" },
+          borderRadius: "15px",
+          marginTop:{md:"20px" , sm:"20px" , xs:"20px"},
+          my:2,
+          boxShadow: "0 0 25px 10px lightgrey",
         }}
       >
         <Box
-          sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
-        >
-          <Typography sx={{ display: "flex", fontSize: 20 }}>
-            IT Requirements:
-          </Typography>
-          <Checkbox checked={checked} onChange={handleChange2} {...label} />
-        </Box>
-
-        <Typography sx={{ display: "flex", fontSize: 12 }}>
-          (Mic ,camera , projector ,etc...)
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          width: "100%",
-          typography: "body1",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <TabContext value={v}>
-          <Box
-            sx={{
-              borderBottom: 1,
-              borderColor: "divider",
-              flexGrow: 1,
-              maxWidth: { xs: 380, md: 500, sm: 400 },
-              bgcolor: "background.paper",
-              display: "flex",
-              flexDirection: "row",
-            }}
-            style={{ margin: "10px" }}
-          >
-            <Tabs
-              value={v}
-              onChange={MON_SUN}
-              variant="scrollable"
-              scrollButtons={true}
-              allowScrollButtonsMobile
-              sx={{
-                [`& .${tabsClasses.scrollButtons}`]: {
-                  '&.Mui-disabled': { opacity: 0.3 },
-                },
-              }}
-              aria-label="scrollable auto tabs example"
-            >
-              <Tab label="MON" value="1" />
-              <Tab label="TUE" value="2" />
-              <Tab label="WED" value="3" />
-              <Tab label="THU" value="4" />
-              <Tab label="FRI" value="5" />
-              <Tab label="SAT" value="6" />
-              <Tab label="SUN" value="7" />
-            </Tabs>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <TabPanel value="1">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Stack spacing={3}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <TimePicker
-                        label="Start Time"
-                        onError={false}
-                        value={time1S}
-                        onChange={(value) => settime1S(value)}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            sx={{
-                              width: {
-                                xs: 220,
-                                sm: 250,
-                                md: 280,
-                              },
-                            }}
-                          />
-                        )}
-                      />
-                    </Box>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <TimePicker
-                        label="End Time"
-                        value={time1E}
-                        onChange={(value) => settime1E(value)}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            sx={{
-                              width: {
-                                xs: 220,
-                                sm: 250,
-                                md: 280,
-                              },
-                            }}
-                          />
-                        )}
-                      />
-                    </Box>
-                  </Box>
-                </Stack>
-              </LocalizationProvider>
-            </TabPanel>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <TabPanel value="2">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Stack spacing={3}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <TimePicker
-                        label="Start Time"
-                        value={time2S}
-                        onChange={(value) => settime2S(value)}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            sx={{
-                              width: {
-                                xs: 220,
-                                sm: 250,
-                                md: 280,
-                              },
-                            }}
-                          />
-                        )}
-                      />
-                    </Box>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <TimePicker
-                        label="End Time"
-                        value={time2E}
-                        onChange={(value) => settime2E(value)}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            sx={{
-                              width: {
-                                xs: 220,
-                                sm: 250,
-                                md: 280,
-                              },
-                            }}
-                          />
-                        )}
-                      />
-                    </Box>
-                  </Box>
-                </Stack>
-              </LocalizationProvider>
-            </TabPanel>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <TabPanel value="3">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Stack spacing={3}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <TimePicker
-                        label="Start Time"
-                        value={time3S}
-                        onChange={(value) => settime3S(value)}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            sx={{
-                              width: {
-                                xs: 220,
-                                sm: 250,
-                                md: 280,
-                              },
-                            }}
-                          />
-                        )}
-                      />
-                    </Box>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <TimePicker
-                        label="End Time"
-                        value={time3E}
-                        onChange={(value) => settime3E(value)}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            sx={{
-                              width: {
-                                xs: 220,
-                                sm: 250,
-                                md: 280,
-                              },
-                            }}
-                          />
-                        )}
-                      />
-                    </Box>
-                  </Box>
-                </Stack>
-              </LocalizationProvider>
-            </TabPanel>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <TabPanel value="4">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Stack spacing={3}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <TimePicker
-                        label="Start Time"
-                        value={time4S}
-                        onChange={(value) => settime4S(value)}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            sx={{
-                              width: {
-                                xs: 220,
-                                sm: 250,
-                                md: 280,
-                              },
-                            }}
-                          />
-                        )}
-                      />
-                    </Box>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <TimePicker
-                        label="End Time"
-                        value={time4E}
-                        onChange={(value) => settime4E(value)}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            sx={{
-                              width: {
-                                xs: 220,
-                                sm: 250,
-                                md: 280,
-                              },
-                            }}
-                          />
-                        )}
-                      />
-                    </Box>
-                  </Box>
-                </Stack>
-              </LocalizationProvider>
-            </TabPanel>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <TabPanel value="5">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Stack spacing={3}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <TimePicker
-                        label="Start Time"
-                        value={time5S}
-                        onChange={(value) => settime5S(value)}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            sx={{
-                              width: {
-                                xs: 220,
-                                sm: 250,
-                                md: 280,
-                              },
-                            }}
-                          />
-                        )}
-                      />
-                    </Box>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <TimePicker
-                        label="End Time"
-                        value={time5E}
-                        onChange={(value) => settime5E(value)}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            sx={{
-                              width: {
-                                xs: 220,
-                                sm: 250,
-                                md: 280,
-                              },
-                            }}
-                          />
-                        )}
-                      />
-                    </Box>
-                  </Box>
-                </Stack>
-              </LocalizationProvider>
-            </TabPanel>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <TabPanel value="6">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Stack spacing={3}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <TimePicker
-                        label="Start Time"
-                        value={time6S}
-                        onChange={(value) => settime6S(value)}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            sx={{
-                              width: {
-                                xs: 220,
-                                sm: 250,
-                                md: 280,
-                              },
-                            }}
-                          />
-                        )}
-                      />
-                    </Box>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <TimePicker
-                        label="End Time"
-                        value={time6E}
-                        onChange={(value) => settime6E(value)}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            sx={{
-                              width: {
-                                xs: 220,
-                                sm: 250,
-                                md: 280,
-                              },
-                            }}
-                          />
-                        )}
-                      />
-                    </Box>
-                  </Box>
-                </Stack>
-              </LocalizationProvider>
-            </TabPanel>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <TabPanel value="7">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Stack spacing={3}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <TimePicker
-                        label="Start Time"
-                        value={time7S}
-                        onChange={(value) => settime7S(value)}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            sx={{
-                              width: {
-                                xs: 220,
-                                sm: 250,
-                                md: 280,
-                              },
-                            }}
-                          />
-                        )}
-                      />
-                    </Box>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <TimePicker
-                        label="End Time"
-                        value={time7E}
-                        onChange={(value) => settime7E(value)}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            sx={{
-                              width: {
-                                xs: 220,
-                                sm: 250,
-                                md: 280,
-                              },
-                            }}
-                          />
-                        )}
-                      />
-                    </Box>
-                  </Box>
-                </Stack>
-              </LocalizationProvider>
-            </TabPanel>
-          </Box>
-        </TabContext>
-      </Box>
-      <Box>
-        <Button
-          style={{ marginBottom: "20px" }}
-          variant="contained"
-          endIcon={<SendIcon />}
-          onClick={() => {
-            dispatcher(
-              bookingAction({
-                data: {
-                  ltId: Object.keys(data)[page - 1],
-                  purpose,
-                  startDate: value.format("YYYY-MM-DD"),
-                  endDate: value1.format("YYYY-MM-DD"),
-                  batch,
-                  it_req: checked,
-                  monST:
-                    time1S !== null
-                      ? time1S.get("hour") * 100 +
-                        (time1S.get("minute") > 0 ? 50 : 0)
-                      : -1,
-                  monET:
-                    time1E !== null
-                      ? time1E.get("hour") * 100 +
-                        (time1E.get("minute") > 0 ? 50 : 0)
-                      : -1,
-
-                  tueST:
-                    time2S !== null
-                      ? time2S.get("hour") * 100 +
-                        (time2S.get("minute") > 0 ? 50 : 0)
-                      : -1,
-                  tueET:
-                    time2E !== null
-                      ? time2E.get("hour") * 100 +
-                        (time2E.get("minute") > 0 ? 50 : 0)
-                      : -1,
-
-                  wedST:
-                    time3S !== null
-                      ? time3S.get("hour") * 100 +
-                        (time3S.get("minutes") > 0 ? 50 : 0)
-                      : -1,
-                  wedET:
-                    time3E !== null
-                      ? time3E.get("hour") * 100 +
-                        (time3E.get("minutes") > 0 ? 50 : 0)
-                      : -1,
-
-                  thuST:
-                    time4S !== null
-                      ? time4S.get("hour") * 100 +
-                        (time4S.get("minutes") > 0 ? 50 : 0)
-                      : -1,
-                  thuET:
-                    time4E !== null
-                      ? time4E.get("hour") * 100 +
-                        (time4E.get("minutes") > 0 ? 50 : 0)
-                      : -1,
-
-                  friST:
-                    time5S !== null
-                      ? time5S.get("hour") * 100 +
-                        (time5S.get("minutes") > 0 ? 50 : 0)
-                      : -1,
-                  friET:
-                    time5E !== null
-                      ? time5E.get("hour") * 100 +
-                        (time5E.get("minutes") > 0 ? 50 : 0)
-                      : -1,
-
-                  satST:
-                    time6S !== null
-                      ? time6S.get("hour") * 100 +
-                        (time6S.get("minutes") > 0 ? 50 : 0)
-                      : -1,
-                  satET:
-                    time6E !== null
-                      ? time6E.get("hour") * 100 +
-                        (time6E.get("minutes") > 0 ? 50 : 0)
-                      : -1,
-
-                  sunST:
-                    time7S !== null
-                      ? time7S.get("hour") * 100 +
-                        (time7S.get("minutes") > 0 ? 50 : 0)
-                      : -1,
-                  sunET:
-                    time7E !== null
-                      ? time7E.get("hour") * 100 +
-                        (time7E.get("minutes") > 0 ? 50 : 0)
-                      : -1,
-                },
-                navigate,
-              })
-            );
+          style={{ display: "flex" }}
+          sx={{
+            flexDirection: {
+              md: "column",
+              lg: "row",
+              sm: "column",
+              xs: "column",
+            },
           }}
         >
-          Submit
-        </Button>
-      </Box>
+          <Box sx={{ width: "425px" }}>
+            <Box style={{ marginTop: "45px" }}>
+              <Box>
+                <FormControl
+                  sx={{
+                    fontSize: 15,
+                    width: {
+                      xs: 250,
+                      sm: 250,
+                      md: 280,
+                    },
+                  }}
+                  error={errors.ltId !== ""}
+                >
+                  <InputLabel id="demo-simple-select-label">LT No.</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="LT No."
+                    value={page}
+                    onChange={displayPage}
+                  >
+                    {Object.keys(data).map((val, key) => (
+                      <MenuItem key={key} value={key + 1}>
+                        {data[val][0]}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <FormHelperText>{errors.ltId}</FormHelperText>
+                </FormControl>
+              </Box>
+            </Box>
+            <Box style={{ margin: "10px" }}>
+              <TextField
+                value={purpose}
+                onChange={handlePurpose}
+                aria-label="minimum height"
+                minRows={4}
+                placeholder="Enter your purpose"
+                sx={{
+                  fontSize: 15,
+                  width: {
+                    xs: 250,
+                    sm: 250,
+                    md: 280,
+                  },
+                }}
+                error={errors.purpose !== ""}
+                helperText={errors.purpose}
+                InputProps={{
+                  inputComponent: TextareaAutosize,
+                }}
+              />
+            </Box>
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Stack style={{ marginTop: "10px", marginBottom: "10px" }}>
+                  <DesktopDatePicker
+                    label="Start Date"
+                    inputFormat="MM/DD/YYYY"
+                    value={value}
+                    onChange={handleChange}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        sx={{
+                          width: {
+                            xs: 250,
+                            sm: 250,
+                            md: 280,
+                          },
+                        }}
+                      />
+                    )}
+                  />
+                </Stack>
+              </LocalizationProvider>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Stack style={{ marginTop: "10px", marginBottom: "10px" }}>
+                  <DesktopDatePicker
+                    label="End Date"
+                    inputFormat="MM/DD/YYYY"
+                    value={value1}
+                    onChange={handleChange1}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        sx={{
+                          width: {
+                            xs: 250,
+                            sm: 250,
+                            md: 280,
+                          },
+                        }}
+                      />
+                    )}
+                  />
+                </Stack>
+              </LocalizationProvider>
+            </Box>
+            <Box style={{ marginBottom: "35px" }}>
+              <TextField
+                id="outlined-basic"
+                label="Enter Batch"
+                variant="outlined"
+                value={batch}
+                onChange={handleBatch}
+                style={{ margin: "10px" }}
+                sx={{
+                  width: {
+                    xs: 250,
+                    sm: 250,
+                    md: 280,
+                  },
+                }}
+                error={errors.batch !== ""}
+                helperText={errors.batch}
+              />
+            </Box>
+          </Box>
+          <Box sx={{ width: "425px" , borderLeft:{lg:'1px dotted black',xl:"1px dotted black"}}}>
+            <Box
+              sx={{
+                width: "100%",
+                typography: "body1",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                marginTop: "25px",
+              }}
+            >
+              <TabContext value={v}>
+                <Box
+                  sx={{
+                    borderBottom: 1,
+                    borderColor: "divider",
+                    flexGrow: 1,
+                    maxWidth: { xs: 400, md: 400, sm: 400 },
+                    bgcolor: "background.paper",
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                  style={{ margin: "10px" }}
+                >
+                  <Tabs
+                    value={v}
+                    onChange={MON_SUN}
+                    variant="scrollable"
+                    scrollButtons={true}
+                    allowScrollButtonsMobile
+                    sx={{
+                      [`& .${tabsClasses.scrollButtons}`]: {
+                        "&.Mui-disabled": { opacity: 0.3 },
+                      },
+                    }}
+                    aria-label="scrollable auto tabs example"
+                  >
+                    <Tab label="MON" value="1" />
+                    <Tab label="TUE" value="2" />
+                    <Tab label="WED" value="3" />
+                    <Tab label="THU" value="4" />
+                    <Tab label="FRI" value="5" />
+                    <Tab label="SAT" value="6" />
+                    <Tab label="SUN" value="7" />
+                  </Tabs>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <TabPanel value="1">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <Stack spacing={3}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Box>
+                            <TimePicker
+                              label="Start Time"
+                              onError={false}
+                              value={time1S}
+                              onChange={(value) => settime1S(value)}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  sx={{
+                                    width: {
+                                      xs: 250,
+                                      sm: 250,
+                                      md: 280,
+                                    },
+                                  }}
+                                />
+                              )}
+                            />
+                          </Box>
+                        </Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Box>
+                            <TimePicker
+                              label="End Time"
+                              value={time1E}
+                              onChange={(value) => settime1E(value)}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  sx={{
+                                    width: {
+                                      xs: 250,
+                                      sm: 250,
+                                      md: 280,
+                                    },
+                                  }}
+                                />
+                              )}
+                            />
+                          </Box>
+                        </Box>
+                      </Stack>
+                    </LocalizationProvider>
+                  </TabPanel>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <TabPanel value="2">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <Stack spacing={3}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Box>
+                            <TimePicker
+                              label="Start Time"
+                              value={time2S}
+                              onChange={(value) => settime2S(value)}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  sx={{
+                                    width: {
+                                      xs: 250,
+                                      sm: 250,
+                                      md: 280,
+                                    },
+                                  }}
+                                />
+                              )}
+                            />
+                          </Box>
+                        </Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Box>
+                            <TimePicker
+                              label="End Time"
+                              value={time2E}
+                              onChange={(value) => settime2E(value)}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  sx={{
+                                    width: {
+                                      xs: 250,
+                                      sm: 250,
+                                      md: 280,
+                                    },
+                                  }}
+                                />
+                              )}
+                            />
+                          </Box>
+                        </Box>
+                      </Stack>
+                    </LocalizationProvider>
+                  </TabPanel>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <TabPanel value="3">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <Stack spacing={3}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Box>
+                            <TimePicker
+                              label="Start Time"
+                              value={time3S}
+                              onChange={(value) => settime3S(value)}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  sx={{
+                                    width: {
+                                      xs: 250,
+                                      sm: 250,
+                                      md: 280,
+                                    },
+                                  }}
+                                />
+                              )}
+                            />
+                          </Box>
+                        </Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Box>
+                            <TimePicker
+                              label="End Time"
+                              value={time3E}
+                              onChange={(value) => settime3E(value)}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  sx={{
+                                    width: {
+                                      xs: 250,
+                                      sm: 250,
+                                      md: 280,
+                                    },
+                                  }}
+                                />
+                              )}
+                            />
+                          </Box>
+                        </Box>
+                      </Stack>
+                    </LocalizationProvider>
+                  </TabPanel>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <TabPanel value="4">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <Stack spacing={3}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Box>
+                            <TimePicker
+                              label="Start Time"
+                              value={time4S}
+                              onChange={(value) => settime4S(value)}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  sx={{
+                                    width: {
+                                      xs: 250,
+                                      sm: 250,
+                                      md: 280,
+                                    },
+                                  }}
+                                />
+                              )}
+                            />
+                          </Box>
+                        </Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Box>
+                            <TimePicker
+                              label="End Time"
+                              value={time4E}
+                              onChange={(value) => settime4E(value)}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  sx={{
+                                    width: {
+                                      xs: 250,
+                                      sm: 250,
+                                      md: 280,
+                                    },
+                                  }}
+                                />
+                              )}
+                            />
+                          </Box>
+                        </Box>
+                      </Stack>
+                    </LocalizationProvider>
+                  </TabPanel>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <TabPanel value="5">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <Stack spacing={3}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Box>
+                            <TimePicker
+                              label="Start Time"
+                              value={time5S}
+                              onChange={(value) => settime5S(value)}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  sx={{
+                                    width: {
+                                      xs: 250,
+                                      sm: 250,
+                                      md: 280,
+                                    },
+                                  }}
+                                />
+                              )}
+                            />
+                          </Box>
+                        </Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Box>
+                            <TimePicker
+                              label="End Time"
+                              value={time5E}
+                              onChange={(value) => settime5E(value)}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  sx={{
+                                    width: {
+                                      xs: 250,
+                                      sm: 250,
+                                      md: 280,
+                                    },
+                                  }}
+                                />
+                              )}
+                            />
+                          </Box>
+                        </Box>
+                      </Stack>
+                    </LocalizationProvider>
+                  </TabPanel>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <TabPanel value="6">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <Stack spacing={3}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Box>
+                            <TimePicker
+                              label="Start Time"
+                              value={time6S}
+                              onChange={(value) => settime6S(value)}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  sx={{
+                                    width: {
+                                      xs: 250,
+                                      sm: 250,
+                                      md: 280,
+                                    },
+                                  }}
+                                />
+                              )}
+                            />
+                          </Box>
+                        </Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Box>
+                            <TimePicker
+                              label="End Time"
+                              value={time6E}
+                              onChange={(value) => settime6E(value)}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  sx={{
+                                    width: {
+                                      xs: 250,
+                                      sm: 250,
+                                      md: 280,
+                                    },
+                                  }}
+                                />
+                              )}
+                            />
+                          </Box>
+                        </Box>
+                      </Stack>
+                    </LocalizationProvider>
+                  </TabPanel>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <TabPanel value="7">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <Stack spacing={3}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Box>
+                            <TimePicker
+                              label="Start Time"
+                              value={time7S}
+                              onChange={(value) => settime7S(value)}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  sx={{
+                                    width: {
+                                      xs: 250,
+                                      sm: 250,
+                                      md: 280,
+                                    },
+                                  }}
+                                />
+                              )}
+                            />
+                          </Box>
+                        </Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Box>
+                            <TimePicker
+                              label="End Time"
+                              value={time7E}
+                              onChange={(value) => settime7E(value)}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  sx={{
+                                    width: {
+                                      xs: 250,
+                                      sm: 250,
+                                      md: 280,
+                                    },
+                                  }}
+                                />
+                              )}
+                            />
+                          </Box>
+                        </Box>
+                      </Stack>
+                    </LocalizationProvider>
+                  </TabPanel>
+                </Box>
+              </TabContext>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                marginBottom: "25px",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Typography sx={{ display: "flex", fontSize: 20 }}>
+                  IT Requirements:
+                </Typography>
+                <Checkbox
+                  checked={checked}
+                  onChange={handleChange2}
+                  {...label}
+                />
+              </Box>
+
+              <Typography sx={{ display: "flex", fontSize: 12 ,color:"grey" }}>
+                (Mic ,camera , projector ,etc...)
+              </Typography>
+            </Box>
+
+            <Box>
+              <Button
+                style={{ marginBottom: "20px" }}
+                variant="contained"
+                endIcon={<SendIcon />}
+                onClick={() => {
+                  dispatcher(
+                    bookingAction({
+                      data: {
+                        ltId: Object.keys(data)[page - 1],
+                        purpose,
+                        startDate: value.format("YYYY-MM-DD"),
+                        endDate: value1.format("YYYY-MM-DD"),
+                        batch,
+                        it_req: checked,
+                        monST:
+                          time1S !== null
+                            ? time1S.get("hour") * 100 +
+                              (time1S.get("minute") > 0 ? 50 : 0)
+                            : -1,
+                        monET:
+                          time1E !== null
+                            ? time1E.get("hour") * 100 +
+                              (time1E.get("minute") > 0 ? 50 : 0)
+                            : -1,
+
+                        tueST:
+                          time2S !== null
+                            ? time2S.get("hour") * 100 +
+                              (time2S.get("minute") > 0 ? 50 : 0)
+                            : -1,
+                        tueET:
+                          time2E !== null
+                            ? time2E.get("hour") * 100 +
+                              (time2E.get("minute") > 0 ? 50 : 0)
+                            : -1,
+
+                        wedST:
+                          time3S !== null
+                            ? time3S.get("hour") * 100 +
+                              (time3S.get("minutes") > 0 ? 50 : 0)
+                            : -1,
+                        wedET:
+                          time3E !== null
+                            ? time3E.get("hour") * 100 +
+                              (time3E.get("minutes") > 0 ? 50 : 0)
+                            : -1,
+
+                        thuST:
+                          time4S !== null
+                            ? time4S.get("hour") * 100 +
+                              (time4S.get("minutes") > 0 ? 50 : 0)
+                            : -1,
+                        thuET:
+                          time4E !== null
+                            ? time4E.get("hour") * 100 +
+                              (time4E.get("minutes") > 0 ? 50 : 0)
+                            : -1,
+
+                        friST:
+                          time5S !== null
+                            ? time5S.get("hour") * 100 +
+                              (time5S.get("minutes") > 0 ? 50 : 0)
+                            : -1,
+                        friET:
+                          time5E !== null
+                            ? time5E.get("hour") * 100 +
+                              (time5E.get("minutes") > 0 ? 50 : 0)
+                            : -1,
+
+                        satST:
+                          time6S !== null
+                            ? time6S.get("hour") * 100 +
+                              (time6S.get("minutes") > 0 ? 50 : 0)
+                            : -1,
+                        satET:
+                          time6E !== null
+                            ? time6E.get("hour") * 100 +
+                              (time6E.get("minutes") > 0 ? 50 : 0)
+                            : -1,
+
+                        sunST:
+                          time7S !== null
+                            ? time7S.get("hour") * 100 +
+                              (time7S.get("minutes") > 0 ? 50 : 0)
+                            : -1,
+                        sunET:
+                          time7E !== null
+                            ? time7E.get("hour") * 100 +
+                              (time7E.get("minutes") > 0 ? 50 : 0)
+                            : -1,
+                      },
+                      navigate,
+                    })
+                  );
+                }}
+              >
+                Submit
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      </Card>
     </div>
   );
 };
