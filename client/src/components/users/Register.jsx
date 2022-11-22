@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import SendIcon from "@mui/icons-material/Send";
 import IconButton from "@mui/material/IconButton";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
@@ -17,7 +16,7 @@ import CardContent from "@mui/material/CardContent";
 import { useDispatch, useSelector } from "react-redux";
 import { addUserAction } from "../../store/actions/users";
 import { useNavigate } from "react-router-dom";
-
+import PersonAddAlt1SharpIcon from '@mui/icons-material/PersonAddAlt1Sharp';
 const Register = () => {
   const dispatcher = useDispatch();
   const navigate = useNavigate();
@@ -238,7 +237,7 @@ const Register = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography style={{ marginBottom: "20px" }}>Name:</Typography>
+                
                 <TextField
                   value={state}
                   onChange={textout}
@@ -247,7 +246,7 @@ const Register = () => {
                   id="outlined-basic-1"
                   label={!err ? "Name*" : " Error! "}
                   variant="outlined"
-                  style={{ marginLeft: "10px" }}
+                  style={{ margin: "auto", width: "260px" }}
                 />
               </Box>
               <Box
@@ -256,9 +255,6 @@ const Register = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography style={{ marginBottom: "20px" }}>
-                  User Name:
-                </Typography>
                 <TextField
                   value={state1}
                   onChange={textout1}
@@ -267,7 +263,7 @@ const Register = () => {
                   id="outlined-basic-2"
                   label={!err1 ? "User Name*" : " Error! "}
                   variant="outlined"
-                  style={{ marginLeft: "10px" }}
+                  style={{ margin: "auto", width: "260px" }}
                 />
               </Box>
               <Box
@@ -276,7 +272,7 @@ const Register = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography style={{ marginBottom: "20px" }}>Email:</Typography>
+                
                 <TextField
                   value={state2}
                   onChange={textout2}
@@ -285,7 +281,7 @@ const Register = () => {
                   id="outlined-basic-3"
                   label={!err2 ? "Mail Id*" : " Error! "}
                   variant="outlined"
-                  style={{ marginLeft: "10px" }}
+                  style={{ margin: "auto", width: "260px" }}
                 />
               </Box>
 
@@ -295,13 +291,9 @@ const Register = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography
-                  style={{ marginBottom: "20px", marginRight: "10px" }}
-                >
-                  Password:
-                </Typography>
+               
                 <FormControl
-                  sx={{ mb: 3, width: "25ch" }}
+                  sx={{ margin:'auto', mb: 3, width: "auto" }}
                   variant="outlined"
                   value={state3}
                   onChange={textout3}
@@ -309,7 +301,7 @@ const Register = () => {
                   label={!err3 ? "Mail Id*" : " Error! "}
                 >
                   <InputLabel htmlFor="outlined-adornment-password">
-                    Password*
+                    Password
                   </InputLabel>
                   <OutlinedInput
                     id="outlined-adornment-password-1"
@@ -343,13 +335,8 @@ const Register = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography
-                  style={{ marginBottom: "20px", marginRight: "10px" }}
-                >
-                  Confirm Password:
-                </Typography>
                 <FormControl
-                  sx={{ mb: 3, width: "25ch" }}
+                  sx={{ margin: 'auto', mb: 3, width: "auto" }}
                   variant="outlined"
                   value={state4}
                   onChange={textout4}
@@ -357,7 +344,7 @@ const Register = () => {
                   label={!err4 ? "Mail Id*" : " Error! "}
                 >
                   <InputLabel htmlFor="outlined-adornment-password">
-                    Password*
+                    Confirm Password
                   </InputLabel>
                   <OutlinedInput
                     id="outlined-adornment-password"
@@ -391,11 +378,9 @@ const Register = () => {
                   justifyContent: "center",
                   textAlign: "center",
                   marginBottom: "10px",
+                  width: '260px'
                 }}
               >
-                <Typography style={{ marginRight: "10px" }}>
-                  Phone Number:
-                </Typography>
                 <MuiTelInput value={phone} onChange={phoneNumber} />
               </Box>
 
@@ -409,7 +394,7 @@ const Register = () => {
                 <Button
                   variant="contained"
                   onClick={handleClickOpen}
-                  endIcon={<SendIcon />}
+                  endIcon={<PersonAddAlt1SharpIcon />}
                 >
                   Add
                 </Button>
