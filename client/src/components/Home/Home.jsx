@@ -8,6 +8,7 @@ import "./TableDaily.css";
 import Table1 from "./TableDaily";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
+import LinearProgress from "@mui/material/LinearProgress";
 
 function makeArray(w, h, val) {
   var arr = [];
@@ -36,6 +37,8 @@ const Home = () => {
   const [data, setData] = useState([]);
 
   const [ltData, setLTData] = useState({});
+
+  const [loader, setLoader] = useState(false);
 
   const getTT = async (date) => {
     return fetch("http://localhost:5001/api/bookings/", {
@@ -81,18 +84,24 @@ const Home = () => {
   };
 
   useEffect(() => {
+    setLoader(true);
     getLT().then((res) => {
       setLTData(res);
+      setLoader(false);
     });
   }, []);
 
   useEffect(() => {
+    setLoader(true);
     getTT(value.format("YYYY-MM-DD")).then((res) => {
       setData(res);
+      setLoader(false);
     });
   }, [value]);
 
   const parsedData = useMemo(() => {
+    setLoader(true);
+
     let ans = makeArray(24, Object.keys(ltData).length, {
       purpose: null,
     });
@@ -122,13 +131,27 @@ const Home = () => {
       }
     }
 
+    setLoader(false);
     return ans;
   }, [data, ltData, value]);
 
-  console.log(data);
+  if (loader) {
+    return (
+      <Box
+        style={{
+          marginTop: '-9px',
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <LinearProgress />
+      </Box>
+    );
+  }
 
   return (
-    <Box style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+    <Box style={{ display: "flex", flexDirection: "column", flex: 1 }}>
       <Box
         style={{
           display: "flex",

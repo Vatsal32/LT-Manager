@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAction } from "../../store/actions/users";
 import { useNavigate } from "react-router-dom";
@@ -17,72 +17,81 @@ import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import FormHelperText from "@mui/material/FormHelperText";
 import Button from "@mui/material/Button";
 
 const Login = () => {
   const [state, setState] = React.useState("");
-  const [err, seterr] = React.useState(false);
 
   const [state1, setState1] = React.useState("");
-  const [err1, seterr1] = React.useState(false);
+  const [errors, setErrors] = React.useState({userName: "", password: ""});
+
+  const loggedIn = useSelector(state => state.users.loggedIn);
+  const e = useSelector(state => state.users.errors);
 
   const textout = (e) => {
     setState(e.target.value);
-    setUserID(e.target.value);
-  };
-  const textout1 = (e) => {
-    setState1(e.target.value);
-    setPassword(e.target.value);
-  };
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
   };
 
-  const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
-    });
+  const textout1 = (e) => {
+    setState1(e.target.value);
   };
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
-  const [values, setValues] = React.useState({
-    amount: "",
-    password: "",
-    weight: "",
-    weightRange: "",
-    showPassword: false,
-  });
+  const [show, setShow] = React.useState(false);
 
   const handleClickOpen = async () => {
-    dispatcher(loginAction(userid, password));
+    setErrors({
+      userName: "",
+      password: "",
+    });
+
     if (state === "") {
-      seterr(true);
-    } else {
-      seterr(false);
+      setErrors(err => ({
+        ...err,
+        userName: "Required"
+      }));
     }
+
     if (state1 === "") {
-      seterr1(true);
-    } else {
-      seterr1(false);
+      setErrors(err => ({
+        ...err,
+        password: "Required",
+      }));
+    }
+
+    if (state !== "" && state1 !== "") {
+      setErrors({
+        userName: "",
+        password: ""
+      });
+      dispatcher(loginAction(state, state1));
     }
   };
 
-  const [userid, setUserID] = useState("");
-  const [password, setPassword] = useState("");
   const dispatcher = useDispatch();
   const navigate = useNavigate();
-
-  const loggedIn = useSelector((state) => state.users.loggedIn);
 
   useEffect(() => {
     if (loggedIn) {
       navigate("/");
     }
   }, [loggedIn, navigate]);
+
+  useEffect(() => {
+    if (e) {
+      setErrors(err => ({
+        ...err,
+        userName: e.userName || "",
+        password: e.password || ""
+      }));
+
+      setState1("");
+    }
+  }, [e]);
 
   return (
     <Box
@@ -147,14 +156,9 @@ const Login = () => {
             >
               <Box style={{ marginBottom: "40px" }}>
                 <Typography
-                  style={{
-                    fontSize: "35px",
-                    fontFamily: "inherit",
-                    fontWeight: "bold",
-                    color: "#1875d1",
-                  }}
+                  variant={'h4'}
                 >
-                  LOGIN
+                  Login
                 </Typography>
               </Box>
               <Box
@@ -165,16 +169,15 @@ const Login = () => {
                   marginBottom: "25px",
                 }}
               >
-                <Typography>User ID:</Typography>
                 <TextField
                   value={state}
                   onChange={textout}
-                  error={err}
-                  helperText={err ? "Enter valid userId" : ""}
+                  error={errors.userName !== ""}
+                  helperText={errors.userName}
                   id="outlined-basic"
-                  label={!err ? "User id" : " Error! "}
+                  label={"User ID"}
                   variant="outlined"
-                  style={{ marginLeft: "25px", width: "220px" }}
+                  sx={{ width: "220px" }}
                 />
               </Box>
               <Box
@@ -184,37 +187,32 @@ const Login = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography
-                  style={{ marginBottom: "20px", marginRight: "10px" }}
-                >
-                  Password:
-                </Typography>
                 <FormControl
                   sx={{ mb: 3, width: "220px" }}
                   variant="outlined"
                   value={state1}
                   onChange={textout1}
-                  error={err1}
-                  helperText={err1 ? "error" : ""}
-                  label={!err1 ? "Mail Id*" : " Error! "}
+                  error={errors.password !== ""}
+                  label={"Email ID"}
                 >
                   <InputLabel htmlFor="outlined-adornment-password">
                     Password
                   </InputLabel>
                   <OutlinedInput
                     id="outlined-adornment-password"
-                    type={values.showPassword ? "text" : "password"}
-                    value={values.password}
-                    onChange={handleChange("password")}
+                    error={errors.password !== ""}
+                    type={show ? "text" : "password"}
+                    value={state1}
+                    onChange={textout1}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
                           aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
+                          onClick={() => setShow(s => !s)}
                           onMouseDown={handleMouseDownPassword}
                           edge="end"
                         >
-                          {values.showPassword ? (
+                          {show ? (
                             <VisibilityOff />
                           ) : (
                             <Visibility />
@@ -224,6 +222,7 @@ const Login = () => {
                     }
                     label="Password"
                   />
+                  <FormHelperText>{errors.password}</FormHelperText>
                 </FormControl>
               </Box>
              

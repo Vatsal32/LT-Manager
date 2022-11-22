@@ -65,7 +65,6 @@ function TableDaily({ data, lectures, date }) {
                     key={key_1}
                     className="new"
                     onClick={() => {
-                      console.log(value);
                       if (value.purpose === null) {
                         navigate(`/book/${key + 1}/${date}`);
                       } else {
