@@ -23,7 +23,7 @@ import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { bookingAction } from "../../store/actions/booking";
+import { bookingAction, bookingResetAction } from "../../store/actions/booking";
 
 const MakeBooking = () => {
   const allowBookings = useSelector(
@@ -44,11 +44,24 @@ const MakeBooking = () => {
     purpose: "",
     batch: "",
     it_req: "",
+    startDate: "",
+    endDate: "",
+    monST: "",
+    tueST: "",
+    wedST: "",
+    thuST: "",
+    friST: "",
+    satST: "",
+    sunST: "",
   });
   const [page, setPage] = useState(tm.x);
   const [batch, setBatch] = useState("");
   const [purpose, setPurpose] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatcher(bookingResetAction());
+  }, []);
 
   useEffect(() => {
     if (!allowBookings && !superAdmin) {
@@ -57,18 +70,23 @@ const MakeBooking = () => {
   }, [allowBookings, superAdmin]);
 
   useEffect(() => {
-    setErrors((err) => ({
-      ...err,
-      ltId: e.ltId || "",
-      purpose: e.purpose || "",
-      startDate: e.startDate || "",
-      endDate: e.endDate || "",
-      batch: e.batch || "",
-      it_req: e.it_req || "",
-    }));
+    let k = {...errors};
+
+    for (let field of Object.keys(e)) {
+      k = {
+        ...k,
+        [field]: e[field]
+      };
+    }
+
+    setErrors(k);
   }, [e]);
 
-  console.log(d);
+  useEffect(() => {
+    if (d) {
+      navigate(`/details/${d}`, { replace: true });
+    }
+  }, [d]);
 
   const displayPage = (event) => {
     setPage(event.target.value);
@@ -78,25 +96,6 @@ const MakeBooking = () => {
 
   const handleChange = (newValue) => {
     setValue(newValue);
-    settime1S("");
-    settime1E("");
-    settime2S("");
-    settime2E("");
-    settime3S("");
-    settime3E("");
-    settime4S("");
-    settime4E("");
-    settime5S("");
-    settime5E("");
-    settime6S("");
-    settime6E("");
-    settime7S("");
-    settime7E("");
-    setValue(tm.y);
-    setV("1");
-    setPage("");
-    setBatch("");
-    setPurpose("");
   };
 
   const [value1, setValue1] = useState(dayjs(tm.y));
@@ -104,6 +103,7 @@ const MakeBooking = () => {
   const handleChange1 = (newValue) => {
     setValue1(newValue);
   };
+
 
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -159,12 +159,12 @@ const MakeBooking = () => {
         textAlign: "center",
       }}
     >
-      <Card 
+      <Card
         sx={{
           width: { xl: "850", lg: "850", md: "425", sm: "425", xs: "425" },
           borderRadius: "15px",
-          marginTop:{md:"20px" , sm:"20px" , xs:"20px"},
-          my:2,
+          marginTop: { md: "20px", sm: "20px", xs: "20px" },
+          my: 2,
           boxShadow: "0 0 25px 10px lightgrey",
         }}
       >
@@ -252,6 +252,8 @@ const MakeBooking = () => {
                     renderInput={(params) => (
                       <TextField
                         {...params}
+                        error={errors.startDate !== ""}
+                        helperText={errors.startDate}
                         sx={{
                           width: {
                             xs: 250,
@@ -283,6 +285,8 @@ const MakeBooking = () => {
                     renderInput={(params) => (
                       <TextField
                         {...params}
+                        error={errors.endDate !== ""}
+                        helperText={errors.endDate}
                         sx={{
                           width: {
                             xs: 250,
@@ -316,7 +320,12 @@ const MakeBooking = () => {
               />
             </Box>
           </Box>
-          <Box sx={{ width: "425px" , borderLeft:{lg:'1px dotted black',xl:"1px dotted black"}}}>
+          <Box
+            sx={{
+              width: "425px",
+              borderLeft: { lg: "1px dotted black", xl: "1px dotted black" },
+            }}
+          >
             <Box
               sx={{
                 width: "100%",
@@ -382,12 +391,13 @@ const MakeBooking = () => {
                           <Box>
                             <TimePicker
                               label="Start Time"
-                              onError={false}
                               value={time1S}
                               onChange={(value) => settime1S(value)}
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
+                                  error={errors.monST !== ""}
+                                  helperText={errors.monST}
                                   sx={{
                                     width: {
                                       xs: 250,
@@ -456,6 +466,8 @@ const MakeBooking = () => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
+                                  error={errors.tueST != ""}
+                                  helperText={errors.tueST}
                                   sx={{
                                     width: {
                                       xs: 250,
@@ -524,6 +536,8 @@ const MakeBooking = () => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
+                                  error={errors.wedST != ""}
+                                  helperText={errors.wedST}
                                   sx={{
                                     width: {
                                       xs: 250,
@@ -592,6 +606,8 @@ const MakeBooking = () => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
+                                  error={errors.thuST != ""}
+                                  helperText={errors.thuST}
                                   sx={{
                                     width: {
                                       xs: 250,
@@ -660,6 +676,8 @@ const MakeBooking = () => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
+                                  error={errors.friST != ""}
+                                  helperText={errors.friST}
                                   sx={{
                                     width: {
                                       xs: 250,
@@ -728,6 +746,8 @@ const MakeBooking = () => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
+                                  error={errors.satST != ""}
+                                  helperText={errors.satST}
                                   sx={{
                                     width: {
                                       xs: 250,
@@ -796,6 +816,8 @@ const MakeBooking = () => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
+                                  error={errors.sunST != ""}
+                                  helperText={errors.sunST}
                                   sx={{
                                     width: {
                                       xs: 250,
@@ -866,7 +888,7 @@ const MakeBooking = () => {
                 />
               </Box>
 
-              <Typography sx={{ display: "flex", fontSize: 12 ,color:"grey" }}>
+              <Typography sx={{ display: "flex", fontSize: 12, color: "grey" }}>
                 (Mic ,camera , projector ,etc...)
               </Typography>
             </Box>

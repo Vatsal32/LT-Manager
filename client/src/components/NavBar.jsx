@@ -52,8 +52,26 @@ const NavBar = () => {
           </IconButton>
         ) : (
           <>
-            <Button variant="contained" color="success">Login</Button>
-          <Tooltip title={'Help'}>
+            <Button variant="contained" color="success">
+              <Link
+                href={"/login"}
+                underline={"none"}
+                style={{
+                  color: 'white'
+                }}
+                sx={{
+                  color: "white",
+                  ":hover": {
+                    color: "white",
+                    textDecoration: "none",
+                    bgcolor: "transparent",
+                  },
+                }}
+              >
+                Login
+              </Link>
+            </Button>
+          <Tooltip title={'Help'} sx={{mx: '10px'}}>
             <IconButton>
               <HelpIcon sx={{
                 color: '#ffffff'
