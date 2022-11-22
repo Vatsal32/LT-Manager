@@ -52,7 +52,7 @@ const MakeBooking = () => {
 
   useEffect(() => {
     if (!allowBookings && !superAdmin) {
-      navigate("/notAuthorized");
+      navigate("/notAuthorized", { replace: true });
     }
   }, [allowBookings, superAdmin]);
 
