@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAction } from "../store/actions/users";
-import HelpIcon from '@mui/icons-material/Help';
+import HelpIcon from "@mui/icons-material/Help";
 
 const NavBar = () => {
   const [anchor, setAnchor] = useState(null);
@@ -57,7 +57,7 @@ const NavBar = () => {
                 href={"/login"}
                 underline={"none"}
                 style={{
-                  color: 'white'
+                  color: "white",
                 }}
                 sx={{
                   color: "white",
@@ -71,15 +71,30 @@ const NavBar = () => {
                 Login
               </Link>
             </Button>
-          <Tooltip title={'Help'} sx={{mx: '10px'}}>
-            <IconButton>
-              <HelpIcon sx={{
-                color: '#ffffff'
-              }} />
-            </IconButton>
-          </Tooltip>
           </>
         )}
+        <Tooltip title={"Help"} sx={{ mx: "10px" }}>
+          <Link 
+            href={"/help"}
+            underline={"none"}
+            sx={{
+              color: "black",
+              ":hover": {
+                color: "black",
+                textDecoration: "none",
+                bgcolor: "transparent",
+              },
+            }}
+          >
+            <IconButton>
+              <HelpIcon
+                sx={{
+                  color: "#ffffff",
+                }}
+              />
+            </IconButton>
+          </Link>
+        </Tooltip>
         <Menu
           id="menu-appbar"
           anchorEl={anchor}

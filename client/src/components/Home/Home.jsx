@@ -102,7 +102,7 @@ const Home = () => {
   const parsedData = useMemo(() => {
     setLoader(true);
 
-    let ans = makeArray(24, Object.keys(ltData).length, {
+    let ans = makeArray(29, Object.keys(ltData).length, {
       purpose: null,
     });
 
@@ -134,6 +134,8 @@ const Home = () => {
     setLoader(false);
     return ans;
   }, [data, ltData, value]);
+
+  console.log(parsedData);
 
   if (loader) {
     return (
@@ -218,7 +220,7 @@ const Home = () => {
             flexDirection: "column",
             height: "100%",
             alignItems: "center",
-            marginTop: "120px",
+            marginTop: "80px",
             marginRight: "20px",
             justifyContent: "flex-start",
           }}

@@ -63,7 +63,7 @@ function App() {
       errorElement: <Error />,
     },
     {
-      path:'/pendingRequestPage',
+      path:'/pending',
       element:<Pending/>,
       errorElement: <Error />
     },
