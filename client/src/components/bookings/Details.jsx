@@ -86,6 +86,7 @@ const Details = () => {
   const [open, setOpen] = React.useState(false);
   const [open1, setOpen1] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
+  const [past, setPast] = React.useState(false);
   const handleOpen = (param) => param(true);
   const handleClose = (param) => param(false);
   const userId = useSelector((state) => state.users.userId);
@@ -187,7 +188,12 @@ const Details = () => {
       setSTDate(dayjs(bookingData.startDate));
     }
     if (bookingData.endDate) {
-      setEDate(dayjs(bookingData.endDate));
+      const d1 = dayjs(bookingData.endDate);
+      setEDate(d1);
+
+      if (dayjs().diff(d1) > 0) {
+        setPast(true);
+      }
     }
     if (bookingData.it_req) {
       setIT(bookingData.it_req);
@@ -207,8 +213,9 @@ const Details = () => {
     if (bookingData.monET && bookingData.monET !== -1) {
       const hr = bookingData.monET / 100;
       const mn = bookingData.monET % 100;
+      console.log(mn === 0 ? "00" : "30");
       arr[0][1] = dayjs(
-        `${hr < 10 ? 0 : ""}${hr}:${mn === 0 ? "00" : "30"}`,
+        `${hr < 10 ? 0 : ""}${hr}:${(mn === 0) ? "00" : "30"}`,
         "HH:MM"
       );
     }
@@ -344,9 +351,6 @@ const Details = () => {
   if (errors !== "") {
     return <Box className="container">{errors}</Box>;
   }
-
-  console.log(d2, e2);
-  console.log(d3, e3);
 
   const dispatcher = useDispatch();
 
@@ -568,7 +572,7 @@ const Details = () => {
               </Grid>
             </LocalizationProvider>
           </TabContext>
-          {approveReject && !approved && (
+          {approveReject && !approved && !past && (
             <>
               <Box className="buttonBox">
                 <Button
@@ -609,14 +613,14 @@ const Details = () => {
                     >
                       Reject
                     </Button>
-                    <Button onClick={handleClose}>Back</Button>
+                    <Button onClick={() => handleClose(setOpen)}>Back</Button>
                   </DialogActions>
                 </Dialog>
               </Box>
             </>
           )}
 
-          {isSuperAdmin && (
+          {isSuperAdmin && !past && (
             <Box className="buttonBox">
               <Button
                 variant="contained"
@@ -701,7 +705,7 @@ const Details = () => {
               </Dialog>
             </Box>
           )}
-          {!isSuperAdmin && userId === bookingData.userId && (
+          {!isSuperAdmin && !past && userId === bookingData.userId && (
             <>
               <Box className={"buttonBox"}>
                 <Button
