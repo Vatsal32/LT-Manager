@@ -18,10 +18,13 @@ import {
   DialogActions,
   DialogTitle,
   Typography,
+  FormHelperText,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import DoneOutlineSharpIcon from "@mui/icons-material/DoneOutlineSharp";
 import ClearSharpIcon from "@mui/icons-material/ClearSharp";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import EditIcon from "@mui/icons-material/Edit";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
   DesktopDatePicker,
@@ -36,6 +39,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   approveBookingAction,
   bookingResetAction,
+  deleteBookingAction,
+  rejectBookingAction,
+  updateBookingAction,
 } from "../../store/actions/booking";
 
 dayjs.extend(customParseFormat);
@@ -52,11 +58,21 @@ function makeArray(w, h, val) {
 }
 
 const Details = () => {
+  useEffect(() => {
+    dispatcher(bookingResetAction());
+  }, []);
+
   const data = useLoaderData();
   const navigate = useNavigate();
   const loc = useLocation();
+  const [userName, setUser] = useState("");
   const [v, setV] = useState("1");
   const [errors, setErrors] = useState("");
+  const [errors1, setErrors1] = useState({
+    ltId: "",
+    it_reg: "",
+    bookId: "",
+  });
   const [page, setPage] = useState("");
   const [ltData, setLTData] = useState({});
   const [bookingData, setBooking] = useState({});
@@ -68,13 +84,23 @@ const Details = () => {
   const [times, setTimes] = useState(makeArray(2, 7, null));
   const [approved, setApproved] = useState(true);
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [open1, setOpen1] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
+  const handleOpen = (param) => param(true);
+  const handleClose = (param) => param(false);
+  const userId = useSelector((state) => state.users.userId);
   const d = useSelector((state) => state.booking.approved);
   const e = useSelector((state) => state.booking.approveErrors);
+  const d1 = useSelector((state) => state.booking.rejected);
+  const e1 = useSelector((state) => state.booking.rejectErrors);
+  const d2 = useSelector((state) => state.booking.updated);
+  const e2 = useSelector((state) => state.booking.updateErrors);
+  const d3 = useSelector((state) => state.booking.deleted);
+  const e3 = useSelector((state) => state.booking.deleteErrors);
   const isAdmin1 = useSelector((state) => state.users.isAdmin1);
   const isAdmin2 = useSelector((state) => state.users.isAdmin2);
   const isAdmin3 = useSelector((state) => state.users.isAdmin3);
+  const isSuperAdmin = useSelector((state) => state.users.isSuperAdmin);
   const approveReject = useSelector(
     (state) =>
       state.users.isAdmin1 ||
@@ -107,10 +133,47 @@ const Details = () => {
   }, [data]);
 
   useEffect(() => {
-    dispatcher(bookingResetAction());
-  }, []);
+    if (d1) {
+      dispatcher(bookingResetAction());
+      navigate("/");
+    }
+
+    if (d3) {
+      dispatcher(bookingResetAction());
+      navigate("/");
+    }
+  }, [d1, d3]);
 
   useEffect(() => {
+    let k = {
+      ltId: "",
+      it_reg: "",
+      bookId: "",
+    };
+
+    for (let field of Object.keys(e2)) {
+      k = {
+        ...k,
+        [field]: e2[field],
+      };
+    }
+
+    setErrors1(k);
+
+    for (let field of Object.keys(e3)) {
+      k = {
+        ...k,
+        [field]: e3[field],
+      };
+    }
+
+    setErrors1(k);
+  }, [e2, e3]);
+
+  useEffect(() => {
+    if (bookingData.userName) {
+      setUser(bookingData.userName);
+    }
     if (bookingData._id && ltData[bookingData.ltId]) {
       setPage(ltData[bookingData.ltId][1] + 1);
     }
@@ -282,6 +345,9 @@ const Details = () => {
     return <Box className="container">{errors}</Box>;
   }
 
+  console.log(d2, e2);
+  console.log(d3, e3);
+
   const dispatcher = useDispatch();
 
   return (
@@ -295,9 +361,42 @@ const Details = () => {
         </Typography>
       )}
 
+      {typeof e1 === "string" && (
+        <Typography
+          variant="body1"
+          color={typeof e1 === "string" ? "red" : "black"}
+        >
+          {typeof e1 === "object" ? "" : e1}
+        </Typography>
+      )}
+
+      {errors1.bookId !== "" && (
+        <Typography
+          variant="body1"
+          color={typeof e1 === "string" ? "red" : "black"}
+        >
+          {errors1.bookId}
+        </Typography>
+      )}
+
+      {errors1.userId !== "" && (
+        <Typography
+          variant="body1"
+          color={typeof e1 === "string" ? "red" : "black"}
+        >
+          {errors1.userId}
+        </Typography>
+      )}
+
       {d && (
         <Typography variant={"body1"} color={"green"}>
           Booking Accepted Successfully
+        </Typography>
+      )}
+
+      {d2 && (
+        <Typography variant={"body1"} color={"green"}>
+          Booking Updated Successfully
         </Typography>
       )}
       <Card
@@ -317,7 +416,7 @@ const Details = () => {
                   shrink: true,
                 }}
                 id="userN"
-                // value={}
+                value={userName}
                 label="Username"
                 placeholder=""
                 disabled
@@ -338,6 +437,8 @@ const Details = () => {
                   label="LT No."
                   value={page}
                   onChange={displayPage}
+                  disabled={!isSuperAdmin}
+                  error={errors1.ltId !== ""}
                 >
                   {Object.keys(ltData).map((val, key) => (
                     <MenuItem key={key} value={key + 1}>
@@ -345,6 +446,7 @@ const Details = () => {
                     </MenuItem>
                   ))}
                 </Select>
+                <FormHelperText>{errors1.ltId}</FormHelperText>
               </FormControl>
             </Grid>
             <Grid item className="gridItem">
@@ -401,9 +503,15 @@ const Details = () => {
                 />
               </LocalizationProvider>
             </Grid>
-            <Grid item sx={{marginBottom:'10px'}}>
+            <Grid item sx={{ marginBottom: "10px" }}>
               <FormControlLabel
-                control={<Checkbox onChange={handleIT} checked={it_req} />}
+                control={
+                  <Checkbox
+                    onChange={handleIT}
+                    checked={it_req}
+                    disabled={!isSuperAdmin}
+                  />
+                }
                 label="IT Requirements"
               />
             </Grid>
@@ -477,23 +585,164 @@ const Details = () => {
                 <Button
                   variant="contained"
                   endIcon={<ClearSharpIcon />}
-                  onClick={handleOpen}
+                  onClick={() => handleOpen(setOpen)}
                 >
                   Reject
                 </Button>
                 <Dialog
                   open={open}
                   keepMounted
-                  onClose={handleClose}
+                  onClose={() => handleClose(setOpen)}
                   aria-describedby="alert-dialog-slide-description"
                 >
                   <DialogTitle>{"Confirm Booking Rejection?"}</DialogTitle>
                   <DialogActions>
-                    <Button>Reject</Button>
+                    <Button
+                      onClick={() => {
+                        dispatcher(
+                          rejectBookingAction({
+                            data: bookingData._id,
+                            navigate,
+                          })
+                        );
+                      }}
+                    >
+                      Reject
+                    </Button>
                     <Button onClick={handleClose}>Back</Button>
                   </DialogActions>
                 </Dialog>
               </Box>
+            </>
+          )}
+
+          {isSuperAdmin && (
+            <Box className="buttonBox">
+              <Button
+                variant="contained"
+                endIcon={<EditIcon />}
+                onClick={() => handleOpen(setOpen1)}
+              >
+                Edit
+              </Button>
+              <Button
+                variant="contained"
+                color={"warning"}
+                endIcon={<DeleteForeverIcon />}
+                onClick={() => handleOpen(setOpen2)}
+              >
+                Delete
+              </Button>
+              <Dialog
+                open={open1}
+                keepMounted
+                onClose={() => handleClose(setOpen1)}
+                aria-describedby="alert-dialog-slide-description"
+              >
+                <DialogTitle>
+                  {"Make changes in the booking request?"}
+                </DialogTitle>
+                <DialogActions>
+                  <Button
+                    onClick={() => {
+                      dispatcher(
+                        updateBookingAction({
+                          data: {
+                            bookId: bookingData._id,
+                            ltId: Object.keys(ltData)[page - 1],
+                            it_req,
+                            startDate: startDate.format("YYYY-MM-DD"),
+                            endDate: endDate.format("YYYY-MM-DD"),
+                          },
+                          navigate,
+                        })
+                      );
+                    }}
+                  >
+                    Yes
+                  </Button>
+                  <Button
+                    onClick={() => handleClose(setOpen1)}
+                    color={"warning"}
+                  >
+                    No
+                  </Button>
+                </DialogActions>
+              </Dialog>
+              <Dialog
+                open={open2}
+                keepMounted
+                onClose={() => handleClose(setOpen2)}
+                aria-describedby="alert-dialog-slide-description"
+              >
+                <DialogTitle>
+                  {"Would you like to permanently delete booking request?"}
+                </DialogTitle>
+                <DialogActions>
+                  <Button
+                    onClick={() => {
+                      dispatcher(
+                        deleteBookingAction({
+                          data: { bookId: bookingData._id },
+                          navigate,
+                        })
+                      );
+                    }}
+                  >
+                    Yes
+                  </Button>
+                  <Button
+                    onClick={() => handleClose(setOpen2)}
+                    color={"warning"}
+                  >
+                    No
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </Box>
+          )}
+          {!isSuperAdmin && userId === bookingData.userId && (
+            <>
+              <Box className={"buttonBox"}>
+                <Button
+                  variant="contained"
+                  color={"warning"}
+                  endIcon={<DeleteForeverIcon />}
+                  onClick={() => handleOpen(setOpen2)}
+                >
+                  Delete
+                </Button>
+              </Box>
+              <Dialog
+                open={open2}
+                keepMounted
+                onClose={() => handleClose(setOpen2)}
+                aria-describedby="alert-dialog-slide-description"
+              >
+                <DialogTitle>
+                  {"Would you like to permanently delete booking request?"}
+                </DialogTitle>
+                <DialogActions>
+                  <Button
+                    onClick={() => {
+                      dispatcher(
+                        deleteBookingAction({
+                          data: { bookId: bookingData._id },
+                          navigate
+                        })
+                      );
+                    }}
+                  >
+                    Yes
+                  </Button>
+                  <Button
+                    onClick={() => handleClose(setOpen2)}
+                    color={"warning"}
+                  >
+                    No
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </>
           )}
         </Box>

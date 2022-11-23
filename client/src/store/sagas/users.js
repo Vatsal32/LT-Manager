@@ -115,13 +115,15 @@ function* loginWorker({ payload }) {
     localStorage.setItem("isAdmin2", res.admin2);
     localStorage.setItem("isAdmin3", res.admin3);  
     localStorage.setItem("isSuperAdmin", res.superAdmin);
+    localStorage.setItem("USER_ID", res.userId);
     yield put(
       loginSuccessfulAction(
         res.token,
         res.admin1,
         res.admin2,
         res.admin3,
-        res.superAdmin
+        res.superAdmin,
+        res.userId
       )
     );
   } else {

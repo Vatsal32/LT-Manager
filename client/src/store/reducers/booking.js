@@ -1,10 +1,28 @@
-import { APPROVE_BOOKING_FAILED, APPROVE_BOOKING_SUCCESSFUL, BOOKING_RESET, BOOKING_SUCCESSFUL, BOOKING_UNSUCCESSFUL } from "../actions/booking";
+import {
+  APPROVE_BOOKING_FAILED,
+  APPROVE_BOOKING_SUCCESSFUL,
+  BOOKING_RESET,
+  BOOKING_SUCCESSFUL,
+  BOOKING_UNSUCCESSFUL,
+  REJECT_BOOKING_FAILED,
+  REJECT_BOOKING_SUCCESSFUL,
+  UPDATE_BOOKING_FAILED,
+  UPDATE_BOOKING_SUCCESSFUL,
+  DELETE_BOOKING_FAILED,
+  DELETE_BOOKING_SUCCESSFUL,
+} from "../actions/booking";
 
 const initialState = {
-  errors: {},
   booked: null,
   approved: null,
-  approveErrors: {}
+  rejected: null,
+  updated: null,
+  deleted: null,
+  errors: {},
+  rejectErrors: {},
+  approveErrors: {},
+  updateErrors: {},
+  deleteErrors: {},
 };
 
 const BookingReducer = (state = initialState, action) => {
@@ -25,17 +43,53 @@ const BookingReducer = (state = initialState, action) => {
       };
     case BOOKING_RESET:
       return initialState;
-    case APPROVE_BOOKING_FAILED: 
+    case APPROVE_BOOKING_FAILED:
       return {
         ...state,
         approved: false,
-        approveErrors: action.payload
+        approveErrors: action.payload,
       };
     case APPROVE_BOOKING_SUCCESSFUL:
       return {
         ...state,
         approved: true,
-        approveErrors: {}
+        approveErrors: {},
+      };
+    case REJECT_BOOKING_SUCCESSFUL:
+      return {
+        ...state,
+        rejected: true,
+        rejectErrors: {},
+      };
+    case REJECT_BOOKING_FAILED:
+      return {
+        ...state,
+        rejected: false,
+        rejectErrors: action.payload,
+      };
+    case UPDATE_BOOKING_SUCCESSFUL:
+      return {
+        ...state,
+        updated: true,
+        updateErrors: {},
+      };
+    case UPDATE_BOOKING_FAILED:
+      return {
+        ...state,
+        updated: false,
+        updateErrors: action.payload,
+      };
+    case DELETE_BOOKING_SUCCESSFUL:
+      return {
+        ...state,
+        deleted: true,
+        deleteErrors: {},
+      };
+    case DELETE_BOOKING_FAILED:
+      return {
+        ...state,
+        deleted: false,
+        deleteErrors: action.payload,
       };
     default:
       return state;

@@ -1,9 +1,18 @@
-import { takeEvery, call, put } from "redux-saga/effects";
+import { takeEvery, call, put, select } from "redux-saga/effects";
 import {
   approveBookingFailed,
   approveBookingSuccessAction,
   APPROVE_BOOKING,
-  BOOKING, bookingFailedAction, bookingSuccessfulAction,
+  UPDATE_BOOKING,
+  BOOKING,
+  bookingFailedAction,
+  bookingSuccessfulAction,
+  rejectBookingFailedAction,
+  rejectBookingSuccessfulAction,
+  REJECT_BOOKING,
+  DELETE_BOOKING,
+  deleteBookingFailedAction,
+  deleteBookingSuccessfulAction,
 } from "../actions/booking";
 
 const processBookingRequest = async (data, navigate) => {
@@ -11,7 +20,7 @@ const processBookingRequest = async (data, navigate) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${localStorage.getItem("JWT_TOKEN")}`
+      Authorization: `Bearer ${localStorage.getItem("JWT_TOKEN")}`,
     },
     body: JSON.stringify(data),
   })
@@ -20,14 +29,14 @@ const processBookingRequest = async (data, navigate) => {
         return res.json();
       } else {
         if (res.status === 440) {
-          navigate('/sessionExpired');
+          navigate("/sessionExpired");
         } else if (res.status === 401) {
-          navigate('/notAuthorized');
+          navigate("/notAuthorized");
         } else {
-          navigate('/error');
+          navigate("/error");
         }
 
-        return {errors: res.status};
+        return { errors: res.status };
       }
     })
     .then((res) => {
@@ -45,7 +54,7 @@ const processBookingApprove = async (data, navigate) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${localStorage.getItem("JWT_TOKEN")}`
+      Authorization: `Bearer ${localStorage.getItem("JWT_TOKEN")}`,
     },
     body: JSON.stringify(data),
   })
@@ -54,14 +63,113 @@ const processBookingApprove = async (data, navigate) => {
         return res.json();
       } else {
         if (res.status === 440) {
-          navigate('/sessionExpired');
+          navigate("/sessionExpired");
         } else if (res.status === 401) {
-          navigate('/notAuthorized');
+          navigate("/notAuthorized");
         } else {
-          navigate('/error');
+          navigate("/error");
         }
 
-        return {errors: res.status};
+        return { errors: res.status };
+      }
+    })
+    .then((res) => {
+      if (res.errors) {
+        return res.errors;
+      } else {
+        return res;
+      }
+    });
+};
+
+const processBookingReject = async (data, navigate) => {
+  return fetch("http://localhost:5001/api/bookings/reject", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("JWT_TOKEN")}`,
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        if (res.status === 440) {
+          navigate("/sessionExpired");
+        } else if (res.status === 401) {
+          navigate("/notAuthorized");
+        } else {
+          navigate("/error");
+        }
+
+        return { errors: res.status };
+      }
+    })
+    .then((res) => {
+      if (res.errors) {
+        return res.errors;
+      } else {
+        return res;
+      }
+    });
+};
+
+const processBookingUpdate = async (data, navigate) => {
+  return fetch("http://localhost:5001/api/bookings/update", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("JWT_TOKEN")}`,
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        if (res.status === 440) {
+          navigate("/sessionExpired");
+        } else if (res.status === 401) {
+          navigate("/notAuthorized");
+        } else {
+          navigate("/error");
+        }
+
+        return { errors: res.status };
+      }
+    })
+    .then((res) => {
+      if (res.errors) {
+        return res.errors;
+      } else {
+        return res;
+      }
+    });
+};
+
+const processBookingDelete = async (data, navigate, endPoint) => {
+  return fetch(`http://localhost:5001/api/bookings/${endPoint}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("JWT_TOKEN")}`,
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        if (res.status === 440) {
+          navigate("/sessionExpired");
+        } else if (res.status === 401) {
+          navigate("/notAuthorized");
+        } else {
+          navigate("/error");
+        }
+
+        return { errors: res.status };
       }
     })
     .then((res) => {
@@ -76,7 +184,7 @@ const processBookingApprove = async (data, navigate) => {
 function* bookingWorker({ payload }) {
   const res = yield call(processBookingRequest, payload.data, payload.navigate);
 
-  if(res.message === 'success') {
+  if (res.message === "success") {
     yield put(bookingSuccessfulAction(res.data.id));
   } else {
     yield put(bookingFailedAction(res));
@@ -88,9 +196,13 @@ export function* bookingWatcher() {
 }
 
 function* approveBookingWorker({ payload }) {
-  const result = yield call(processBookingApprove, {bookId: payload.data}, payload.navigate);
+  const result = yield call(
+    processBookingApprove,
+    { bookId: payload.data },
+    payload.navigate
+  );
 
-  if (result.message === 'success') {
+  if (result.message === "success") {
     yield put(approveBookingSuccessAction());
   } else {
     yield put(approveBookingFailed(result));
@@ -99,4 +211,61 @@ function* approveBookingWorker({ payload }) {
 
 export function* approveBookingWatcher() {
   yield takeEvery(APPROVE_BOOKING, approveBookingWorker);
+}
+
+function* rejectBookingWorker({ payload }) {
+  const result = yield call(
+    processBookingReject,
+    { bookId: payload.data },
+    payload.navigate
+  );
+
+  if (result.message === "success") {
+    yield put(rejectBookingSuccessfulAction());
+  } else {
+    yield put(rejectBookingFailedAction(result));
+  }
+}
+
+export function* rejectBookingWatcher() {
+  yield takeEvery(REJECT_BOOKING, rejectBookingWorker);
+}
+
+function* updateBookingWorker({ payload }) {
+  const result = yield call(
+    processBookingUpdate,
+    payload.data,
+    payload.navigate
+  );
+
+  if (result.message === "success") {
+    yield put(rejectBookingSuccessfulAction());
+  } else {
+    yield put(rejectBookingFailedAction(result));
+  }
+}
+
+export function* updateBookingWatcher() {
+  yield takeEvery(UPDATE_BOOKING, updateBookingWorker);
+}
+
+function* deleteBookingWorker({ payload }) {
+  const sAdmin = yield select(state => state.users.isSuperAdmin);
+  console.log(sAdmin);
+  const result = yield call(
+    processBookingDelete,
+    payload.data,
+    payload.navigate,
+    sAdmin ? 'del' : 'delU'
+  );
+
+  if (result.message === "success") {
+    yield put(deleteBookingSuccessfulAction());
+  } else {
+    yield put(deleteBookingFailedAction(result));
+  }
+}
+
+export function* deleteBookingWatcher() {
+  yield takeEvery(DELETE_BOOKING, deleteBookingWorker);
 }

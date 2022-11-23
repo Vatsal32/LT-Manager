@@ -9,6 +9,7 @@ import {
 } from "../actions/users";
 
 const JWT_TOKEN = localStorage.getItem("JWT_TOKEN");
+const userId = localStorage.getItem("USER_ID");
 const isAdmin1 = localStorage.getItem("isAdmin1") === "true" ? true : false || false;
 const isAdmin2 = localStorage.getItem("isAdmin2") === "true" ? true : false || false;
 const isAdmin3 = localStorage.getItem("isAdmin3") === "true" ? true : false || false;
@@ -16,6 +17,7 @@ const isSuperAdmin = localStorage.getItem("isSuperAdmin") === "true" ? true : fa
 
 const initialState = {
   jwtToken: JWT_TOKEN,
+  userId: userId,
   errors: {},
   loggedIn: Boolean(JWT_TOKEN),
   added: false,
@@ -35,17 +37,19 @@ const UserReducer = (state = initialState, action) => {
       return {
         ...state,
         jwtToken: action.payload.token,
+        userId: action.payload.userId,
         errors: {},
         loggedIn: true,
         isAdmin3: action.payload.isAdmin3,
         isAdmin1: action.payload.isAdmin1,
         isAdmin2: action.payload.isAdmin2,
-        isSuperAdmin: action.payload.superAdmin,
+        isSuperAdmin: action.payload.isSuperAdmin,
       };
     case LOGIN_UNSUCCESSFUL:
       return {
         ...state,
         jwtToken: "",
+        userId: "",
         errors: {
           ...action.payload.errors,
         },
@@ -57,6 +61,7 @@ const UserReducer = (state = initialState, action) => {
       };
     case LOGOUT_SUCCESSFUL:
       localStorage.setItem("JWT_TOKEN", "");
+      localStorage.setItem("USER_ID", "");
       localStorage.setItem("isAdmin1", false);
       localStorage.setItem("isAdmin2", false);
       localStorage.setItem("isAdmin3", false);
@@ -70,6 +75,7 @@ const UserReducer = (state = initialState, action) => {
         isAdmin2: false,
         isAdmin3: false,
         isSuperAdmin: false,
+        userId: "",
       };
     case USER_ADDED_SUCCESSFULLY:
       return {
