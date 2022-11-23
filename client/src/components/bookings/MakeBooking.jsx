@@ -164,6 +164,11 @@ const MakeBooking = () => {
         textAlign: "center",
       }}
     >
+      {errors.slots && (
+        <Typography variant="body1" color={"red"}>
+          {errors.slots}
+        </Typography>
+      )}
       <Card
         sx={{
           width: { xl: "850", lg: "850", md: "425", sm: "425", xs: "425" },
@@ -917,78 +922,78 @@ const MakeBooking = () => {
                         monST:
                           time1S !== null
                             ? time1S.get("hour") * 100 +
-                              (time1S.get("minute") > 0 ? 50 : 0)
+                              (time1S.get("minute") >= 30 ? 50 : 0)
                             : -1,
                         monET:
                           time1E !== null
                             ? time1E.get("hour") * 100 +
-                              (time1E.get("minute") > 0 ? 50 : 0)
+                              (time1E.get("minute") > 30 ? 100 : (time1E.get("minute") === 0 ? 0 : 50))
                             : -1,
 
                         tueST:
                           time2S !== null
                             ? time2S.get("hour") * 100 +
-                              (time2S.get("minute") > 0 ? 50 : 0)
+                              (time2S.get("minute") >= 30 ? 50 : 0)
                             : -1,
                         tueET:
                           time2E !== null
                             ? time2E.get("hour") * 100 +
-                              (time2E.get("minute") > 0 ? 50 : 0)
+                              (time2E.get("minute") > 30 ? 100 : (time2E.get("minute") === 0 ? 0 : 50))
                             : -1,
 
                         wedST:
                           time3S !== null
                             ? time3S.get("hour") * 100 +
-                              (time3S.get("minutes") > 0 ? 50 : 0)
+                              (time3S.get("minutes") >= 30 ? 50 : 0)
                             : -1,
                         wedET:
                           time3E !== null
                             ? time3E.get("hour") * 100 +
-                              (time3E.get("minutes") > 0 ? 50 : 0)
+                              (time3E.get("minutes") > 30 ? 100 : (time3E.get("minute") === 0 ? 0 : 50))
                             : -1,
 
                         thuST:
                           time4S !== null
                             ? time4S.get("hour") * 100 +
-                              (time4S.get("minutes") > 0 ? 50 : 0)
+                              (time4S.get("minutes") >= 30 ? 50 : 0)
                             : -1,
                         thuET:
                           time4E !== null
                             ? time4E.get("hour") * 100 +
-                              (time4E.get("minutes") > 0 ? 50 : 0)
+                              (time4E.get("minutes") > 30 ? 100 : (time4E.get("minute") === 0 ? 0 : 50))
                             : -1,
 
                         friST:
                           time5S !== null
                             ? time5S.get("hour") * 100 +
-                              (time5S.get("minutes") > 0 ? 50 : 0)
+                              (time5S.get("minutes") >= 30 ? 50 : 0)
                             : -1,
                         friET:
                           time5E !== null
                             ? time5E.get("hour") * 100 +
-                              (time5E.get("minutes") > 0 ? 50 : 0)
+                              (time5E.get("minutes") > 30 ? 100 : (time5E.get("minute") === 0 ? 0 : 50))
                             : -1,
 
                         satST:
                           time6S !== null
                             ? time6S.get("hour") * 100 +
-                              (time6S.get("minutes") > 0 ? 50 : 0)
+                              (time6S.get("minutes") >= 30 ? 50 : 0)
                             : -1,
                         satET:
                           time6E !== null
                             ? time6E.get("hour") * 100 +
-                              (time6E.get("minutes") > 0 ? 50 : 0)
+                              (time6E.get("minutes") > 30 ? 100 : (time6E.get("minute") === 0 ? 0 : 50))
                             : -1,
 
                         sunST:
                           time7S !== null
                             ? time7S.get("hour") * 100 +
-                              (time7S.get("minutes") > 0 ? 50 : 0)
+                              (time7S.get("minutes") >= 30 ? 50 : 0)
                             : -1,
                         sunET:
                           time7E !== null
                             ? time7E.get("hour") * 100 +
-                              (time7E.get("minutes") > 0 ? 50 : 0)
+                              (time7E.get("minutes") > 30 ? 100 : (time7E.get("minute") === 0 ? 0 : 50))
                             : -1,
                       },
                       navigate,

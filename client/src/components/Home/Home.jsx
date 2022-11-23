@@ -135,8 +135,6 @@ const Home = () => {
     return ans;
   }, [data, ltData, value]);
 
-  console.log(parsedData);
-
   if (loader) {
     return (
       <Box

@@ -46,14 +46,14 @@ function TableDaily({ data, lectures, date }) {
     <table className="dwm_main refreshable" id="day_main">
       <thead>
         <tr>
-          <th className="first_last" style={{ width: "3.846153846" }}>
+          <th className="first_last" style={{ width: "3.448275%" }}>
             <a>Time</a>
           </th>
           {time.map((val, key) => (
             <th
               key={key}
               className="first_last"
-              style={{ width: "3.846153846%" }}
+              style={{ width: "3.448275%%" }}
             >
               <a>{val.t}</a>
             </th>

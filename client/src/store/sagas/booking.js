@@ -251,7 +251,6 @@ export function* updateBookingWatcher() {
 
 function* deleteBookingWorker({ payload }) {
   const sAdmin = yield select(state => state.users.isSuperAdmin);
-  console.log(sAdmin);
   const result = yield call(
     processBookingDelete,
     payload.data,
