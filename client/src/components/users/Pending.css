@@ -2,6 +2,8 @@
     display: grid;
     grid-template-columns: 3fr 1fr 2fr;
     padding:5px;
+    border-top: solid 1px;
+    border-bottom: solid 1px;
     /* border:solid 3px; */
     border-radius: 5px;
     border-color:rgb(108, 119, 119);
