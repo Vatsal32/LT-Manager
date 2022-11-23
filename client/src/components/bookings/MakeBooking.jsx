@@ -146,9 +146,8 @@ const MakeBooking = () => {
   };
 
   const handleBatch = (event) => {
-    setBatch(event.target.value);
+    setBatch(event.target.value.replace(/[0-9]{3}|[a-zA-Z]/gi, ''));
   };
-
   const handlePurpose = (event) => {
     setPurpose(event.target.value);
   };
@@ -314,9 +313,10 @@ const MakeBooking = () => {
             <Box style={{ marginBottom: "35px" }}>
               <TextField
                 id="outlined-basic"
-                label="Enter Batch"
+                label="Batches Attending"
                 variant="outlined"
                 value={batch}
+                placeholder="seperate by space, max 2 digits"
                 onChange={handleBatch}
                 style={{ margin: "10px" }}
                 sx={{
