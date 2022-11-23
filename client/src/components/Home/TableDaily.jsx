@@ -1,7 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
+import dayjs from "dayjs";
 import "./TableDaily.css";
 import { useNavigate } from "react-router-dom";
+
+
 
 function TableDaily({ data, lectures, date }) {
   const time = [
@@ -32,8 +35,9 @@ function TableDaily({ data, lectures, date }) {
   ];
 
   const navigate = useNavigate();
+  const now = dayjs();
 
-  return (
+   return (
     <table className="dwm_main refreshable" id="day_main">
       <thead>
         <tr>
@@ -66,7 +70,10 @@ function TableDaily({ data, lectures, date }) {
                     className="new"
                     onClick={() => {
                       if (value.purpose === null) {
-                        navigate(`/book/${key + 1}/${date}`);
+                        if (now.diff(date, "day") > -2) {
+                          console.log(now.diff(date, "day"));
+                          alert("Please book a slot atleast three days earlier.");
+                        } else {navigate(`/book/${key + 1}/${date}`);}                      
                       } else {
                         navigate(`/details/${value._id}`);
                       }
