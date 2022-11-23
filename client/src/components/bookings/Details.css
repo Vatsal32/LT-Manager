@@ -58,7 +58,7 @@
   }
 }
 
-@media only screen and (min-width: 1000px) {
+@media only screen and (min-width: 1002px) {
   .formContainer{
     width: 500px;
   }
@@ -67,5 +67,6 @@
   }
   .mainContainer{
     flex-direction: row;
+    width: 1002px;
   }
 }
