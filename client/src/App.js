@@ -10,10 +10,13 @@ import DeleteUser from "./components/users/DeleteUser";
 import AddRooms from "./components/rooms/AddRooms";
 import Details from "./components/bookings/Details";
 import Error from "./components/Error";
+import Help from "./components/users/Help";
+import Pending from "./components/users/PendingRequestPage";
 import SessionExpired from "./components/SessionExpired";
 import { useDispatch } from "react-redux";
 import { logoutAction } from "./store/actions/users";
 import NotAuthorized from "./components/NotAuthorized";
+
 
 function App() {
   const dispatcher = useDispatch();
@@ -57,6 +60,16 @@ function App() {
     {
       path: "/addRooms",
       element: <AddRooms />,
+      errorElement: <Error />
+    },
+    {
+      path:'/pendingRequestPage',
+      element:<Pending/>,
+      errorElement: <Error />
+    },
+    {
+      path: "/help",
+      element:<Help/>,
       errorElement: <Error />
     },
     {
