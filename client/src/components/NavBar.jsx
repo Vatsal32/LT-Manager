@@ -110,7 +110,22 @@ const NavBar = () => {
           open={Boolean(anchor)}
           onClose={handleClose}
         >
-          <MenuItem onClick={handleClose}>Profile</MenuItem>
+          <MenuItem>
+          <Link
+              href={"/pending"}
+              underline={"none"}
+              sx={{
+                color: "black",
+                ":hover": {
+                  color: "black",
+                  textDecoration: "none",
+                  bgcolor: "transparent",
+                },
+              }}
+            >
+              Pending Requests
+            </Link>
+          </MenuItem>
           <MenuItem
             onClick={() => {
               handleClose();
