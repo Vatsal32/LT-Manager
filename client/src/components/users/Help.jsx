@@ -48,10 +48,10 @@ export default function SimpleAccordion() {
               3. After login selecting a cell will open a booking page.
             </Typography>
             <Typography>
-              4. Fill in teh required details such as LT Number, select start and end date,etc and submit for approval.
+              4. Fill in the required details such as LT Number, select start and end date,etc and submit for approval.
             </Typography>
             <Typography>
-              5. Your request will show up on timetable as red block till it is approved.
+              5. Your request will show up on timetable as yellow block till it is approved.
             </Typography>
           </AccordionDetails>
         </Accordion>

@@ -309,7 +309,7 @@ const MakeBooking = () => {
             <Box style={{ marginBottom: "35px" }}>
               <TextField
                 id="outlined-basic"
-                label="Enter Batch"
+                label="For Batch"
                 variant="outlined"
                 value={batch}
                 onChange={handleBatch}
