@@ -302,14 +302,24 @@ const Details = () => {
         <form className="formContainer">
           <Grid container direction="column" spacing="20" alignItems="center">
             <Grid item className="gridItem">
+              <TextField
+                  className="new1"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  id="userN"
+                  // value={}
+                  label="Username"
+                  placeholder=""
+                  disabled
+                />
+            </Grid>
+            
+            <Grid item className="gridItem">
               <FormControl
                 sx={{
                   fontSize: 15,
-                  width: {
-                    xs: 250,
-                    sm: 250,
-                    md: 280,
-                  },
+                  width: '100%'  
                 }}
               >
                 <InputLabel id="demo-simple-select-label">LT No.</InputLabel>
@@ -394,7 +404,7 @@ const Details = () => {
           <TabContext value={v}>
             <Tabs
               variant="scrollable"
-              scrollButtons
+              
               allowScrollButtonsMobile
               value={v}
               onChange={MON_SUN}
@@ -415,10 +425,7 @@ const Details = () => {
                 justifyContent="center"
                 sx={{
                   marginTop: 0,
-                  flexDirection: {
-                    xs: "column",
-                    md: "column",
-                  },
+                  flexDirection: 'column',
                   flex: 1,
                 }}
               >
