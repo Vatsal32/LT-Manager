@@ -25,12 +25,12 @@ function App() {
     {
       path: "/login",
       element: <Login />,
-      errorElement: <Error />
+      errorElement: <Error />,
     },
     {
       path: "/",
       element: <Home />,
-      errorElement: <Error />
+      errorElement: <Error />,
     },
     {
       path: "/book/:x/:y",
@@ -45,22 +45,22 @@ function App() {
         return ans.data;
       },
       element: <MakeBooking />,
-      errorElement: <Error />
+      errorElement: <Error />,
     },
     {
       path: "/register/",
       element: <Register />,
-      errorElement: <Error />
+      errorElement: <Error />,
     },
     {
       path: "/deleteUser",
       element: <DeleteUser />,
-      errorElement: <Error />
+      errorElement: <Error />,
     },
     {
       path: "/addRooms",
       element: <AddRooms />,
-      errorElement: <Error />
+      errorElement: <Error />,
     },
     {
       path:'/pendingRequestPage',
@@ -75,15 +75,25 @@ function App() {
     {
       path: "/details/:id",
       loader: async ({ params }) => {
-        console.log(params);
-        const result = await fetch("http://localhost:5001/api/bookings/details", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("JWT_TOKEN")}`,
-          },
-          body: JSON.stringify({ bookId: params.id }),
-        })
+        const result = await fetch("http://localhost:5001/api/rooms/", {
+          method: "GET",
+        });
+        const ans = await result.json();
+        if (ans.errors) {
+          return ans.errors;
+        }
+
+        const result1 = await fetch(
+          "http://localhost:5001/api/bookings/details",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("JWT_TOKEN")}`,
+            },
+            body: JSON.stringify({ bookId: params.id }),
+          }
+        )
           .then((res) => {
             if (res.ok) {
               return res.json();
@@ -95,34 +105,34 @@ function App() {
             console.log(err);
             return { errors: err };
           });
-  
-        if (result.errors) {
-          return result;
+
+        if (result1.errors) {
+          return result1;
         } else {
-          return result.data;
+          return { ltData: ans.data, data: result1.data };
         }
       },
       element: <Details />,
-      errorElement: <Error />
+      errorElement: <Error />,
     },
     {
       path: "/error",
-      element: <Error />
+      element: <Error />,
     },
     {
       path: "/sessionExpired",
       loader: async () => {
         dispatcher(logoutAction());
       },
-      element: <SessionExpired />
+      element: <SessionExpired />,
     },
     {
       path: "/notAuthorized",
       element: <NotAuthorized />,
-      errorElement: <Error />
+      errorElement: <Error />,
     },
   ]);
-  
+
   return (
     <Box
       sx={{

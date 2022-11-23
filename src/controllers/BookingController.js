@@ -113,6 +113,14 @@ const checkConflictDates = async (ltId, std, etd) => {
   const startDate = new Date(std);
   const endDate = new Date(etd);
 
+  if (startDate > endDate) {
+    return {
+      errors: {
+        startDate: "Cannot be greater than the end Date"
+      }
+    };
+  }
+
   return BookingsModel.find({ ltId })
     .where({
       $and: [
@@ -188,7 +196,7 @@ module.exports = {
         })
         .catch((err) => {
           console.log(err);
-          res.json({ errors: "something went wrong" });
+          res.json({ errors: {misc: "something went wrong" }});
         });
     }
   },
@@ -268,11 +276,24 @@ module.exports = {
         const fields = Object.keys(dayTime);
 
         if (datas === []) {
+          console.log(dayTime[fields[1]], dayTime[fields[0]]);
+          if (dayTime[fields[1]] !== -1 && dayTime[fields[0]] !== -1 && dayTime[fields[1]] <= dayTime[fields[0]]) {
+            errors = {
+              ...errors,
+              [fields[0]]: "Cannot be greater than or equal end time",
+            };
+            break;
+          }
+
           newBooking[fields[0]] = dayTime[fields[0]];
           newBooking[fields[1]] = dayTime[fields[1]];
           continue;
         } else if (datas.errors) {
-          res.json({ errors: datas.errors });
+          errors = {
+            ...errors,
+            ...datas.errors
+          };
+          break;
         } else {
           for (let data of datas) {
             const left1 = data[fields[0]],
@@ -289,6 +310,12 @@ module.exports = {
               right2 === -1
             ) {
               f = false;
+            } else if (dayTime[fields[1]] < dayTime[fields[0]]) {
+              errors = {
+                ...errors,
+                [fields[0]]: "Cannot be greater than or equal end time",
+              };
+              break;
             } else {
               if (left1 <= right2 && left2 <= right1) {
                 f = false;
@@ -313,7 +340,7 @@ module.exports = {
       } else {
         newBooking
           .save()
-          .then(res.json({ message: "success" }))
+          .then(res.json({ message: "success", data: {id: newBooking._id.toString()} }))
           .catch((err) => {
             console.log(err);
             res.json({ errors: "Something went wrong" });

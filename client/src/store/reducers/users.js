@@ -32,7 +32,6 @@ const UserReducer = (state = initialState, action) => {
   
   switch (action.type) {
     case LOGIN_SUCCESSFUL:
-      console.log(action.payload);
       return {
         ...state,
         jwtToken: action.payload.token,
