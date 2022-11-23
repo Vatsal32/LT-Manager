@@ -10,7 +10,13 @@ import { combineReducers, createStore, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
-import { approveBookingWatcher, bookingWatcher } from "./sagas/booking";
+import {
+  approveBookingWatcher,
+  bookingWatcher,
+  deleteBookingWatcher,
+  rejectBookingWatcher,
+  updateBookingWatcher,
+} from "./sagas/booking";
 import BookingReducer from "./reducers/booking";
 import RoomReducer from "./reducers/rooms";
 import { addRoomWatcher } from "./sagas/rooms";
@@ -29,7 +35,10 @@ function* rootSagas() {
     addUserWatcher(),
     deleteUserWatcher(),
     addRoomWatcher(),
-    approveBookingWatcher()
+    approveBookingWatcher(),
+    rejectBookingWatcher(),
+    updateBookingWatcher(),
+    deleteBookingWatcher(),
   ]);
 }
 

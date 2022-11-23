@@ -10,7 +10,7 @@ router.post("/book", UserController.isAuthenticated, bookingController.makeBooki
 
 router.post("/bookI", UserController.isSuperAdmin, bookingController.makeBooking);
 
-router.put("/update", bookingController.updateBooking);
+router.put("/update", UserController.isSuperAdmin, bookingController.updateBooking);
 
 router.delete("/del", UserController.isSuperAdmin, bookingController.deleteBooking);
 

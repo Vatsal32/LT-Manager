@@ -87,7 +87,7 @@ function TableDaily({ data, lectures, date }) {
                           : (value.admin1 && value.admin2 && value.admin3) ||
                             value.superAdmin
                           ? "green"
-                          : "red",
+                          : "yellow",
                     }}
                   >
                     <a>{value.purpose !== "" ? value.purpose : ""}</a>

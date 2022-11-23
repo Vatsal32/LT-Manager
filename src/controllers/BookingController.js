@@ -2,6 +2,7 @@ const UserModel = require("../models/UsersModel");
 const RoomModel = require("../models/RoomModel");
 const ObjectId = require("mongodb").ObjectId;
 const BookingsModel = require("../models/BookingsModel");
+const UsersModel = require("../models/UsersModel");
 
 function dateIsValid(date) {
   const isValid = new Date(date);
@@ -116,8 +117,8 @@ const checkConflictDates = async (ltId, std, etd) => {
   if (startDate > endDate) {
     return {
       errors: {
-        startDate: "Cannot be greater than the end Date"
-      }
+        startDate: "Cannot be greater than the end Date",
+      },
     };
   }
 
@@ -152,7 +153,21 @@ module.exports = {
     if (ObjectId.isValid(id)) {
       BookingsModel.findOne({ _id: ObjectId(id) }).then((result) => {
         if (result) {
-          res.json({ message: "success", data: result });
+          UsersModel.findOne({ _id: ObjectId(result.userId) })
+            .then((result1) => {
+              if (result1) {
+                res.json({
+                  message: "success",
+                  data: { ...result._doc, userName: result1.userName },
+                });
+              } else {
+                res.json({ message: "errors", errors: "User Not found" });
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              res.json({ errors: "Something went wrong" });
+            });
         } else {
           res.json({ errors: "No such booking" });
         }
@@ -196,7 +211,7 @@ module.exports = {
         })
         .catch((err) => {
           console.log(err);
-          res.json({ errors: {misc: "something went wrong" }});
+          res.json({ errors: { misc: "something went wrong" } });
         });
     }
   },
@@ -277,7 +292,11 @@ module.exports = {
 
         if (datas === []) {
           console.log(dayTime[fields[1]], dayTime[fields[0]]);
-          if (dayTime[fields[1]] !== -1 && dayTime[fields[0]] !== -1 && dayTime[fields[1]] <= dayTime[fields[0]]) {
+          if (
+            dayTime[fields[1]] !== -1 &&
+            dayTime[fields[0]] !== -1 &&
+            dayTime[fields[1]] <= dayTime[fields[0]]
+          ) {
             errors = {
               ...errors,
               [fields[0]]: "Cannot be greater than or equal end time",
@@ -291,7 +310,7 @@ module.exports = {
         } else if (datas.errors) {
           errors = {
             ...errors,
-            ...datas.errors
+            ...datas.errors,
           };
           break;
         } else {
@@ -338,9 +357,15 @@ module.exports = {
       if (Object.keys(errors).length > 0) {
         res.json({ errors });
       } else {
+        console.log(newBooking);
         newBooking
           .save()
-          .then(res.json({ message: "success", data: {id: newBooking._id.toString()} }))
+          .then(
+            res.json({
+              message: "success",
+              data: { id: newBooking._id.toString() },
+            })
+          )
           .catch((err) => {
             console.log(err);
             res.json({ errors: "Something went wrong" });
@@ -354,13 +379,14 @@ module.exports = {
     const ltId = req.body.ltId || "N/A";
     let startDate = req.body.startDate || "";
     let endDate = req.body.endDate || "";
+    let it_req = req.body.it_req === "false" ? false : true || "";
     const reqBody = {
       bookId,
       userId: "N/A",
       ltId,
       startDate,
       endDate,
-      it_req: true,
+      it_req,
     };
 
     const errors = await checkForErrors(reqBody);
@@ -368,37 +394,6 @@ module.exports = {
     if (Object.keys(errors).length > 0) {
       res.json({ errors });
     } else {
-      const times = [
-        {
-          monST: req.body.monST + 1 || -1,
-          monET: req.body.monET || -1,
-        },
-        {
-          tueST: req.body.tueST + 1 || -1,
-          tueET: req.body.tueET || -1,
-        },
-        {
-          wedST: req.body.wedST + 1 || -1,
-          wedET: req.body.wedET || -1,
-        },
-        {
-          thuST: req.body.thuST + 1 || -1,
-          thuET: req.body.thuET || -1,
-        },
-        {
-          friST: req.body.friST + 1 || -1,
-          friET: req.body.friET || -1,
-        },
-        {
-          satST: req.body.satST + 1 || -1,
-          satET: req.body.satET || -1,
-        },
-        {
-          sunST: req.body.sunST + 1 || -1,
-          sunET: req.body.sunET || -1,
-        },
-      ];
-
       let errors = {};
       let updates = {
         startDate,
@@ -421,6 +416,37 @@ module.exports = {
               bookId: "Booking Doesn't exists",
             };
           } else {
+            const times = [
+              {
+                monST: req.body.monST + 1 || result.monST,
+                monET: req.body.monET || result.monET,
+              },
+              {
+                tueST: req.body.tueST + 1 || result.tueST,
+                tueET: req.body.tueET || result.tueET,
+              },
+              {
+                wedST: req.body.wedST + 1 || result.wedST,
+                wedET: req.body.wedET || result.wedET,
+              },
+              {
+                thuST: req.body.thuST + 1 || result.thuST,
+                thuET: req.body.thuET || result.thuET,
+              },
+              {
+                friST: req.body.friST + 1 || result.friST,
+                friET: req.body.friET || result.friET,
+              },
+              {
+                satST: req.body.satST + 1 || result.satST,
+                satET: req.body.satET || result.satET,
+              },
+              {
+                sunST: req.body.sunST + 1 || result.sunST,
+                sunET: req.body.sunET || result.sunET,
+              },
+            ];
+
             for (let dayTime of times) {
               const datas = await checkConflictDates(
                 result.ltId,
@@ -472,7 +498,6 @@ module.exports = {
                   } else {
                     if (left1 <= right2 && left2 <= right1) {
                       f = false;
-                      console.log("ERROR HERE");
                       errors = {
                         ...errors,
                         slots: "Slots already occupied",
@@ -519,17 +544,17 @@ module.exports = {
   },
 
   deleteBooking: async (req, res) => {
-    const userName = req.body.userName || "";
+    const bookId = req.body.bookId || "";
 
-    if (userName !== "") {
+    if (ObjectId.isValid(bookId)) {
       BookingsModel.findOneAndDelete({
-        userName,
+        _id: ObjectId(bookId),
       })
         .then((data) => {
           if (data === null) {
             res.json({
               errors: {
-                userName: "Doesn't Exists.",
+                bookId: "Doesn't Exists.",
               },
             });
           } else {
@@ -543,7 +568,7 @@ module.exports = {
     } else {
       res.json({
         errors: {
-          userName: "Enter a valid ID",
+          bookId: "Enter a valid ID",
         },
       });
     }
