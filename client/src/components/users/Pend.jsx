@@ -11,7 +11,7 @@ export default function Pend(props) {
 
 
       <Divider />
-      <ListItemButton className='pendingitem' component="a" href="#simple-list" >
+      <ListItemButton className='pendingitem' sx={{display:'grid'}} component="a" href="#simple-list" >
         <ListItemText className='pendingitemtext' primary={props.userName} sx={{ width: 'auto' }} />
         <ListItemText className='pendingitemlt' primary={props.LtNumber} />
         <ListItemText className='pendingitemtext' primary={props.date}/>
