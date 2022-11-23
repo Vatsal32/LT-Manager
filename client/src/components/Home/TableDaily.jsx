@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 import dayjs from "dayjs";
 import "./TableDaily.css";
 import { useNavigate } from "react-router-dom";
-
-
+import { useSelector } from "react-redux";
 
 function TableDaily({ data, lectures, date }) {
   const time = [
@@ -32,16 +31,22 @@ function TableDaily({ data, lectures, date }) {
     { t: "17:30" },
     { t: "18:00" },
     { t: "18:30" },
+    { t: "19:00" },
+    { t: "19:30" },
+    { t: "20:00" },
+    { t: "20:30" },
+    { t: "21:00" },
   ];
 
   const navigate = useNavigate();
   const now = dayjs();
+  const isSuperAdmin = useSelector(state => state.users.isSuperAdmin);
 
    return (
     <table className="dwm_main refreshable" id="day_main">
       <thead>
         <tr>
-          <th className="first_last" style={{ width: "3.846153846%" }}>
+          <th className="first_last" style={{ width: "3.846153846" }}>
             <a>Time</a>
           </th>
           {time.map((val, key) => (
@@ -70,10 +75,11 @@ function TableDaily({ data, lectures, date }) {
                     className="new"
                     onClick={() => {
                       if (value.purpose === null) {
-                        if (now.diff(date, "day") > -2) {
-                          console.log(now.diff(date, "day"));
+                        if (now.diff(date, "day") > -2 && !isSuperAdmin) {
                           alert("Please book a slot atleast three days earlier.");
-                        } else {navigate(`/book/${key + 1}/${date}`);}                      
+                        } else {
+                          navigate(`/book/${key + 1}/${date}`);
+                        }                      
                       } else {
                         navigate(`/details/${value._id}`);
                       }

@@ -54,6 +54,7 @@ const MakeBooking = () => {
     satST: "",
     sunST: "",
   });
+  const loggedIn = useSelector((state) => state.users.loggedIn);
   const [page, setPage] = useState(tm.x);
   const [batch, setBatch] = useState("");
   const [purpose, setPurpose] = useState("");
@@ -64,6 +65,10 @@ const MakeBooking = () => {
   }, []);
 
   useEffect(() => {
+    if (!loggedIn) {
+      navigate('/login');
+    }
+
     if (!allowBookings && !superAdmin) {
       navigate("/notAuthorized", { replace: true });
     }
@@ -248,6 +253,7 @@ const MakeBooking = () => {
                     label="Start Date"
                     inputFormat="MM/DD/YYYY"
                     value={value}
+                    disabled
                     onChange={handleChange}
                     renderInput={(params) => (
                       <TextField
