@@ -14,6 +14,9 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Dialog,
+  DialogActions,
+  DialogTitle,
   Typography,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
@@ -30,7 +33,10 @@ import { TabContext } from "@mui/lab";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useDispatch, useSelector } from "react-redux";
-import { approveBookingAction, bookingResetAction } from "../../store/actions/booking";
+import {
+  approveBookingAction,
+  bookingResetAction,
+} from "../../store/actions/booking";
 
 dayjs.extend(customParseFormat);
 
@@ -61,6 +67,9 @@ const Details = () => {
   const [it_req, setIT] = useState(false);
   const [times, setTimes] = useState(makeArray(2, 7, null));
   const [approved, setApproved] = useState(true);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const d = useSelector((state) => state.booking.approved);
   const e = useSelector((state) => state.booking.approveErrors);
   const isAdmin1 = useSelector((state) => state.users.isAdmin1);
@@ -254,7 +263,7 @@ const Details = () => {
       bookingData.superAdmin ||
       (bookingData.admin1 && isAdmin1) ||
       (bookingData.admin2 && isAdmin2) ||
-      (bookingData.admin3 && isAdmin3) || 
+      (bookingData.admin3 && isAdmin3) ||
       d
     ) {
       setApproved(true);
@@ -303,23 +312,23 @@ const Details = () => {
           <Grid container direction="column" spacing="20" alignItems="center">
             <Grid item className="gridItem">
               <TextField
-                  className="new1"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  id="userN"
-                  // value={}
-                  label="Username"
-                  placeholder=""
-                  disabled
-                />
+                className="new1"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                id="userN"
+                // value={}
+                label="Username"
+                placeholder=""
+                disabled
+              />
             </Grid>
-            
+
             <Grid item className="gridItem">
               <FormControl
                 sx={{
                   fontSize: 15,
-                  width: '100%'  
+                  width: "100%",
                 }}
               >
                 <InputLabel id="demo-simple-select-label">LT No.</InputLabel>
@@ -392,7 +401,7 @@ const Details = () => {
                 />
               </LocalizationProvider>
             </Grid>
-            <Grid item>
+            <Grid item sx={{marginBottom:'10px'}}>
               <FormControlLabel
                 control={<Checkbox onChange={handleIT} checked={it_req} />}
                 label="IT Requirements"
@@ -404,7 +413,6 @@ const Details = () => {
           <TabContext value={v}>
             <Tabs
               variant="scrollable"
-              
               allowScrollButtonsMobile
               value={v}
               onChange={MON_SUN}
@@ -425,7 +433,7 @@ const Details = () => {
                 justifyContent="center"
                 sx={{
                   marginTop: 0,
-                  flexDirection: 'column',
+                  flexDirection: "column",
                   flex: 1,
                 }}
               >
@@ -466,9 +474,25 @@ const Details = () => {
                 >
                   Accept
                 </Button>
-                <Button variant="contained" endIcon={<ClearSharpIcon />}>
+                <Button
+                  variant="contained"
+                  endIcon={<ClearSharpIcon />}
+                  onClick={handleOpen}
+                >
                   Reject
                 </Button>
+                <Dialog
+                  open={open}
+                  keepMounted
+                  onClose={handleClose}
+                  aria-describedby="alert-dialog-slide-description"
+                >
+                  <DialogTitle>{"Confirm Booking Rejection?"}</DialogTitle>
+                  <DialogActions>
+                    <Button>Reject</Button>
+                    <Button onClick={handleClose}>Back</Button>
+                  </DialogActions>
+                </Dialog>
               </Box>
             </>
           )}
