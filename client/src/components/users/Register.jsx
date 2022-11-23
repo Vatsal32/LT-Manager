@@ -10,13 +10,13 @@ import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { MuiTelInput } from "mui-tel-input";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { useDispatch, useSelector } from "react-redux";
 import { addUserAction } from "../../store/actions/users";
 import { useNavigate } from "react-router-dom";
 import PersonAddAlt1SharpIcon from '@mui/icons-material/PersonAddAlt1Sharp';
+import { FormHelperText } from "@mui/material";
 const Register = () => {
   const allowRegister = useSelector(
     (state) =>
@@ -34,7 +34,11 @@ const Register = () => {
     }
   }, [allowRegister]);
 
+  const [smallPassword, setSmallPassword] = React.useState(false);
+
   const handleChange = (prop) => (event) => {
+    if((event.target.value).length < 8) setSmallPassword(true);
+    else setSmallPassword(false);
     setValues({ ...values, [prop]: event.target.value });
   };
 
@@ -69,7 +73,7 @@ const Register = () => {
   const [err, seterr] = React.useState(false);
 
   const textout = (e) => {
-    setState(e.target.value);
+    setState(e.target.value.replace(/[^a-z\s]/gi, ''));
   };
 
   const [state1, setState1] = React.useState("");
@@ -130,7 +134,6 @@ const Register = () => {
 
   const checkErrors = () => {
     let err = false;
-
     if (state === "") {
       seterr(true);
       err = true;
@@ -143,19 +146,19 @@ const Register = () => {
     } else {
       seterr1(false);
     }
-    if (state2 === "") {
+    if (state2 === "" || !state2.includes("@lnmiit.ac.in")) {
       seterr2(true);
       err = true;
     } else {
       seterr2(false);
     }
-    if (state3 === "") {
+    if (state3 === "" || state3.length < 8) {
       seterr3(true);
       err = true;
     } else {
       seterr3(false);
     }
-    if (state4 === "") {
+    if (state4 === "" || state3!=state4) {
       seterr4(true);
       err = true;
     } else {
@@ -167,18 +170,18 @@ const Register = () => {
 
   const handleClickOpen = () => {
     if (!checkErrors()) {
-      let p = phone;
-      let i = 0;
-      while (p[i] != " ") {
-        i++;
-      }
-      p = p.substring(i + 1, p.length);
-      let q = "";
-      for (i = 0; i < p.length; i++) {
-        if (p[i] !== " ") {
-          q += p[i];
-        }
-      }
+      // let p = phone;
+      // let i = 0;
+      // while (p[i] != " ") {
+      //   i++;
+      // }
+      // p = p.substring(i + 1, p.length);
+      // let q = "";
+      // for (i = 0; i < p.length; i++) {
+      //   if (p[i] !== " ") {
+      //     q += p[i];
+      //   }
+      // }
 
       const data = {
         name: state,
@@ -186,7 +189,7 @@ const Register = () => {
         email: state2,
         password: state3,
         confirmPassword: state4,
-        phoneNum: q,
+        phoneNum: phone,
       };
 
       dispatcher(addUserAction({ data, navigate }));
@@ -198,7 +201,8 @@ const Register = () => {
   const [phone, setPhone] = React.useState("");
 
   const phoneNumber = (newPhone) => {
-    setPhone(newPhone);
+    var num = newPhone.target.value.replace(/[^1-9]/gi, '');
+    if(num.length<=10)setPhone(num);
   };
 
   return (
@@ -247,6 +251,7 @@ const Register = () => {
               {errors && <Typography>{errors.user}</Typography>}
               <Box
                 style={{
+                  marginTop:"10px", 
                   display: "flex",
                   alignItems: "center",
                 }}
@@ -258,7 +263,7 @@ const Register = () => {
                   error={err}
                   helperText={err ? "Empty field!" : " "}
                   id="outlined-basic-1"
-                  label={!err ? "Name*" : " Error! "}
+                  label="Name"
                   variant="outlined"
                   style={{ margin: "auto", width: "260px" }}
                 />
@@ -273,9 +278,10 @@ const Register = () => {
                   value={state1}
                   onChange={textout1}
                   error={err1}
-                  helperText={err1 ? "Empty field!" : " "}
+                  helperText={err1 ? "Invalid User Name!" : " "}
                   id="outlined-basic-2"
-                  label={!err1 ? "User Name*" : " Error! "}
+                  label="Username"
+                  // {!err1 ? "User Name*" : " Error! "}
                   variant="outlined"
                   style={{ margin: "auto", width: "260px" }}
                 />
@@ -291,9 +297,10 @@ const Register = () => {
                   value={state2}
                   onChange={textout2}
                   error={err2}
-                  helperText={err2 ? "Empty field!" : " "}
+                  helperText={err2 ? "Invalid email!" : " "}
                   id="outlined-basic-3"
-                  label={!err2 ? "Mail Id*" : " Error! "}
+                  label= "Email"
+                  // {!err2 ? "Mail Id*" : " Error! "}
                   variant="outlined"
                   style={{ margin: "auto", width: "260px" }}
                 />
@@ -321,6 +328,7 @@ const Register = () => {
                     id="outlined-adornment-password-1"
                     type={values.showPassword ? "text" : "password"}
                     value={values.password}
+                    error={smallPassword}
                     onChange={handleChange("password")}
                     endAdornment={
                       <InputAdornment position="end">
@@ -340,6 +348,11 @@ const Register = () => {
                     }
                     label="Password"
                   />
+                  {!!smallPassword && (
+                      <FormHelperText error id="password-error" sx={{marginBottom:-3}}>
+                        Password length must be atleast 8*
+                      </FormHelperText>
+                    )}
                 </FormControl>
               </Box>
 
@@ -364,6 +377,7 @@ const Register = () => {
                     id="outlined-adornment-password"
                     type={values1.showPassword ? "text" : "password"}
                     value={values1.password}
+                    error={state3!=state4}
                     onChange={handleChange1("password")}
                     endAdornment={
                       <InputAdornment position="end">
@@ -383,6 +397,11 @@ const Register = () => {
                     }
                     label="Password"
                   />
+                  {!!(state3!=state4) && (
+                      <FormHelperText error id="password-error" sx={{marginBottom:-3}}>
+                        Password does not match*
+                      </FormHelperText>
+                    )}
                 </FormControl>
               </Box>
               <Box
@@ -392,10 +411,10 @@ const Register = () => {
                   justifyContent: "center",
                   textAlign: "center",
                   marginBottom: "10px",
-                  width: '260px'
+                  width: '265px'
                 }}
               >
-                <MuiTelInput value={phone} onChange={phoneNumber} />
+                <TextField label="Phone" value={phone} onChange={phoneNumber} sx={{width:'100%'}}/>
               </Box>
 
               <Box
