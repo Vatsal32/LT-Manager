@@ -1,9 +1,12 @@
 import React, { useEffect } from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import { Stack } from "@mui/system";
+import { Box } from "@mui/system";
+import {
+  Grid,
+  TextField,
+  Card,
+  Button,
+  Typography,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { addRoomAction } from "../../store/actions/rooms";
 import { useNavigate } from "react-router-dom";
@@ -31,12 +34,13 @@ const AddRooms = () => {
 
   useEffect(() => {
     if (!allowAdd) {
-      navigate('/notAuthorized');
+      navigate("/notAuthorized");
     }
   }, [allowAdd]);
 
   const textout = (e) => {
-    setState(e.target.value);
+    let res = e.target.value.replace(/[^0-9]/gi, "");
+    setState(res);
   };
 
   useEffect(() => {
@@ -62,6 +66,12 @@ const AddRooms = () => {
     }
   }, [errors, added]);
 
+  const handleCapChange = (e) => {
+    let res = e.target.value.replace(/[^0-9]/gi, "");
+    while (res[0] == 0) res = res.substring(1);
+    setState1(res);
+  };
+
   const handleClickOpen = () => {
     let e = true;
     if (state == "") {
@@ -81,12 +91,12 @@ const AddRooms = () => {
         capacity: "Should be numeric positive value",
       }));
     }
-
+    
     if (e) {
       dispatcher(
         addRoomAction({
           data: {
-            roomNo: state,
+            roomNo: "LT-" +state,
             capacity: state1,
           },
           navigate,
@@ -97,82 +107,59 @@ const AddRooms = () => {
 
   return (
     <Box
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-      }}
+      alignItems="center"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      marginBottom="100px"
+      flex="1"
     >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          textAlign: "center",
-          height: "100%",
+      <Typography style={{ marginBottom: "20px", color: "green" }}>
+        {success}
+      </Typography>
+      <Card
+        variant="outlined"
+        alignItems="center"
+        sx={{
+          boxShadow: 10,
+          borderRadius: 3,
+          padding: 6,
         }}
       >
-        <Box
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            textAlign: "center",
-          }}
-        >
-          <Typography style={{ marginBottom: "20px", color: "green" }}>
-            {success}
-          </Typography>
-        </Box>
-        <Box
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            textAlign: "center",
-          }}
-        >
-          <Typography style={{ marginBottom: "20px" }}>Room Number:</Typography>
-          <TextField
-            value={state}
-            onChange={textout}
-            error={err && Boolean(error.roomNo)}
-            helperText={error.roomNo}
-            id="outlined-basic"
-            label={"Room Number"}
-            variant="outlined"
-            required
-            style={{ marginLeft: "10px", marginBottom: "50px" }}
-          />
-        </Box>
-        <Box
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            textAlign: "center",
-          }}
-        >
-          <Typography style={{ marginBottom: "20px" }}>Capacity:</Typography>
-          <TextField
-            value={state1}
-            onChange={(e) => setState1(e.target.value)}
-            error={err && Boolean(error.capacity)}
-            helperText={error.capacity}
-            id="outlined-basic"
-            label={"Capacity"}
-            variant="outlined"
-            required
-            style={{ marginLeft: "10px" }}
-          />
-        </Box>
-        <Stack direction="row" spacing={5} margin="10px">
-          <Button variant="contained" onClick={handleClickOpen}>
-            Add Room
-          </Button>
-        </Stack>
-      </div>
+        <form>
+          <Grid container direction="column" spacing="10">
+            <Grid item>
+              <TextField
+                label="Room Number"
+                value={state}
+                onChange={textout}
+                error={err && Boolean(error.roomNo)}
+                helperText={error.roomNo}
+                required
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                label="Capacity"
+                value={state1}
+                onChange={handleCapChange}
+                error={err && Boolean(error.capacity)}
+                helperText={error.capacity}
+                required
+              />
+            </Grid>
+            <Grid item display="flex" justifyContent="center">
+              <Button
+                variant="contained"
+                sx={{ width: "100px", marginTop: "20px" }}
+                onClick={handleClickOpen}
+              >
+                Add
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </Card>
     </Box>
   );
 };
