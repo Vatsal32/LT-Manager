@@ -290,8 +290,7 @@ module.exports = {
         const datas = await checkConflictDates(ltId, startDate, endDate);
         const fields = Object.keys(dayTime);
 
-        if (datas === []) {
-          console.log(dayTime[fields[1]], dayTime[fields[0]]);
+        if (datas.length === 0) {
           if (
             dayTime[fields[1]] !== -1 &&
             dayTime[fields[0]] !== -1 &&
@@ -357,7 +356,6 @@ module.exports = {
       if (Object.keys(errors).length > 0) {
         res.json({ errors });
       } else {
-        console.log(newBooking);
         newBooking
           .save()
           .then(

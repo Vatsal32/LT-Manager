@@ -15,7 +15,7 @@ import CardContent from "@mui/material/CardContent";
 import { useDispatch, useSelector } from "react-redux";
 import { addUserAction } from "../../store/actions/users";
 import { useNavigate } from "react-router-dom";
-import PersonAddAlt1SharpIcon from '@mui/icons-material/PersonAddAlt1Sharp';
+import PersonAddAlt1SharpIcon from "@mui/icons-material/PersonAddAlt1Sharp";
 import { FormHelperText } from "@mui/material";
 const Register = () => {
   const allowRegister = useSelector(
@@ -37,7 +37,7 @@ const Register = () => {
   const [smallPassword, setSmallPassword] = React.useState(false);
 
   const handleChange = (prop) => (event) => {
-    if((event.target.value).length < 8) setSmallPassword(true);
+    if (event.target.value.length < 8) setSmallPassword(true);
     else setSmallPassword(false);
     setValues({ ...values, [prop]: event.target.value });
   };
@@ -73,7 +73,7 @@ const Register = () => {
   const [err, seterr] = React.useState(false);
 
   const textout = (e) => {
-    setState(e.target.value.replace(/[^a-z\s]/gi, ''));
+    setState(e.target.value.replace(/[^a-z\s]/gi, ""));
   };
 
   const [state1, setState1] = React.useState("");
@@ -158,7 +158,7 @@ const Register = () => {
     } else {
       seterr3(false);
     }
-    if (state4 === "" || state3!=state4) {
+    if (state4 === "" || state3 != state4) {
       seterr4(true);
       err = true;
     } else {
@@ -201,8 +201,13 @@ const Register = () => {
   const [phone, setPhone] = React.useState("");
 
   const phoneNumber = (newPhone) => {
-    var num = newPhone.target.value.replace(/[^1-9]/gi, '');
-    if(num.length<=10)setPhone(num);
+    let num = newPhone.target.value.replace(/[^0-9]/gi, "");
+
+    while (num[0] == "0") {
+      num = num.substring(1);
+    }
+
+    if (num.length <= 10) setPhone(num);
   };
 
   return (
@@ -251,12 +256,11 @@ const Register = () => {
               {errors && <Typography>{errors.user}</Typography>}
               <Box
                 style={{
-                  marginTop:"10px", 
+                  marginTop: "10px",
                   display: "flex",
                   alignItems: "center",
                 }}
               >
-                
                 <TextField
                   value={state}
                   onChange={textout}
@@ -292,14 +296,13 @@ const Register = () => {
                   alignItems: "center",
                 }}
               >
-                
                 <TextField
                   value={state2}
                   onChange={textout2}
                   error={err2}
                   helperText={err2 ? "Invalid email!" : " "}
                   id="outlined-basic-3"
-                  label= "Email"
+                  label="Email"
                   // {!err2 ? "Mail Id*" : " Error! "}
                   variant="outlined"
                   style={{ margin: "auto", width: "260px" }}
@@ -312,9 +315,8 @@ const Register = () => {
                   alignItems: "center",
                 }}
               >
-               
                 <FormControl
-                  sx={{ margin:'auto', mb: 3, width: "auto" }}
+                  sx={{ margin: "auto", mb: 3, width: "auto" }}
                   variant="outlined"
                   value={state3}
                   onChange={textout3}
@@ -349,10 +351,14 @@ const Register = () => {
                     label="Password"
                   />
                   {!!smallPassword && (
-                      <FormHelperText error id="password-error" sx={{marginBottom:-3}}>
-                        Password length must be atleast 8*
-                      </FormHelperText>
-                    )}
+                    <FormHelperText
+                      error
+                      id="password-error"
+                      sx={{ marginBottom: -3 }}
+                    >
+                      Password length must be atleast 8*
+                    </FormHelperText>
+                  )}
                 </FormControl>
               </Box>
 
@@ -363,7 +369,7 @@ const Register = () => {
                 }}
               >
                 <FormControl
-                  sx={{ margin: 'auto', mb: 3, width: "auto" }}
+                  sx={{ margin: "auto", mb: 3, width: "auto" }}
                   variant="outlined"
                   value={state4}
                   onChange={textout4}
@@ -377,7 +383,7 @@ const Register = () => {
                     id="outlined-adornment-password"
                     type={values1.showPassword ? "text" : "password"}
                     value={values1.password}
-                    error={state3!=state4}
+                    error={state3 != state4}
                     onChange={handleChange1("password")}
                     endAdornment={
                       <InputAdornment position="end">
@@ -397,11 +403,15 @@ const Register = () => {
                     }
                     label="Password"
                   />
-                  {!!(state3!=state4) && (
-                      <FormHelperText error id="password-error" sx={{marginBottom:-3}}>
-                        Password does not match*
-                      </FormHelperText>
-                    )}
+                  {!!(state3 != state4) && (
+                    <FormHelperText
+                      error
+                      id="password-error"
+                      sx={{ marginBottom: -3 }}
+                    >
+                      Password does not match*
+                    </FormHelperText>
+                  )}
                 </FormControl>
               </Box>
               <Box
@@ -411,10 +421,15 @@ const Register = () => {
                   justifyContent: "center",
                   textAlign: "center",
                   marginBottom: "10px",
-                  width: '265px'
+                  width: "265px",
                 }}
               >
-                <TextField label="Phone" value={phone} onChange={phoneNumber} sx={{width:'100%'}}/>
+                <TextField
+                  label="Phone"
+                  value={phone}
+                  onChange={phoneNumber}
+                  sx={{ width: "100%" }}
+                />
               </Box>
 
               <Box

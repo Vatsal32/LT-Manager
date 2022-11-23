@@ -202,129 +202,128 @@ const Details = () => {
     let arr = times;
 
     if (bookingData.monST && bookingData.monST !== -1) {
-      const hr = bookingData.monST / 100;
-      const mn = bookingData.monST % 100;
+      const hr = Math.floor(bookingData.monST / 100);
+      const mn = (bookingData.monST - 1) % 100;
       arr[0][0] = dayjs(
         `${hr < 10 ? 0 : ""}${hr}:${mn === 0 ? "00" : "30"}`,
-        "HH:MM"
+        "HH:mm"
       );
     }
 
     if (bookingData.monET && bookingData.monET !== -1) {
-      const hr = bookingData.monET / 100;
+      const hr = Math.floor(bookingData.monET / 100);
       const mn = bookingData.monET % 100;
-      console.log(mn === 0 ? "00" : "30");
       arr[0][1] = dayjs(
         `${hr < 10 ? 0 : ""}${hr}:${(mn === 0) ? "00" : "30"}`,
-        "HH:MM"
+        "HH:mm"
       );
     }
 
     if (bookingData.tueST && bookingData.tueST !== -1) {
-      const hr = bookingData.tueST / 100;
-      const mn = bookingData.tueST % 100;
+      const hr = Math.floor(bookingData.tueST / 100);
+      const mn = (bookingData.tueST - 1) % 100;
       arr[1][0] = dayjs(
         `${hr < 10 ? 0 : ""}${hr}:${mn === 0 ? "00" : "30"}`,
-        "HH:MM"
+        "HH:mm"
       );
     }
 
     if (bookingData.tueET && bookingData.tueET !== -1) {
-      const hr = bookingData.tueET / 100;
+      const hr = Math.floor(bookingData.tueET / 100);
       const mn = bookingData.tueET % 100;
       arr[1][1] = dayjs(
         `${hr < 10 ? 0 : ""}${hr}:${mn === 0 ? "00" : "30"}`,
-        "HH:MM"
+        "HH:mm"
       );
     }
 
     if (bookingData.wedST && bookingData.wedST !== -1) {
-      const hr = bookingData.wedST / 100;
-      const mn = bookingData.wedST % 100;
+      const hr = Math.floor(bookingData.wedST / 100);
+      const mn = (bookingData.wedST - 1) % 100;
       arr[2][0] = dayjs(
         `${hr < 10 ? 0 : ""}${hr}:${mn === 0 ? "00" : "30"}`,
-        "HH:MM"
+        "HH:mm"
       );
     }
 
     if (bookingData.wedET && bookingData.wedET !== -1) {
-      const hr = bookingData.wedET / 100;
+      const hr = Math.floor(bookingData.wedET / 100);
       const mn = bookingData.wedET % 100;
       arr[2][1] = dayjs(
         `${hr < 10 ? 0 : ""}${hr}:${mn === 0 ? "00" : "30"}`,
-        "HH:MM"
+        "HH:mm"
       );
     }
 
     if (bookingData.thuST && bookingData.thuST !== -1) {
-      const hr = bookingData.thuST / 100;
-      const mn = bookingData.thuST % 100;
+      const hr = Math.floor(bookingData.thuST / 100);
+      const mn = (bookingData.thuST - 1) % 100;
       arr[3][0] = dayjs(
         `${hr < 10 ? 0 : ""}${hr}:${mn === 0 ? "00" : "30"}`,
-        "HH:MM"
+        "HH:mm"
       );
     }
 
     if (bookingData.thuET && bookingData.thuET !== -1) {
-      const hr = bookingData.thuET / 100;
+      const hr = Math.floor(bookingData.thuET / 100);
       const mn = bookingData.thuET % 100;
       arr[3][1] = dayjs(
         `${hr < 10 ? 0 : ""}${hr}:${mn === 0 ? "00" : "30"}`,
-        "HH:MM"
+        "HH:mm"
       );
     }
 
     if (bookingData.friST && bookingData.friST !== -1) {
-      const hr = bookingData.friST / 100;
-      const mn = bookingData.friST % 100;
+      const hr = Math.floor(bookingData.friST / 100);
+      const mn = (bookingData.friST - 1) % 100;
       arr[4][0] = dayjs(
         `${hr < 10 ? 0 : ""}${hr}:${mn === 0 ? "00" : "30"}`,
-        "HH:MM"
+        "HH:mm"
       );
     }
 
     if (bookingData.friET && bookingData.friET !== -1) {
-      const hr = bookingData.friET / 100;
+      const hr = Math.floor(bookingData.friET / 100);
       const mn = bookingData.friET % 100;
       arr[4][1] = dayjs(
         `${hr < 10 ? 0 : ""}${hr}:${mn === 0 ? "00" : "30"}`,
-        "HH:MM"
+        "HH:mm"
       );
     }
 
     if (bookingData.satST && bookingData.satST !== -1) {
-      const hr = bookingData.satST / 100;
-      const mn = bookingData.satST % 100;
+      const hr = Math.floor(bookingData.satST / 100);
+      const mn = (bookingData.satST - 1) % 100;
       arr[5][0] = dayjs(
         `${hr < 10 ? 0 : ""}${hr}:${mn === 0 ? "00" : "30"}`,
-        "HH:MM"
+        "HH:mm"
       );
     }
 
     if (bookingData.satET && bookingData.satET !== -1) {
-      const hr = bookingData.satET / 100;
+      const hr = Math.floor(bookingData.satET / 100);
       const mn = bookingData.satET % 100;
       arr[5][1] = dayjs(
         `${hr < 10 ? 0 : ""}${hr}:${mn === 0 ? "00" : "30"}`,
-        "HH:MM"
+        "HH:mm"
       );
     }
 
     if (bookingData.sunST && bookingData.sunST !== -1) {
-      const hr = bookingData.sunST / 100;
-      const mn = bookingData.sunST % 100;
+      const hr = Math.floor(bookingData.sunST / 100);
+      const mn = (bookingData.sunST - 1) % 100;
       arr[6][0] = dayjs(
         `${hr < 10 ? 0 : ""}${hr}:${mn === 0 ? "00" : "30"}`,
-        "HH:MM"
+        "HH:mm"
       );
     }
 
     if (bookingData.sunET && bookingData.sunET !== -1) {
-      const hr = bookingData.sunET / 100;
+      const hr = Math.floor(bookingData.sunET / 100);
       const mn = bookingData.sunET % 100;
       arr[6][1] = dayjs(
         `${hr < 10 ? 0 : ""}${hr}:${mn === 0 ? "00" : "30"}`,
-        "HH:MM"
+        "HH:mm"
       );
     }
 
@@ -349,7 +348,7 @@ const Details = () => {
   };
 
   if (errors !== "") {
-    return <Box className="container">{errors}</Box>;
+    navigate('/error');
   }
 
   const dispatcher = useDispatch();
