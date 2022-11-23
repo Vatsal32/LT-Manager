@@ -3,7 +3,13 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { Card, Typography } from "@mui/material";
+import {
+  Card,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Typography,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
 import dayjs from "dayjs";
@@ -57,6 +63,7 @@ const MakeBooking = () => {
   const [page, setPage] = useState(tm.x);
   const [batch, setBatch] = useState("");
   const [purpose, setPurpose] = useState("");
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -70,12 +77,12 @@ const MakeBooking = () => {
   }, [allowBookings, superAdmin]);
 
   useEffect(() => {
-    let k = {...errors};
+    let k = { ...errors };
 
     for (let field of Object.keys(e)) {
       k = {
         ...k,
-        [field]: e[field]
+        [field]: e[field],
       };
     }
 
@@ -94,6 +101,13 @@ const MakeBooking = () => {
 
   const [value, setValue] = useState(dayjs(tm.y));
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const handleChange = (newValue) => {
     setValue(newValue);
   };
@@ -103,7 +117,6 @@ const MakeBooking = () => {
   const handleChange1 = (newValue) => {
     setValue1(newValue);
   };
-
 
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -147,7 +160,96 @@ const MakeBooking = () => {
   const handlePurpose = (event) => {
     setPurpose(event.target.value);
   };
+  const handleSubmit = () => {
+    {
+      dispatcher(
+        bookingAction({
+          data: {
+            ltId: Object.keys(data)[page - 1],
+            purpose,
+            startDate: value.format("YYYY-MM-DD"),
+            endDate: value1.format("YYYY-MM-DD"),
+            batch,
+            it_req: checked,
+            monST:
+              time1S !== null
+                ? time1S.get("hour") * 100 + (time1S.get("minute") > 0 ? 50 : 0)
+                : -1,
+            monET:
+              time1E !== null
+                ? time1E.get("hour") * 100 + (time1E.get("minute") > 0 ? 50 : 0)
+                : -1,
 
+            tueST:
+              time2S !== null
+                ? time2S.get("hour") * 100 + (time2S.get("minute") > 0 ? 50 : 0)
+                : -1,
+            tueET:
+              time2E !== null
+                ? time2E.get("hour") * 100 + (time2E.get("minute") > 0 ? 50 : 0)
+                : -1,
+
+            wedST:
+              time3S !== null
+                ? time3S.get("hour") * 100 +
+                  (time3S.get("minutes") > 0 ? 50 : 0)
+                : -1,
+            wedET:
+              time3E !== null
+                ? time3E.get("hour") * 100 +
+                  (time3E.get("minutes") > 0 ? 50 : 0)
+                : -1,
+
+            thuST:
+              time4S !== null
+                ? time4S.get("hour") * 100 +
+                  (time4S.get("minutes") > 0 ? 50 : 0)
+                : -1,
+            thuET:
+              time4E !== null
+                ? time4E.get("hour") * 100 +
+                  (time4E.get("minutes") > 0 ? 50 : 0)
+                : -1,
+
+            friST:
+              time5S !== null
+                ? time5S.get("hour") * 100 +
+                  (time5S.get("minutes") > 0 ? 50 : 0)
+                : -1,
+            friET:
+              time5E !== null
+                ? time5E.get("hour") * 100 +
+                  (time5E.get("minutes") > 0 ? 50 : 0)
+                : -1,
+
+            satST:
+              time6S !== null
+                ? time6S.get("hour") * 100 +
+                  (time6S.get("minutes") > 0 ? 50 : 0)
+                : -1,
+            satET:
+              time6E !== null
+                ? time6E.get("hour") * 100 +
+                  (time6E.get("minutes") > 0 ? 50 : 0)
+                : -1,
+
+            sunST:
+              time7S !== null
+                ? time7S.get("hour") * 100 +
+                  (time7S.get("minutes") > 0 ? 50 : 0)
+                : -1,
+            sunET:
+              time7E !== null
+                ? time7E.get("hour") * 100 +
+                  (time7E.get("minutes") > 0 ? 50 : 0)
+                : -1,
+          },
+          navigate,
+        })
+      );
+    }
+    setOpen(false);
+  };
   return (
     <div
       style={{
@@ -898,100 +1000,17 @@ const MakeBooking = () => {
                 style={{ marginBottom: "20px" }}
                 variant="contained"
                 endIcon={<SendIcon />}
-                onClick={() => {
-                  dispatcher(
-                    bookingAction({
-                      data: {
-                        ltId: Object.keys(data)[page - 1],
-                        purpose,
-                        startDate: value.format("YYYY-MM-DD"),
-                        endDate: value1.format("YYYY-MM-DD"),
-                        batch,
-                        it_req: checked,
-                        monST:
-                          time1S !== null
-                            ? time1S.get("hour") * 100 +
-                              (time1S.get("minute") > 0 ? 50 : 0)
-                            : -1,
-                        monET:
-                          time1E !== null
-                            ? time1E.get("hour") * 100 +
-                              (time1E.get("minute") > 0 ? 50 : 0)
-                            : -1,
-
-                        tueST:
-                          time2S !== null
-                            ? time2S.get("hour") * 100 +
-                              (time2S.get("minute") > 0 ? 50 : 0)
-                            : -1,
-                        tueET:
-                          time2E !== null
-                            ? time2E.get("hour") * 100 +
-                              (time2E.get("minute") > 0 ? 50 : 0)
-                            : -1,
-
-                        wedST:
-                          time3S !== null
-                            ? time3S.get("hour") * 100 +
-                              (time3S.get("minutes") > 0 ? 50 : 0)
-                            : -1,
-                        wedET:
-                          time3E !== null
-                            ? time3E.get("hour") * 100 +
-                              (time3E.get("minutes") > 0 ? 50 : 0)
-                            : -1,
-
-                        thuST:
-                          time4S !== null
-                            ? time4S.get("hour") * 100 +
-                              (time4S.get("minutes") > 0 ? 50 : 0)
-                            : -1,
-                        thuET:
-                          time4E !== null
-                            ? time4E.get("hour") * 100 +
-                              (time4E.get("minutes") > 0 ? 50 : 0)
-                            : -1,
-
-                        friST:
-                          time5S !== null
-                            ? time5S.get("hour") * 100 +
-                              (time5S.get("minutes") > 0 ? 50 : 0)
-                            : -1,
-                        friET:
-                          time5E !== null
-                            ? time5E.get("hour") * 100 +
-                              (time5E.get("minutes") > 0 ? 50 : 0)
-                            : -1,
-
-                        satST:
-                          time6S !== null
-                            ? time6S.get("hour") * 100 +
-                              (time6S.get("minutes") > 0 ? 50 : 0)
-                            : -1,
-                        satET:
-                          time6E !== null
-                            ? time6E.get("hour") * 100 +
-                              (time6E.get("minutes") > 0 ? 50 : 0)
-                            : -1,
-
-                        sunST:
-                          time7S !== null
-                            ? time7S.get("hour") * 100 +
-                              (time7S.get("minutes") > 0 ? 50 : 0)
-                            : -1,
-                        sunET:
-                          time7E !== null
-                            ? time7E.get("hour") * 100 +
-                              (time7E.get("minutes") > 0 ? 50 : 0)
-                            : -1,
-                      },
-                      navigate,
-                    })
-                  );
-                }}
+                onClick={handleOpen}
               >
                 Submit
               </Button>
+              <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Confirm Booking?</DialogTitle>
+                <DialogActions>
+                  <Button onClick={handleSubmit}>Yes</Button>
+                  <Button onClick={handleClose}> No</Button>
+                </DialogActions>
+              </Dialog>
             </Box>
           </Box>
         </Box>
