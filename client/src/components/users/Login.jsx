@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAction } from "../../store/actions/users";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import * as React from "react";
 import img1 from "./images/1.jpg";
 import img2 from "./images/2.jpg";
@@ -28,6 +28,7 @@ const Login = () => {
 
   const loggedIn = useSelector(state => state.users.loggedIn);
   const e = useSelector(state => state.users.errors);
+  const loc = useLocation();
 
   const textout = (e) => {
     setState(e.target.value);
@@ -77,6 +78,10 @@ const Login = () => {
 
   useEffect(() => {
     if (loggedIn) {
+      if (loc.state?.pg && loc.state?.pg !== null) {
+        navigate(loc.state?.pg);
+      }
+
       navigate("/");
     }
   }, [loggedIn, navigate]);

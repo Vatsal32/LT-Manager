@@ -20,6 +20,13 @@ const NavBar = () => {
   const [anchor, setAnchor] = useState(null);
   const dispatcher = useDispatch();
   const loggedIn = useSelector((state) => state.users.loggedIn);
+  const isSuper = useSelector(
+    (state) =>
+      state.users.isAdmin1 ||
+      state.users.isAdmin2 ||
+      state.users.isAdmin3 ||
+      state.users.isSuperAdmin
+  );
 
   const handleClose = () => {
     setAnchor(null);
@@ -74,7 +81,7 @@ const NavBar = () => {
           </>
         )}
         <Tooltip title={"Help"} sx={{ mx: "10px" }}>
-          <Link 
+          <Link
             href={"/help"}
             underline={"none"}
             sx={{
@@ -110,22 +117,24 @@ const NavBar = () => {
           open={Boolean(anchor)}
           onClose={handleClose}
         >
-          <MenuItem>
-          <Link
-              href={"/pending"}
-              underline={"none"}
-              sx={{
-                color: "black",
-                ":hover": {
+          {isSuper && (
+            <MenuItem>
+              <Link
+                href={"/pending"}
+                underline={"none"}
+                sx={{
                   color: "black",
-                  textDecoration: "none",
-                  bgcolor: "transparent",
-                },
-              }}
-            >
-              Pending Requests
-            </Link>
-          </MenuItem>
+                  ":hover": {
+                    color: "black",
+                    textDecoration: "none",
+                    bgcolor: "transparent",
+                  },
+                }}
+              >
+                Pending Requests
+              </Link>
+            </MenuItem>
+          )}
           <MenuItem
             onClick={() => {
               handleClose();
