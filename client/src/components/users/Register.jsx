@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
@@ -123,7 +122,7 @@ const Register = () => {
   const added = useSelector((state) => state.users.added);
 
   useEffect(() => {
-    setErrors(e);
+    setErrors(e.user);
   }, [e]);
 
   useEffect(() => {
@@ -210,6 +209,8 @@ const Register = () => {
     if (num.length <= 10) setPhone(num);
   };
 
+  console.log(errors);
+
   return (
     <Box
       style={{
@@ -253,10 +254,9 @@ const Register = () => {
                 textAlign: "center",
               }}
             >
-              {errors && <Typography>{errors.user}</Typography>}
               <Box
                 style={{
-                  marginTop: "10px",
+                  marginTop: "20px",
                   display: "flex",
                   alignItems: "center",
                 }}
@@ -264,8 +264,8 @@ const Register = () => {
                 <TextField
                   value={state}
                   onChange={textout}
-                  error={err}
-                  helperText={err ? "Empty field!" : " "}
+                  error={errors.name !== ""}
+                  helperText={errors.name}
                   id="outlined-basic-1"
                   label="Name"
                   variant="outlined"
@@ -281,11 +281,10 @@ const Register = () => {
                 <TextField
                   value={state1}
                   onChange={textout1}
-                  error={err1}
-                  helperText={err1 ? "Invalid User Name!" : " "}
                   id="outlined-basic-2"
                   label="Username"
-                  // {!err1 ? "User Name*" : " Error! "}
+                  error={errors.userName !== ""}
+                  helperText={errors.userName}
                   variant="outlined"
                   style={{ margin: "auto", width: "260px" }}
                 />
@@ -299,8 +298,8 @@ const Register = () => {
                 <TextField
                   value={state2}
                   onChange={textout2}
-                  error={err2}
-                  helperText={err2 ? "Invalid email!" : " "}
+                  error={errors.email !== ""}
+                  helperText={errors.email}
                   id="outlined-basic-3"
                   label="Email"
                   // {!err2 ? "Mail Id*" : " Error! "}
@@ -320,8 +319,8 @@ const Register = () => {
                   variant="outlined"
                   value={state3}
                   onChange={textout3}
-                  error={err3}
-                  label={!err3 ? "Mail Id*" : " Error! "}
+                  error={errors.password !== ""}
+                  label={'Password'}
                 >
                   <InputLabel htmlFor="outlined-adornment-password">
                     Password
@@ -350,6 +349,7 @@ const Register = () => {
                     }
                     label="Password"
                   />
+                  <FormHelperText>{errors.password}</FormHelperText>
                   {!!smallPassword && (
                     <FormHelperText
                       error
@@ -373,7 +373,7 @@ const Register = () => {
                   variant="outlined"
                   value={state4}
                   onChange={textout4}
-                  error={err4}
+                  error={errors.confirmPassword}
                   label={!err4 ? "Mail Id*" : " Error! "}
                 >
                   <InputLabel htmlFor="outlined-adornment-password">
@@ -403,6 +403,9 @@ const Register = () => {
                     }
                     label="Password"
                   />
+                  <FormHelperText>
+                    {errors.confirmPassword}
+                  </FormHelperText>
                   {!!(state3 != state4) && (
                     <FormHelperText
                       error
@@ -428,6 +431,8 @@ const Register = () => {
                   label="Phone"
                   value={phone}
                   onChange={phoneNumber}
+                  error={errors.phoneNumber !== ''}
+                  helperText={errors.phoneNumber}
                   sx={{ width: "100%" }}
                 />
               </Box>
