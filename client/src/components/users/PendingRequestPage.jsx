@@ -42,7 +42,6 @@ export default function PendingRequestPage() {
             errors: ans.errors,
           };
         } else {
-          console.log("RET", ans.data);
           return ans.data;
         }
       });

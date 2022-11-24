@@ -118,22 +118,75 @@ const NavBar = () => {
           onClose={handleClose}
         >
           {isSuper && (
-            <MenuItem>
-              <Link
-                href={"/pending"}
-                underline={"none"}
-                sx={{
-                  color: "black",
-                  ":hover": {
+            [
+              <MenuItem key={1}>
+                <Link
+                  href={"/pending"}
+                  underline={"none"}
+                  sx={{
                     color: "black",
-                    textDecoration: "none",
-                    bgcolor: "transparent",
-                  },
-                }}
-              >
-                Pending Requests
-              </Link>
-            </MenuItem>
+                    ":hover": {
+                      color: "black",
+                      textDecoration: "none",
+                      bgcolor: "transparent",
+                    },
+                  }}
+                >
+                  Pending Requests
+                </Link>
+              </MenuItem>,
+
+              <MenuItem key={2}>
+                <Link
+                  href={"/register"}
+                  underline={"none"}
+                  sx={{
+                    color: "black",
+                    ":hover": {
+                      color: "black",
+                      textDecoration: "none",
+                      bgcolor: "transparent",
+                    },
+                  }}
+                >
+                  Add User
+                </Link>
+              </MenuItem>,
+
+              <MenuItem key={3}>
+                <Link
+                  href={"/deleteUser"}
+                  underline={"none"}
+                  sx={{
+                    color: "black",
+                    ":hover": {
+                      color: "black",
+                      textDecoration: "none",
+                      bgcolor: "transparent",
+                    },
+                  }}
+                >
+                  Delete User
+                </Link>
+              </MenuItem>,
+
+              <MenuItem key={4}>
+                <Link
+                  href={"/addRooms"}
+                  underline={"none"}
+                  sx={{
+                    color: "black",
+                    ":hover": {
+                      color: "black",
+                      textDecoration: "none",
+                      bgcolor: "transparent",
+                    },
+                  }}
+                >
+                  Add Room
+                </Link>
+              </MenuItem>
+            ]
           )}
           <MenuItem
             onClick={() => {
