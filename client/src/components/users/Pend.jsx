@@ -21,7 +21,6 @@ export default function Pend(props) {
           navigate(`/details/${props.id}`, {state: {pg: loc.pathname}});
         }} 
       >
-        {/* <ListItemText className='pendingitemtext' primary={props.userName} sx={{ width: 'auto' }} /> */}
         <ListItemText className='pendingitemlt' primary={props.LtNumber} />
         <ListItemText className='pendingitemtext' primary={props.date}/>
       </ListItemButton>
@@ -31,7 +30,6 @@ export default function Pend(props) {
 }
 
 Pend.propTypes={
-  userName:PropTypes.string.isRequired,
   LtNumber:PropTypes.string.isRequired,
   date:PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,

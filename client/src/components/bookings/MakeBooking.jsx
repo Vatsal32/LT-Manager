@@ -58,11 +58,21 @@ const MakeBooking = () => {
   const [page, setPage] = useState(tm.x);
   const [batch, setBatch] = useState("");
   const [purpose, setPurpose] = useState("");
+  const [value, setValue] = useState(dayjs(tm.y));
+  const [value1, setValue1] = useState(dayjs(tm.y));
+  const [v, setV] = useState("1");
+
   const navigate = useNavigate();
 
   useEffect(() => {
     dispatcher(bookingResetAction());
   }, []);
+
+  useEffect(() => {
+    if (value) {
+      setV(`${value.day() + 1}`);
+    }
+  }, [value]);
 
   useEffect(() => {
     if (!loggedIn) {
@@ -99,13 +109,10 @@ const MakeBooking = () => {
     setPage(event.target.value);
   };
 
-  const [value, setValue] = useState(dayjs(tm.y));
-
+  
   const handleChange = (newValue) => {
     setValue(newValue);
   };
-
-  const [value1, setValue1] = useState(dayjs(tm.y));
 
   const handleChange1 = (newValue) => {
     setValue1(newValue);
@@ -113,8 +120,6 @@ const MakeBooking = () => {
 
 
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
-
-  const [v, setV] = useState("1");
 
   const MON_SUN = (event, newValue) => {
     setV(newValue);
