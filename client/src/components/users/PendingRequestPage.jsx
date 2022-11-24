@@ -76,7 +76,6 @@ export default function PendingRequestPage() {
         return (
           <Pend
             key={key}
-            userName={item.userName}
             LtNumber={item.lt}
             date={dayjs(item.startDate).format("DD-MM-YYYY")}
             id={item.id}

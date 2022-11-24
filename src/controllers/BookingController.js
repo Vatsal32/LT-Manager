@@ -190,7 +190,6 @@ module.exports = {
           let no = {
             id: u._id,
             startDate: u.startDate,
-            userName: "TEMP"
           };
 
           await RoomModel.findOne({
