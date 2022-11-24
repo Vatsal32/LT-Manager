@@ -1,8 +1,8 @@
-const UserModel = require("../models/UsersModel");
 const RoomModel = require("../models/RoomModel");
 const ObjectId = require("mongodb").ObjectId;
 const BookingsModel = require("../models/BookingsModel");
 const UsersModel = require("../models/UsersModel");
+const moment = require("moment");
 
 function dateIsValid(date) {
   const isValid = new Date(date);
@@ -11,7 +11,7 @@ function dateIsValid(date) {
 
 const checkUserValid = async (field, value) => {
   let error, isUnique;
-  ({ error, isUnique } = await UserModel.findOne({ _id: value })
+  ({ error, isUnique } = await UsersModel.findOne({ _id: value })
     .exec()
     .then((user) => {
       let res = {};
@@ -147,6 +147,72 @@ const checkConflictDates = async (ltId, std, etd) => {
 };
 
 module.exports = {
+  getPendingSchedules: async (req, res) => {
+    let d = {};
+    const today = moment();
+    const todayDate = new Date(today.format('YYYY-MM-DD'));
+
+    if (req.admin1) {
+      d = {
+        ...d,
+        admin1: false,
+      };
+    } else if (req.admin2) {
+      d = {
+        ...d,
+        admin2: false,
+      };
+    } else if (req.admin3) {
+      d = {
+        ...d,
+        admin3: false,
+      };
+    } else {
+      d = {
+        ...d,
+        admin1: false,
+        admin2: false,
+        admin3: false
+      };
+    }
+
+    await BookingsModel.find({
+      superAdmin: false,
+      ...d,
+      endDate: {
+        $gte: todayDate.toISOString()
+      }   
+    })
+      .then(async (result) => {
+        const results = [];
+
+        for (let u of result) {
+          let no = {
+            id: u._id,
+            startDate: u.startDate,
+            userName: "TEMP"
+          };
+
+          await RoomModel.findOne({
+            _id: u.ltId,
+          }).then((data) => {
+            no = {
+              ...no,
+              lt: data.roomNo,
+            };
+          });
+
+          results.push(no);
+        }
+
+        res.json({ message: "success", data: results });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json({ errors: "Something went wrong" });
+      });
+  },
+
   getSchedule: async (req, res) => {
     const id = req.body.bookId || "";
 
@@ -291,7 +357,17 @@ module.exports = {
         const fields = Object.keys(dayTime);
 
         if (datas.length === 0) {
-          if (
+          if (dayTime[fields[1]] !== -1 && dayTime[fields[1]] > 2100) {
+            errors = {
+              ...errors,
+              [fields[1]]: "Cannot be greater than 9:00 PM",
+            };
+          } else if (dayTime[fields[0]] !== -1 && dayTime[fields[0]] < 700) {
+            errors = {
+              ...errors,
+              [fields[0]]: "Cannot be less than 7:00 AM",
+            };
+          } else if (
             dayTime[fields[1]] !== -1 &&
             dayTime[fields[0]] !== -1 &&
             dayTime[fields[1]] <= dayTime[fields[0]]
@@ -313,6 +389,7 @@ module.exports = {
           };
           break;
         } else {
+          console.log(datas);
           for (let data of datas) {
             const left1 = data[fields[0]],
               left2 = dayTime[fields[0]];

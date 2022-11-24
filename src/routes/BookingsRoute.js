@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.post("/", bookingController.getTimetable);
 
+router.get("/pending", UserController.isSuper, bookingController.getPendingSchedules);
+
 router.post("/book", UserController.isAuthenticated, bookingController.makeBooking);
 
 router.post("/bookI", UserController.isSuperAdmin, bookingController.makeBooking);

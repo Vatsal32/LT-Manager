@@ -68,11 +68,13 @@ const MakeBooking = () => {
     if (!loggedIn) {
       navigate('/login');
     }
+  }, [loggedIn]);
 
-    if (!allowBookings && !superAdmin) {
+  useEffect(() => {
+    if (!allowBookings && !superAdmin && loggedIn) {
       navigate("/notAuthorized", { replace: true });
     }
-  }, [allowBookings, superAdmin]);
+  }, [allowBookings, superAdmin, loggedIn]);
 
   useEffect(() => {
     let k = {...errors};

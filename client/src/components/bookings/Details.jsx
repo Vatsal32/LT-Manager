@@ -136,11 +136,21 @@ const Details = () => {
   useEffect(() => {
     if (d1) {
       dispatcher(bookingResetAction());
+
+      if (loc.state?.pg && loc.state?.pg !== null) {
+        navigate(loc.state?.pg);
+      }
+
       navigate("/");
     }
 
     if (d3) {
       dispatcher(bookingResetAction());
+
+      if (loc.state?.pg && loc.state?.pg !== null) {
+        navigate(loc.state?.pg);
+      }
+
       navigate("/");
     }
   }, [d1, d3]);
