@@ -15,8 +15,8 @@ import {
   deleteBookingSuccessfulAction,
 } from "../actions/booking";
 
-const processBookingRequest = async (data, navigate) => {
-  return fetch("http://localhost:5001/api/bookings/book", {
+const processBookingRequest = async (data, navigate, endPoint) => {
+  return fetch(`http://localhost:5001/api/bookings/${endPoint}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -50,7 +50,7 @@ const processBookingRequest = async (data, navigate) => {
 };
 
 const processBookingApprove = async (data, navigate) => {
-  return fetch("http://localhost:5001/api/bookings/accept", {
+  return fetch(`http://localhost:5001/api/bookings/accpet`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -182,7 +182,8 @@ const processBookingDelete = async (data, navigate, endPoint) => {
 };
 
 function* bookingWorker({ payload }) {
-  const res = yield call(processBookingRequest, payload.data, payload.navigate);
+  const isSuperAdmin = yield select(state => state.users.isSuperAdmin);
+  const res = yield call(processBookingRequest, payload.data, payload.navigate, isSuperAdmin ? 'bookI' : 'book');
 
   if (res.message === "success") {
     yield put(bookingSuccessfulAction(res.data.id));
