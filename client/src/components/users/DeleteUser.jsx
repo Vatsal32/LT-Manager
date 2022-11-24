@@ -21,33 +21,38 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const DeleteUser = () => {
-  const allowDelete = useSelector(state => (state.users.isAdmin1 || state.users.isAdmin2 || state.users.isAdmin3 || state.users.isSuperAdmin));
+  const allowDelete = useSelector(
+    (state) =>
+      state.users.isAdmin1 ||
+      state.users.isAdmin2 ||
+      state.users.isAdmin3 ||
+      state.users.isSuperAdmin
+  );
   const [open, setOpen] = React.useState(false);
   const [state, setState] = React.useState("");
-  const [err, seterr] = React.useState(false);
-  const ee = useSelector(state => state.users.deleteErrors);
-  const deleted = useSelector(state => state.users.deleted);
+  const ee = useSelector((state) => state.users.deleteErrors);
+  const deleted = useSelector((state) => state.users.deleted);
   const [errors, setErrors] = React.useState({
-    userName: ""
+    userName: "",
   });
   const dispatcher = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!allowDelete) {
-      navigate('/notAuthorized');
+      navigate("/notAuthorized");
     }
   }, [allowDelete]);
 
   useEffect(() => {
-    if (ee && ee.userName) {
-      setErrors(ee);
-      seterr(true);
+    if (ee && ee.errors) {
+      setErrors({
+        userName: ee.errors
+      });
     } else {
       setErrors({
-        userName: ""
+        userName: "",
       });
-      seterr(false);
     }
   }, [ee, deleted]);
 
@@ -56,11 +61,8 @@ const DeleteUser = () => {
   };
 
   const handleClickOpen = () => {
-    if (state === "") {
-      seterr(true);
-    } else {
+    if (state !== "") {
       setOpen(true);
-      seterr(false);
     }
   };
 
@@ -69,15 +71,17 @@ const DeleteUser = () => {
   };
 
   const handleDelete = () => {
-    console.log({
-      userName: state, 
-    });
-    dispatcher(deleteUserAction({
-      data: {
-        userName: state, 
-      },
-      navigate,
-    }));
+    // console.log({
+    //   userName: state,
+    // });
+    dispatcher(
+      deleteUserAction({
+        data: {
+          userName: state,
+        },
+        navigate,
+      })
+    );
     setOpen(false);
   };
 
@@ -99,6 +103,11 @@ const DeleteUser = () => {
           height: "100%",
         }}
       >
+        {deleted && (
+          <Typography variant="body1" color={"green"} sx={{mb: '20px'}}>
+            User deleted successfully
+          </Typography>
+        )}
         <Box
           style={{
             display: "flex",
@@ -111,10 +120,10 @@ const DeleteUser = () => {
           <TextField
             value={state}
             onChange={textout}
-            error={err}
+            error={errors.userName !== ""}
             helperText={errors.userName}
             id="outlined-basic"
-            label={!err ? "user*" : " Error! "}
+            label={"User"}
             variant="outlined"
             style={{ marginLeft: "10px" }}
           />
@@ -127,7 +136,6 @@ const DeleteUser = () => {
           >
             Delete
           </Button>
-         
         </Stack>
         <Dialog
           open={open}
