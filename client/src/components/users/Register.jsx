@@ -431,7 +431,7 @@ const Register = () => {
                   label="Phone"
                   value={phone}
                   onChange={phoneNumber}
-                  error={errors.phoneNumber !== ''}
+                  error={errors.phoneNumber !== ""}
                   helperText={errors.phoneNumber}
                   sx={{ width: "100%" }}
                 />
