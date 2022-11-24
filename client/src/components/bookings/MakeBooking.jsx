@@ -70,7 +70,7 @@ const MakeBooking = () => {
 
   useEffect(() => {
     if (value) {
-      setV(`${value.day() + 1}`);
+      setV(`${value.day()}`);
     }
   }, [value]);
 
